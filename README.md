@@ -1,8 +1,16 @@
 # Lumbar Vertebral Super-Resolution Structure Reconstruction Challenge
 
-**LumbarSR Challenge**
+<p align="center">
+  <img src="docs/images/logo_512.png" alt="LumbarSR Logo" width="200">
+</p>
 
-[![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+<p align="center">
+  <strong>LumbarSR Challenge</strong>
+</p>
+
+<p align="center">
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg" alt="License"></a>
+</p>
 
 ## Overview
 
@@ -11,6 +19,12 @@ Medical computed tomography (CT) plays a crucial role in disease diagnosis, with
 This challenge addresses the critical need for algorithms capable of reconstructing high-resolution bone microstructure from paired regular clinical helical CT lumbar vertebral images to match the quality of state-of-the-art Micro-PCCT. The LumbarSR challenge provides a unique dataset of 30 paired human dry lumbar vertebrae scanned with both clinical helical CT (at multiple resolution and reconstruction configurations) and Micro-PCCT at 0.1mm super-resolution. This novel benchmark enables development and evaluation of super-resolution reconstruction algorithms in musculoskeletal imaging, with potential applications in osteoporosis screening, fracture risk assessment, and low back pain investigation.
 
 The technical objective is to develop algorithms that can transform clinical helical CT images (0.5-1.0 mm resolution) into high-resolution images comparable to Micro-PCCT (0.1 mm), representing a 10-200× super-resolution enhancement factor. Success in this challenge could transform routine lumbar CT scans into diagnostic tools for bone microstructure assessment, advancing AI-based image reconstruction in musculoskeletal radiology.
+
+<p align="center">
+  <img src="docs/images/showcase.gif" alt="Multi-resolution CT Visualization" width="100%">
+  <br>
+  <em>Tri-planar views and 3D bone rendering across different CT resolutions</em>
+</p>
 
 ## Task Description
 
