@@ -1,12 +1,16 @@
 # LumbarSR Challenge
 
-**Lumbar Vertebral Super-Resolution Structure Reconstruction Challenge**
+**LumbarSR: Lumbar Vertebral Super-Resolution Structure Reconstruction Challenge**
 
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
 ## Overview
 
-LumbarSR is a medical imaging challenge focused on super-resolution reconstruction of lumbar vertebral CT images. The goal is to reconstruct high-resolution Photon-Counting CT (PCCT) images from clinical CT scans.
+Medical computed tomography (CT) plays a crucial role in disease diagnosis, with CT technology having undergone significant evolution over the past half-century—from primary CT to energy-integrating detector CT, and now to photon-counting detector CT (PCCT) systems being deployed in clinical centers worldwide. Low back pain is a prevalent symptom affecting approximately 540 million people globally at any given time, with lumbar vertebral microstructure changes being a potential osseous factor contributing to this condition. However, these microstructural morphological changes remain largely undetectable due to current limitations in standard clinical CT equipment resolution.
+
+This challenge addresses the critical need for algorithms capable of reconstructing high-resolution bone microstructure from paired regular clinical helical CT lumbar vertebral images to match the quality of state-of-the-art Micro-PCCT. The LumbarSR challenge provides a unique dataset of 30 paired human dry lumbar vertebrae scanned with both clinical helical CT (at multiple resolution and reconstruction configurations) and Micro-PCCT at 0.1mm super-resolution. This novel benchmark enables development and evaluation of super-resolution reconstruction algorithms in musculoskeletal imaging, with potential applications in osteoporosis screening, fracture risk assessment, and low back pain investigation.
+
+The technical objective is to develop algorithms that can transform clinical helical CT images (0.5-1.0 mm resolution) into high-resolution images comparable to Micro-PCCT (0.1 mm), representing a 10-200× super-resolution enhancement factor. Success in this challenge could transform routine lumbar CT scans into diagnostic tools for bone microstructure assessment, advancing AI-based image reconstruction in musculoskeletal radiology.
 
 ## Task Description
 
@@ -71,8 +75,41 @@ Details coming soon.
 
 ## Timeline
 
-- **Phase 1**: Training and validation with paired data
-- **Phase 2**: Final evaluation on hidden test set
+> **Note**: Schedule is tentative and subject to change.
+
+| Milestone | Date |
+|-----------|------|
+| Challenge website launch | April 1-10, 2026 |
+| Training data release | April 15, 2026 |
+| Registration opens | April 15, 2026 |
+| Validation data release | May 1, 2026 |
+| Submission system opens | June 1, 2026 |
+| Public test phase begins | July 1, 2026 |
+| Submission deadline | August 15, 2026 |
+| Hidden test evaluation | August 16-31, 2026 |
+| Results notification | September 5, 2026 |
+| MICCAI Challenge Event | October 4 or 8, 2026 |
+
+## Training Data Policy
+
+1. **Challenge Data**: Participants are encouraged to use the official LumbarSR training set as the core development data.
+
+2. **External Data (Allowed)**: To maximize performance, external datasets are allowed for pre-training and/or supplementary training (public or legally/ethically permitted institutional data). Teams must disclose the external data sources in their method description (name/type and approximate scale).
+
+3. **Pre-trained / Foundation Models (Allowed)**: Use of any publicly available pre-trained models and foundation models is permitted. Model name/version (or checkpoint) must be disclosed.
+
+4. **Synthetic Data (Allowed)**: Synthetic data generation (e.g., augmentation, simulation, self-training) is allowed and should be briefly described.
+
+5. **Fair-Play / No Test Leakage**: No use of hidden test ground truth or any form of test-set leakage. Inference must be fully automatic with no case-by-case manual tuning.
+
+## Organizers
+
+- **Ruipeng Zhang**, Institute of Diagnostic and Interventional Radiology, Shanghai Sixth People's Hospital Affiliated to Shanghai Jiao Tong University School of Medicine
+- **Ping Wang**, Institute of Diagnostic and Interventional Radiology, Shanghai Sixth People's Hospital Affiliated to Shanghai Jiao Tong University School of Medicine
+- **Mengfei Wang**, Donghua University
+- **Zhenzhen Cao**, Basic Medical Science, Kunming Medical University
+- **Xuefei Hu**, Basic Medical Science, Tarim University School of Medicine
+- **Yuehua Li**, Institute of Diagnostic and Interventional Radiology, Shanghai Sixth People's Hospital Affiliated to Shanghai Jiao Tong University School of Medicine
 
 ## Citation
 

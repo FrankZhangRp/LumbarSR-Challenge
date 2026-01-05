@@ -5,26 +5,32 @@ title: LumbarSR Challenge
 
 # LumbarSR Challenge
 
-## Lumbar Vertebral Super-Resolution Structure Reconstruction
-
-Welcome to the LumbarSR Challenge! This challenge focuses on reconstructing high-resolution Micro-PCCT images from clinical CT scans of lumbar vertebrae.
+## Lumbar Vertebral Super-Resolution Structure Reconstruction Challenge
 
 <div class="quick-links">
   <a href="#overview" class="btn">Overview</a>
   <a href="#dataset" class="btn btn-outline">Dataset</a>
   <a href="#evaluation" class="btn btn-outline">Evaluation</a>
-  <a href="#submission" class="btn btn-outline">Submission</a>
+  <a href="#timeline" class="btn btn-outline">Timeline</a>
 </div>
 
 ---
 
 ## Overview
 
-Super-resolution reconstruction of CT images is crucial for improving diagnostic accuracy in clinical settings. This challenge aims to develop algorithms that can enhance the resolution of clinical CT scans to match the quality of Micro-PCCT imaging.
+Medical computed tomography (CT) plays a crucial role in disease diagnosis, with CT technology having undergone significant evolution over the past half-century—from primary CT to energy-integrating detector CT, and now to photon-counting detector CT (PCCT) systems being deployed in clinical centers worldwide. Low back pain is a prevalent symptom affecting approximately 540 million people globally at any given time, with lumbar vertebral microstructure changes being a potential osseous factor contributing to this condition. However, these microstructural morphological changes remain largely undetectable due to current limitations in standard clinical CT equipment resolution.
 
 <div class="info-box">
-<strong>Challenge Goal:</strong> Develop algorithms to reconstruct high-resolution Micro-PCCT images (105μm isotropic) from clinical CT scans at different resolutions and fields of view.
+<strong>Challenge Goal:</strong> Develop algorithms capable of reconstructing high-resolution bone microstructure from paired regular clinical helical CT lumbar vertebral images to match the quality of state-of-the-art Micro-PCCT.
 </div>
+
+The LumbarSR challenge provides a unique dataset of **30 paired human dry lumbar vertebrae** scanned with both clinical helical CT (at multiple resolution and reconstruction configurations) and Micro-PCCT at 0.1mm super-resolution. This novel benchmark enables development and evaluation of super-resolution reconstruction algorithms in musculoskeletal imaging, with potential applications in:
+
+- Osteoporosis screening
+- Fracture risk assessment
+- Low back pain investigation
+
+The technical objective is to develop algorithms that can transform clinical helical CT images (0.5-1.0 mm resolution) into high-resolution images comparable to Micro-PCCT (0.1 mm), representing a **10-200× super-resolution enhancement factor**.
 
 ---
 
@@ -70,11 +76,17 @@ For each sample, we provide 4 clinical CT sequences with soft tissue kernel:
 | 586X_586Y_500Z_S | 586μm | 500μm | Large |
 | 586X_586Y_1000Z_S | 586μm | 1000μm | Large |
 
+### Ground Truth
+
+- **Resolution**: 105μm isotropic
+- **Format**: NIfTI (.nii.gz)
+- **Data type**: int16 (Hounsfield Units)
+
 ---
 
 ## Evaluation
 
-### Metrics
+### CT Window Settings
 
 All metrics are computed under **three different CT window settings**:
 
@@ -84,7 +96,7 @@ All metrics are computed under **three different CT window settings**:
 | **Bone** | 400 | 1800 | Bone structure visualization |
 | **Soft Tissue** | 40 | 400 | Soft tissue visualization |
 
-### Evaluation Metrics
+### Metrics
 
 - **PSNR** - Peak Signal-to-Noise Ratio (dB)
 - **SSIM** - Structural Similarity Index
@@ -96,16 +108,47 @@ All metrics are computed under **three different CT window settings**:
 
 ---
 
-## Timeline
+## Training Data Policy
 
-- **Phase 1**: Training and validation with paired data
-- **Phase 2**: Final evaluation on hidden test set
+1. **Challenge Data**: Participants are encouraged to use the official LumbarSR training set as the core development data.
+
+2. **External Data (Allowed)**: External datasets are allowed for pre-training and/or supplementary training. Teams must disclose the external data sources in their method description.
+
+3. **Pre-trained / Foundation Models (Allowed)**: Use of any publicly available pre-trained models and foundation models is permitted. Model name/version must be disclosed.
+
+4. **Synthetic Data (Allowed)**: Synthetic data generation (e.g., augmentation, simulation, self-training) is allowed and should be briefly described.
+
+5. **Fair-Play / No Test Leakage**: No use of hidden test ground truth or any form of test-set leakage. Inference must be fully automatic with no case-by-case manual tuning.
 
 ---
 
-## Submission
+## Timeline
 
-Submission details will be announced soon.
+> **Note**: Schedule is tentative and subject to change.
+
+| Milestone | Date |
+|-----------|------|
+| Challenge website launch | April 1-10, 2026 |
+| Training data release | April 15, 2026 |
+| Registration opens | April 15, 2026 |
+| Validation data release | May 1, 2026 |
+| Submission system opens | June 1, 2026 |
+| Public test phase begins | July 1, 2026 |
+| Submission deadline | August 15, 2026 |
+| Hidden test evaluation | August 16-31, 2026 |
+| Results notification | September 5, 2026 |
+| MICCAI Challenge Event | October 4 or 8, 2026 |
+
+---
+
+## Organizers
+
+- **Ruipeng Zhang** - Shanghai Sixth People's Hospital, SJTU
+- **Ping Wang** - Shanghai Sixth People's Hospital, SJTU
+- **Mengfei Wang** - Donghua University
+- **Zhenzhen Cao** - Kunming Medical University
+- **Xuefei Hu** - Tarim University School of Medicine
+- **Yuehua Li** - Shanghai Sixth People's Hospital, SJTU
 
 ---
 
