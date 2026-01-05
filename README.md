@@ -21,9 +21,11 @@ This challenge addresses the critical need for algorithms capable of reconstruct
 The technical objective is to develop algorithms that can transform clinical helical CT images (0.5-1.0 mm resolution) into high-resolution images comparable to Micro-PCCT (0.1 mm), representing a 10-200× super-resolution enhancement factor. Success in this challenge could transform routine lumbar CT scans into diagnostic tools for bone microstructure assessment, advancing AI-based image reconstruction in musculoskeletal radiology.
 
 <p align="center">
-  <img src="docs/images/showcase.gif" alt="Multi-resolution CT Visualization" width="100%">
+  <a href="docs/images/showcase.gif">
+    <img src="docs/images/showcase_preview.gif" alt="Multi-resolution CT Visualization" width="100%">
+  </a>
   <br>
-  <em>Tri-planar views and 3D bone rendering across different CT resolutions</em>
+  <em>Tri-planar views and 3D bone rendering across different CT resolutions (<a href="docs/images/showcase.gif">Full resolution</a>)</em>
 </p>
 
 ## Task Description
