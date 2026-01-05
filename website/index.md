@@ -137,7 +137,7 @@ All metrics are computed under **three different CT window settings**:
 | Submission deadline | August 15, 2026 |
 | Hidden test evaluation | August 16-31, 2026 |
 | Results notification | September 5, 2026 |
-| MICCAI Challenge Event | October 4 or 8, 2026 |
+| Challenge Event | TBD |
 
 ---
 

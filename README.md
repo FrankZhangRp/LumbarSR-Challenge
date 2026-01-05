@@ -1,6 +1,6 @@
 # Lumbar Vertebral Super-Resolution Structure Reconstruction Challenge
 
-**LumbarSR Challenge @ MICCAI 2026**
+**LumbarSR Challenge**
 
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
@@ -88,7 +88,7 @@ Details coming soon.
 | Submission deadline | August 15, 2026 |
 | Hidden test evaluation | August 16-31, 2026 |
 | Results notification | September 5, 2026 |
-| MICCAI Challenge Event | October 4 or 8, 2026 |
+| Challenge Event | TBD |
 
 ## Training Data Policy
 
