@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>LumbarSR Challenge - MICCAI 2026</title>
+    <meta name="description" content="Lumbar Vertebral Super-Resolution Structure Reconstruction Challenge at MICCAI 2026">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style type="text/css">
+        body {
+            font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+            font-weight: 300;
+            font-size: 18px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 1100px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        h1 {
+            font-weight: 300;
+            font-size: 36px;
+            margin-bottom: 5px;
+        }
+
+        h2 {
+            font-weight: 400;
+            font-size: 24px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: #222;
+        }
+
+        h3 {
+            font-weight: 400;
+            font-size: 20px;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .subtitle {
+            font-size: 22px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        a:link, a:visited {
+            color: #1367a7;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #208799;
+            text-decoration: underline;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+            margin: 30px 0;
+        }
+
+        img.rounded {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            -moz-border-radius: 10px;
+            -webkit-border-radius: 10px;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        table.data-table {
+            width: 100%;
+        }
+
+        table.data-table th {
+            background-color: #f5f5f5;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 400;
+            border-bottom: 2px solid #ddd;
+        }
+
+        table.data-table td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        table.data-table tr:hover {
+            background-color: #fafafa;
+        }
+
+        .info-box {
+            background-color: #f0f7ff;
+            border: 1px solid #d0e3f7;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin: 20px 0;
+        }
+
+        .highlight-box {
+            background-color: #fff8e6;
+            border: 1px solid #ffe0a0;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin: 20px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 25px;
+            background-color: #1367a7;
+            color: white !important;
+            border-radius: 5px;
+            text-decoration: none !important;
+            margin: 5px;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #208799;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #1367a7;
+            color: #1367a7 !important;
+        }
+
+        .btn-outline:hover {
+            background-color: #1367a7;
+            color: white !important;
+        }
+
+        ul {
+            margin: 10px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        pre {
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            overflow-x: auto;
+            font-size: 14px;
+        }
+
+        code {
+            font-family: "Monaco", "Menlo", "Consolas", monospace;
+        }
+
+        .author-list {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .affiliation {
+            font-size: 15px;
+            color: #777;
+            font-style: italic;
+        }
+
+        .metric-item {
+            display: inline-block;
+            margin: 5px 15px 5px 0;
+        }
+
+        .note {
+            font-size: 15px;
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+    <br><br>
+
+    <!-- Title Section -->
+    <center>
+        <span style="font-size:38px; font-weight:300;">LumbarSR Challenge</span>
+        <br><br>
+        <span class="subtitle">Lumbar Vertebral Super-Resolution Structure Reconstruction</span>
+        <br>
+        <span style="font-size:18px; color:#888;">MICCAI 2026 Challenge</span>
+        <br><br>
+
+        <!-- Quick Links -->
+        <a href="#overview" class="btn">Overview</a>
+        <a href="#dataset" class="btn btn-outline">Dataset</a>
+        <a href="#evaluation" class="btn btn-outline">Evaluation</a>
+        <a href="#timeline" class="btn btn-outline">Timeline</a>
+        <a href="https://github.com/FrankZhangRp/LumbarSR-Challenge" class="btn btn-outline">GitHub</a>
+    </center>
+
+    <br>
+    <hr>
+
+    <!-- Overview Section -->
+    <h2 id="overview">Overview</h2>
+
+    <p>
+        Medical computed tomography (CT) plays a crucial role in disease diagnosis, with CT technology having undergone significant evolution over the past half-century. Low back pain is a prevalent symptom affecting approximately <strong>540 million people</strong> globally at any given time, with lumbar vertebral microstructure changes being a potential osseous factor contributing to this condition. However, these microstructural morphological changes remain largely undetectable due to current limitations in standard clinical CT equipment resolution.
+    </p>
+
+    <div class="info-box">
+        <strong>Challenge Goal:</strong> Develop algorithms capable of reconstructing high-resolution bone microstructure from paired regular clinical helical CT lumbar vertebral images to match the quality of state-of-the-art Micro-PCCT.
+    </div>
+
+    <p>
+        The LumbarSR challenge provides a unique dataset of <strong>30 paired human dry lumbar vertebrae</strong> scanned with both clinical helical CT (at multiple resolution and reconstruction configurations) and Micro-PCCT at 0.1mm super-resolution. This novel benchmark enables development and evaluation of super-resolution reconstruction algorithms in musculoskeletal imaging, with potential applications in:
+    </p>
+
+    <ul>
+        <li>Osteoporosis screening and bone quality assessment</li>
+        <li>Fracture risk prediction</li>
+        <li>Low back pain investigation</li>
+    </ul>
+
+    <p>
+        The technical objective is to develop algorithms that can transform clinical helical CT images (0.5-1.0 mm resolution) into high-resolution images comparable to Micro-PCCT (0.1 mm), representing a <strong>10-200x super-resolution enhancement factor</strong>.
+    </p>
+
+    <hr>
+
+    <!-- Task Section -->
+    <h2>Task Definition</h2>
+
+    <h3>Input</h3>
+    <p>Clinical CT images reconstructed with <strong>soft tissue kernel</strong> at two different fields of view:</p>
+
+    <table class="data-table">
+        <tr>
+            <th>Field of View</th>
+            <th>In-plane Resolution</th>
+            <th>Slice Thickness</th>
+        </tr>
+        <tr>
+            <td>Small FOV (High Resolution)</td>
+            <td>195 μm</td>
+            <td>500 μm / 1000 μm</td>
+        </tr>
+        <tr>
+            <td>Large FOV (Standard)</td>
+            <td>586 μm</td>
+            <td>500 μm / 1000 μm</td>
+        </tr>
+    </table>
+
+    <h3>Output</h3>
+    <p>High-resolution <strong>Micro-PCCT</strong> image with <strong>105 μm isotropic</strong> resolution.</p>
+
+    <hr>
+
+    <!-- Dataset Section -->
+    <h2 id="dataset">Dataset</h2>
+
+    <h3>Download</h3>
+    <p>
+        <a href="https://drive.google.com/" class="btn">Google Drive</a>
+        <span class="note">(Link coming soon)</span>
+    </p>
+
+    <h3>Data Statistics</h3>
+    <table class="data-table">
+        <tr>
+            <th>Split</th>
+            <th>Samples</th>
+            <th>Clinical CT</th>
+            <th>Micro-PCCT</th>
+        </tr>
+        <tr>
+            <td>Training</td>
+            <td>30</td>
+            <td>Available</td>
+            <td>Available</td>
+        </tr>
+        <tr>
+            <td>Validation Phase 1</td>
+            <td>5</td>
+            <td>Available</td>
+            <td>Available</td>
+        </tr>
+        <tr>
+            <td>Validation Phase 2</td>
+            <td>5</td>
+            <td>Available</td>
+            <td>Hidden</td>
+        </tr>
+    </table>
+
+    <h3>Input Sequences</h3>
+    <p>For each sample, we provide 4 clinical CT sequences with soft tissue kernel:</p>
+
+    <table class="data-table">
+        <tr>
+            <th>Sequence</th>
+            <th>Resolution</th>
+            <th>Slice Thickness</th>
+            <th>FOV</th>
+        </tr>
+        <tr>
+            <td><code>195X_195Y_500Z_S</code></td>
+            <td>195 μm</td>
+            <td>500 μm</td>
+            <td>Small</td>
+        </tr>
+        <tr>
+            <td><code>195X_195Y_1000Z_S</code></td>
+            <td>195 μm</td>
+            <td>1000 μm</td>
+            <td>Small</td>
+        </tr>
+        <tr>
+            <td><code>586X_586Y_500Z_S</code></td>
+            <td>586 μm</td>
+            <td>500 μm</td>
+            <td>Large</td>
+        </tr>
+        <tr>
+            <td><code>586X_586Y_1000Z_S</code></td>
+            <td>586 μm</td>
+            <td>1000 μm</td>
+            <td>Large</td>
+        </tr>
+    </table>
+
+    <h3>Ground Truth</h3>
+    <ul>
+        <li><strong>Resolution:</strong> 105 μm isotropic</li>
+        <li><strong>Format:</strong> NIfTI (.nii.gz)</li>
+        <li><strong>Data type:</strong> int16 (Hounsfield Units)</li>
+    </ul>
+
+    <hr>
+
+    <!-- Evaluation Section -->
+    <h2 id="evaluation">Evaluation</h2>
+
+    <h3>CT Window Settings</h3>
+    <p>All metrics are computed under <strong>three different CT window settings</strong>:</p>
+
+    <table class="data-table">
+        <tr>
+            <th>Window</th>
+            <th>Window Center (WC)</th>
+            <th>Window Width (WW)</th>
+            <th>Purpose</th>
+        </tr>
+        <tr>
+            <td><strong>Raw</strong></td>
+            <td>-</td>
+            <td>-</td>
+            <td>Original HU values (-1024 ~ 3071)</td>
+        </tr>
+        <tr>
+            <td><strong>Bone</strong></td>
+            <td>400</td>
+            <td>1800</td>
+            <td>Bone structure visualization</td>
+        </tr>
+        <tr>
+            <td><strong>Soft Tissue</strong></td>
+            <td>40</td>
+            <td>400</td>
+            <td>Soft tissue visualization</td>
+        </tr>
+    </table>
+
+    <h3>Metrics</h3>
+    <ul>
+        <li><strong>PSNR</strong> - Peak Signal-to-Noise Ratio (dB)</li>
+        <li><strong>SSIM</strong> - Structural Similarity Index</li>
+        <li><strong>MAE</strong> - Mean Absolute Error</li>
+    </ul>
+
+    <div class="highlight-box">
+        <strong>Final Ranking:</strong> The final ranking will be determined by a weighted combination of metrics across all three window settings.
+    </div>
+
+    <hr>
+
+    <!-- Training Data Policy -->
+    <h2>Training Data Policy</h2>
+
+    <ol>
+        <li><strong>Challenge Data:</strong> Participants are encouraged to use the official LumbarSR training set as the core development data.</li>
+        <li><strong>External Data (Allowed):</strong> External datasets are allowed for pre-training and/or supplementary training. Teams must disclose the external data sources.</li>
+        <li><strong>Pre-trained / Foundation Models (Allowed):</strong> Use of any publicly available pre-trained models and foundation models is permitted. Model name/version must be disclosed.</li>
+        <li><strong>Synthetic Data (Allowed):</strong> Synthetic data generation (e.g., augmentation, simulation, self-training) is allowed and should be briefly described.</li>
+        <li><strong>Fair-Play / No Test Leakage:</strong> No use of hidden test ground truth or any form of test-set leakage. Inference must be fully automatic.</li>
+    </ol>
+
+    <hr>
+
+    <!-- Timeline Section -->
+    <h2 id="timeline">Timeline</h2>
+
+    <p class="note">Note: Schedule is tentative and subject to change.</p>
+
+    <table class="data-table">
+        <tr>
+            <th>Milestone</th>
+            <th>Date</th>
+        </tr>
+        <tr>
+            <td>Challenge website launch</td>
+            <td>April 1-10, 2026</td>
+        </tr>
+        <tr>
+            <td>Training data release</td>
+            <td>April 15, 2026</td>
+        </tr>
+        <tr>
+            <td>Registration opens</td>
+            <td>April 15, 2026</td>
+        </tr>
+        <tr>
+            <td>Validation data release</td>
+            <td>May 1, 2026</td>
+        </tr>
+        <tr>
+            <td>Submission system opens</td>
+            <td>June 1, 2026</td>
+        </tr>
+        <tr>
+            <td>Public test phase begins</td>
+            <td>July 1, 2026</td>
+        </tr>
+        <tr>
+            <td>Submission deadline</td>
+            <td>August 15, 2026</td>
+        </tr>
+        <tr>
+            <td>Hidden test evaluation</td>
+            <td>August 16-31, 2026</td>
+        </tr>
+        <tr>
+            <td>Results notification</td>
+            <td>September 5, 2026</td>
+        </tr>
+        <tr>
+            <td>MICCAI Challenge Event</td>
+            <td>October 4 or 8, 2026</td>
+        </tr>
+    </table>
+
+    <hr>
+
+    <!-- Organizers Section -->
+    <h2>Organizers</h2>
+
+    <ul>
+        <li><strong>Ruipeng Zhang</strong> - Shanghai Sixth People's Hospital, SJTU</li>
+        <li><strong>Ping Wang</strong> - Shanghai Sixth People's Hospital, SJTU</li>
+        <li><strong>Mengfei Wang</strong> - Donghua University</li>
+        <li><strong>Zhenzhen Cao</strong> - Kunming Medical University</li>
+        <li><strong>Xuefei Hu</strong> - Tarim University School of Medicine</li>
+        <li><strong>Yuehua Li</strong> - Shanghai Sixth People's Hospital, SJTU</li>
+    </ul>
+
+    <hr>
+
+    <!-- Contact Section -->
+    <h2>Contact</h2>
+
+    <p>
+        For questions about the challenge, please contact:<br>
+        <strong>Email:</strong> <a href="mailto:zhangrp@sjtu.edu.cn">zhangrp@sjtu.edu.cn</a><br>
+        <strong>GitHub:</strong> <a href="https://github.com/FrankZhangRp">@FrankZhangRp</a>
+    </p>
+
+    <hr>
+
+    <!-- Citation Section -->
+    <h2>Citation</h2>
+
+    <p>If you use this dataset, please cite:</p>
+
+    <pre><code>@misc{lumbarsr2026,
+  title={LumbarSR: Lumbar Vertebral Super-Resolution Challenge},
+  author={Zhang, Ruipeng and Wang, Ping and Wang, Mengfei and Cao, Zhenzhen and Hu, Xuefei and Li, Yuehua},
+  year={2026},
+  url={https://github.com/FrankZhangRp/LumbarSR-Challenge}
+}</code></pre>
+
+    <br><br>
+
+    <center>
+        <p style="font-size:14px; color:#999;">
+            LumbarSR Challenge @ MICCAI 2026
+        </p>
+    </center>
+
+    <br><br>
+
+</body>
+</html>
