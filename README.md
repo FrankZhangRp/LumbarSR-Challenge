@@ -1,6 +1,6 @@
-# LumbarSR Challenge
+# Lumbar Vertebral Super-Resolution Structure Reconstruction Challenge
 
-**LumbarSR: Lumbar Vertebral Super-Resolution Structure Reconstruction Challenge**
+**LumbarSR Challenge @ MICCAI 2026**
 
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
