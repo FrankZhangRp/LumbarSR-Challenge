@@ -1,0 +1,247 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+/* Custom styles for LumbarSR Challenge */
+
+:root {
+  --primary-color: #2c3e50;
+  --accent-color: #3498db;
+  --success-color: #27ae60;
+  --warning-color: #f39c12;
+  --light-bg: #f8f9fa;
+  --border-color: #e9ecef;
+}
+
+/* Header improvements */
+.page-header {
+  background: linear-gradient(135deg, #1a5276 0%, #2980b9 50%, #3498db 100%);
+  padding: 3rem 1rem;
+}
+
+.project-name {
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.project-tagline {
+  font-weight: 300;
+  opacity: 0.95;
+}
+
+/* Main content styling */
+.main-content {
+  max-width: 64rem;
+  padding: 2rem 4rem;
+  margin: 0 auto;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+/* Section headers */
+.main-content h2 {
+  color: var(--primary-color);
+  border-bottom: 3px solid var(--accent-color);
+  padding-bottom: 0.5rem;
+  margin-top: 2.5rem;
+}
+
+.main-content h3 {
+  color: #34495e;
+  margin-top: 1.8rem;
+}
+
+/* Info boxes */
+.info-box {
+  background: var(--light-bg);
+  border-left: 4px solid var(--accent-color);
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.info-box.success {
+  border-left-color: var(--success-color);
+  background: #e8f6ef;
+}
+
+.info-box.warning {
+  border-left-color: var(--warning-color);
+  background: #fef9e7;
+}
+
+/* Tables */
+.main-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.main-content table th {
+  background: var(--primary-color);
+  color: white;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+}
+
+.main-content table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.main-content table tr:nth-child(even) {
+  background: var(--light-bg);
+}
+
+.main-content table tr:hover {
+  background: #e8f4fc;
+}
+
+/* Code blocks */
+.main-content code {
+  background: #f4f4f4;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+/* Metric cards */
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.metric-card {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.metric-card h4 {
+  margin: 0 0 0.5rem 0;
+  color: var(--accent-color);
+}
+
+.metric-card p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Window settings table */
+.window-table {
+  margin: 1rem 0;
+}
+
+.window-table th {
+  background: #34495e !important;
+}
+
+/* Timeline */
+.timeline {
+  position: relative;
+  padding-left: 2rem;
+  margin: 1.5rem 0;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--accent-color);
+  border-radius: 2px;
+}
+
+.timeline-item {
+  position: relative;
+  padding: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -2rem;
+  top: 1.3rem;
+  width: 12px;
+  height: 12px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 0 0 2px var(--accent-color);
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: var(--accent-color);
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background 0.2s, transform 0.2s;
+  margin: 0.5rem 0.5rem 0.5rem 0;
+}
+
+.btn:hover {
+  background: #2980b9;
+  transform: translateY(-1px);
+  color: white;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2px solid var(--accent-color);
+  color: var(--accent-color);
+}
+
+.btn-outline:hover {
+  background: var(--accent-color);
+  color: white;
+}
+
+/* Quick links */
+.quick-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+}
+
+/* Footer */
+.site-footer {
+  border-top: 2px solid var(--border-color);
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+}
+
+/* Responsive */
+@media screen and (max-width: 42em) {
+  .main-content {
+    padding: 1rem;
+  }
+
+  .metric-grid {
+    grid-template-columns: 1fr;
+  }
+}

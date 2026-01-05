@@ -49,12 +49,21 @@ For each sample, we provide 4 sequences with soft tissue kernel:
 
 ## Evaluation Metrics
 
-- **PSNR** (Peak Signal-to-Noise Ratio)
+### Metrics
+
+- **PSNR** (Peak Signal-to-Noise Ratio) - measured in dB
 - **SSIM** (Structural Similarity Index)
 - **MAE** (Mean Absolute Error)
-- **NCC** (Normalized Cross Correlation)
 
-Metrics are computed under bone window (WC=400, WW=1800).
+### CT Window Settings
+
+All metrics are computed under three different CT window settings:
+
+| Window | Window Center (WC) | Window Width (WW) | Description |
+|--------|-------------------|-------------------|-------------|
+| Raw | - | - | Original HU values (-1024 ~ 3071) |
+| Bone | 400 | 1800 | Bone structure visualization |
+| Soft Tissue | 40 | 400 | Soft tissue visualization |
 
 ## Submission
 
