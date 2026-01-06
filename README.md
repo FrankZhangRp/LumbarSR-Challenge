@@ -5,11 +5,10 @@
 </p>
 
 <p align="center">
-  <strong>LumbarSR Challenge</strong>
-</p>
-
-<p align="center">
   <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg" alt="License"></a>
+  <img src="https://img.shields.io/badge/Samples-30-blue" alt="Samples">
+  <img src="https://img.shields.io/badge/Slices-212K-green" alt="Slices">
+  <img src="https://img.shields.io/badge/Resolution-105μm-orange" alt="Resolution">
 </p>
 
 ## Overview
@@ -137,7 +136,7 @@ Details coming soon.
 - **Mengfei Wang**, School of Information and Intelligent Science, Donghua University
 - **Zhenzhen Cao**, Basic Medical Science, Kunming Medical University
 - **Xuefei Hu**, Basic Medical Science, Tarim University School of Medicine
-- **Yuehua Li**, Institute of Diagnostic and Interventional Radiology, Shanghai Sixth People's Hospital Affiliated to Shanghai Jiao Tong University School of Medicine
+- **Yuehua Li**✉, Institute of Diagnostic and Interventional Radiology, Shanghai Sixth People's Hospital Affiliated to Shanghai Jiao Tong University School of Medicine (liyuehua77@sjtu.edu.cn)
 
 ## Citation
 
