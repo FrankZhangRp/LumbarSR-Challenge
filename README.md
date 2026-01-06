@@ -75,6 +75,21 @@ For each sample, we provide 4 sequences with soft tissue kernel:
 - Format: NIfTI (.nii.gz)
 - Data type: int16 (Hounsfield Units)
 
+### Dataset Statistics
+
+**Training Set (30 samples)**
+
+| Modality | Total Slices | Avg per Case |
+|----------|--------------|--------------|
+| 195um_500Z | 5,642 | 188.1 |
+| 195um_1000Z | 2,815 | 93.8 |
+| 586um_500Z | 5,610 | 187.0 |
+| 586um_1000Z | 2,804 | 93.5 |
+| MicroPCCT_105um | 23,645 | 788.2 |
+| **Total** | **57,387** | **1,912.9** |
+
+> Note: After registration to MicroPCCT space, all modalities are resampled to 105um isotropic resolution (788.2 slices/modality average, 7,093.5 slices/case total).
+
 ## Evaluation Metrics
 
 ### Metrics
