@@ -77,7 +77,7 @@ For each sample, we provide 4 sequences with soft tissue kernel:
 
 ### Dataset Statistics
 
-- **Training Set**: 30 samples, 57,387 slices total (avg 1,912.9 slices/case)
+- **Training Set**: 30 samples, 212,805 slices total (avg 7,093.5 slices/case, registered to 105μm isotropic)
 
 ## Evaluation Metrics
 
