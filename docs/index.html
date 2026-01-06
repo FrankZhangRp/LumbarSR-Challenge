@@ -18,7 +18,9 @@
             font-size: 18px;
             margin-left: auto;
             margin-right: auto;
-            width: 1100px;
+            max-width: 1100px;
+            width: 90%;
+            padding: 0 20px;
             line-height: 1.6;
             color: #333;
         }
@@ -185,6 +187,96 @@
             font-size: 15px;
             color: #666;
             font-style: italic;
+        }
+
+        /* Table wrapper for horizontal scroll on mobile */
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Button container for flex wrap */
+        .btn-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            body {
+                font-size: 16px;
+                padding: 0 15px;
+            }
+
+            h1, .title {
+                font-size: 24px !important;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            h3 {
+                font-size: 18px;
+            }
+
+            .subtitle {
+                font-size: 18px;
+            }
+
+            .btn {
+                padding: 8px 16px;
+                font-size: 14px;
+                margin: 3px;
+            }
+
+            table.data-table th,
+            table.data-table td {
+                padding: 8px 10px;
+                font-size: 14px;
+            }
+
+            pre {
+                font-size: 12px;
+                padding: 10px;
+            }
+
+            .info-box,
+            .highlight-box {
+                padding: 12px 15px;
+            }
+
+            img.rounded {
+                max-width: 100%;
+                height: auto;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            body {
+                font-size: 15px;
+            }
+
+            h1, .title {
+                font-size: 20px !important;
+            }
+
+            h2 {
+                font-size: 18px;
+            }
+
+            .btn {
+                display: block;
+                width: 100%;
+                text-align: center;
+                margin: 5px 0;
+            }
+
+            .btn-container {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -487,7 +579,7 @@
     <ul>
         <li><strong>Ruipeng Zhang</strong> - Shanghai Sixth People's Hospital, SJTU</li>
         <li><strong>Ping Wang</strong> - Shanghai Sixth People's Hospital, SJTU</li>
-        <li><strong>Mengfei Wang</strong> - Donghua University</li>
+        <li><strong>Mengfei Wang</strong> - School of Information and Intelligent Science, Donghua University</li>
         <li><strong>Zhenzhen Cao</strong> - Kunming Medical University</li>
         <li><strong>Xuefei Hu</strong> - Tarim University School of Medicine</li>
         <li><strong>Yuehua Li</strong> - Shanghai Sixth People's Hospital, SJTU</li>

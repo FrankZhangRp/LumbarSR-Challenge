@@ -130,7 +130,7 @@ Details coming soon.
 
 - **Ruipeng Zhang**, Institute of Diagnostic and Interventional Radiology, Shanghai Sixth People's Hospital Affiliated to Shanghai Jiao Tong University School of Medicine
 - **Ping Wang**, Institute of Diagnostic and Interventional Radiology, Shanghai Sixth People's Hospital Affiliated to Shanghai Jiao Tong University School of Medicine
-- **Mengfei Wang**, Donghua University
+- **Mengfei Wang**, School of Information and Intelligent Science, Donghua University
 - **Zhenzhen Cao**, Basic Medical Science, Kunming Medical University
 - **Xuefei Hu**, Basic Medical Science, Tarim University School of Medicine
 - **Yuehua Li**, Institute of Diagnostic and Interventional Radiology, Shanghai Sixth People's Hospital Affiliated to Shanghai Jiao Tong University School of Medicine
