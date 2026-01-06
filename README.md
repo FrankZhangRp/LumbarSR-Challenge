@@ -36,6 +36,14 @@ Given clinical CT images acquired with **soft tissue reconstruction kernel** at 
 
 Reconstruct the corresponding high-resolution Micro-PCCT image (105um isotropic resolution).
 
+<p align="center">
+  <a href="docs/images/flowchart.png">
+    <img src="docs/images/flowchart_preview.png" alt="Challenge Flowchart" width="100%">
+  </a>
+  <br>
+  <em>Challenge pipeline overview (<a href="docs/images/flowchart.png">Full resolution</a>)</em>
+</p>
+
 ## Dataset
 
 ### Download
