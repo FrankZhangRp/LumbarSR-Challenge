@@ -20,11 +20,11 @@ import os
 import json
 from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass, field, asdict
+from concurrent.futures import ProcessPoolExecutor
+import multiprocessing as mp
 import numpy as np
 import nibabel as nib
-from scipy import ndimage
 from skimage.metrics import structural_similarity as ssim_func
-from skimage.metrics import peak_signal_noise_ratio as psnr_func
 
 
 # CT Window presets
@@ -33,6 +33,9 @@ WINDOWS = {
     'bone': {'center': 400, 'width': 1800},      # Bone window
     'soft_tissue': {'center': 40, 'width': 400}, # Soft tissue window
 }
+
+# Windows to evaluate (bone and soft tissue only)
+EVAL_WINDOWS = ['bone', 'soft_tissue']
 
 
 @dataclass
@@ -130,24 +133,52 @@ def compute_psnr(gt: np.ndarray, pred: np.ndarray,
     return 10 * np.log10(1.0 / mse)
 
 
-def compute_ssim(gt: np.ndarray, pred: np.ndarray,
-                 mask: Optional[np.ndarray] = None) -> float:
-    """Compute SSIM between ground truth and prediction.
+def _compute_ssim_slice(args: Tuple[np.ndarray, np.ndarray, int]) -> float:
+    gt_slice, pred_slice, win_size = args
+    return ssim_func(gt_slice, pred_slice, data_range=1.0, win_size=win_size)
 
-    Args:
-        gt: Ground truth (normalized to [0, 1])
-        pred: Prediction (normalized to [0, 1])
-        mask: Optional mask (used for weighting)
 
-    Returns:
-        SSIM value
-    """
-    # Use 3D SSIM with appropriate window size
+def compute_ssim_3d(gt: np.ndarray, pred: np.ndarray,
+                    mask: Optional[np.ndarray] = None) -> float:
     win_size = min(7, min(gt.shape) // 2 * 2 - 1)
     if win_size < 3:
         win_size = 3
-
     return ssim_func(gt, pred, data_range=1.0, win_size=win_size)
+
+
+def compute_ssim(gt: np.ndarray, pred: np.ndarray,
+                 mask: Optional[np.ndarray] = None,
+                 n_workers: int = None,
+                 sample_slices: int = None,
+                 use_3d: bool = False) -> float:
+    if use_3d:
+        return compute_ssim_3d(gt, pred, mask)
+
+    if n_workers is None:
+        n_workers = min(mp.cpu_count(), 64)
+
+    min_dim = min(gt.shape[0], gt.shape[1])
+    win_size = min(7, min_dim // 2 * 2 - 1)
+    if win_size < 3:
+        win_size = 3
+
+    n_slices = gt.shape[2]
+
+    if sample_slices is not None and sample_slices < n_slices:
+        indices = np.linspace(0, n_slices - 1, sample_slices, dtype=int)
+    else:
+        indices = range(n_slices)
+
+    slice_args = [(gt[:, :, i].copy(), pred[:, :, i].copy(), win_size)
+                  for i in indices]
+
+    if n_workers == 1:
+        ssim_values = [_compute_ssim_slice(args) for args in slice_args]
+    else:
+        with ProcessPoolExecutor(max_workers=n_workers) as executor:
+            ssim_values = list(executor.map(_compute_ssim_slice, slice_args))
+
+    return float(np.mean(ssim_values))
 
 
 def compute_mae(gt: np.ndarray, pred: np.ndarray,
@@ -243,7 +274,7 @@ class MetricsCalculator:
 
     def evaluate_case(self, gt: np.ndarray, pred: np.ndarray,
                       case_id: str) -> CaseMetrics:
-        """Evaluate a single case across all windows.
+        """Evaluate a single case across bone and soft tissue windows.
 
         Args:
             gt: Ground truth in HU
@@ -255,7 +286,7 @@ class MetricsCalculator:
         """
         result = CaseMetrics(case_id=case_id)
 
-        for window_name in WINDOWS.keys():
+        for window_name in EVAL_WINDOWS:
             metrics = self.compute_all_metrics(gt, pred, window_name)
             result.psnr[window_name] = metrics['psnr']
             result.ssim[window_name] = metrics['ssim']
@@ -278,13 +309,12 @@ class MetricsCalculator:
         """
         n_cases = len(case_results)
         metric_names = ['psnr', 'ssim', 'mae', 'rmse', 'ncc', 'nrmse']
-        window_names = list(WINDOWS.keys())
 
         dataset = DatasetMetrics(n_cases=n_cases)
 
         for metric_name in metric_names:
             dataset.metrics[metric_name] = {}
-            for window_name in window_names:
+            for window_name in EVAL_WINDOWS:
                 values = [getattr(c, metric_name)[window_name]
                           for c in case_results]
                 dataset.metrics[metric_name][window_name] = {
@@ -299,8 +329,9 @@ def format_case_report(case: CaseMetrics) -> str:
     """Format single case metrics as text report."""
     lines = [f"\n{'='*60}", f"Case: {case.case_id}", '='*60]
 
-    for window in WINDOWS.keys():
-        lines.append(f"\n[{window.upper()}]")
+    for window in EVAL_WINDOWS:
+        window_label = "BONE" if window == "bone" else "SOFT TISSUE"
+        lines.append(f"\n[{window_label}]")
         lines.append(f"  PSNR:  {case.psnr[window]:.2f} dB")
         lines.append(f"  SSIM:  {case.ssim[window]:.4f}")
         lines.append(f"  MAE:   {case.mae[window]:.4f}")
@@ -322,8 +353,9 @@ def format_dataset_report(dataset: DatasetMetrics) -> str:
     metric_names = ['psnr', 'ssim', 'mae', 'rmse', 'ncc', 'nrmse']
     units = {'psnr': 'dB', 'ssim': '', 'mae': '', 'rmse': '', 'ncc': '', 'nrmse': ''}
 
-    for window in WINDOWS.keys():
-        lines.append(f"\n[{window.upper()}]")
+    for window in EVAL_WINDOWS:
+        window_label = "BONE" if window == "bone" else "SOFT TISSUE"
+        lines.append(f"\n[{window_label}]")
         for metric in metric_names:
             stats = dataset.metrics[metric][window]
             unit = units[metric]
