@@ -47,7 +47,53 @@ Reconstruct the corresponding high-resolution Micro-PCCT image (105um isotropic 
 
 ### Download
 
-**[Google Drive Link]** (Coming Soon)
+**[Download Dataset (tar.gz)](https://drive.google.com/file/d/1mPK0_i15XPzp1pyydV2uhsMfBuYGjJGy/view?usp=sharing)**
+
+The dataset is provided as a compressed tar.gz archive. After downloading, extract it using:
+
+```bash
+# Extract the dataset
+tar -xzf LumbarSR_Dataset.tar.gz
+
+# This will create a LumbarSR/ directory with the following structure
+```
+
+### Directory Structure
+
+```
+LumbarSR/
+├── original_dicom/              # Original DICOM data
+│   ├── Lumbar_01/
+│   │   ├── clinical_ct/
+│   │   │   ├── 195X_195Y_500Z_S/      # Small FOV, soft kernel
+│   │   │   ├── 195X_195Y_1000Z_S/     # Small FOV, soft kernel
+│   │   │   ├── 586X_586Y_500Z_S/      # Large FOV, soft kernel
+│   │   │   └── 586X_586Y_1000Z_S/     # Large FOV, soft kernel
+│   │   └── micro_ct/
+│   │       └── *.dcm                   # Original Micro-PCCT DICOM
+│   ├── Lumbar_02/
+│   │   └── ...
+│   └── Lumbar_30/
+│       └── ...
+├── registered_nifti/            # Processed NIfTI data (ready to use)
+│   ├── Lumbar_01/
+│   │   ├── Lumbar01_ClinicalCT_195X_195Y_500Z_S_registered.nii.gz
+│   │   ├── Lumbar01_ClinicalCT_195X_195Y_1000Z_S_registered.nii.gz
+│   │   ├── Lumbar01_ClinicalCT_586X_586Y_500Z_S_registered.nii.gz
+│   │   ├── Lumbar01_ClinicalCT_586X_586Y_1000Z_S_registered.nii.gz
+│   │   └── Lumbar01_MicroPCCT_105um.nii.gz                          # Ground truth
+│   ├── Lumbar_02/
+│   │   └── ...
+│   └── Lumbar_30/
+│       └── ...
+└── README.md
+```
+
+**Key Points:**
+- `original_dicom/`: Contains raw DICOM files for advanced users who want to process from scratch
+- `registered_nifti/`: Pre-processed and registered NIfTI files, ready for training (recommended starting point)
+- All clinical CT sequences are rigidly registered to the Micro-PCCT space
+- Ground truth files are named `*_MicroPCCT_105um.nii.gz`
 
 ### Data Split
 
