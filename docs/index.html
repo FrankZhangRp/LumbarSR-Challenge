@@ -381,9 +381,54 @@
 
     <h3>Download</h3>
     <p>
-        <a href="https://drive.google.com/" class="btn">Google Drive</a>
-        <span class="note">(Link coming soon)</span>
+        <a href="https://drive.google.com/file/d/1mPK0_i15XPzp1pyydV2uhsMfBuYGjJGy/view?usp=sharing" class="btn">Download Dataset (tar.gz)</a>
     </p>
+
+    <p>The dataset is provided as a compressed tar.gz archive. After downloading, extract it using:</p>
+
+    <pre><code># Extract the dataset
+tar -xzf LumbarSR_Dataset.tar.gz
+
+# This will create a LumbarSR/ directory with the following structure</code></pre>
+
+    <h3>Directory Structure</h3>
+
+    <pre><code>LumbarSR/
+├── original_dicom/              # Original DICOM data
+│   ├── Lumbar_01/
+│   │   ├── clinical_ct/
+│   │   │   ├── 195X_195Y_500Z_S/      # Small FOV, soft kernel
+│   │   │   ├── 195X_195Y_1000Z_S/     # Small FOV, soft kernel
+│   │   │   ├── 586X_586Y_500Z_S/      # Large FOV, soft kernel
+│   │   │   └── 586X_586Y_1000Z_S/     # Large FOV, soft kernel
+│   │   └── micro_ct/
+│   │       └── *.dcm                   # Original Micro-PCCT DICOM
+│   ├── Lumbar_02/
+│   │   └── ...
+│   └── Lumbar_30/
+│       └── ...
+├── registered_nifti/            # Processed NIfTI data (ready to use)
+│   ├── Lumbar_01/
+│   │   ├── Lumbar01_ClinicalCT_195X_195Y_500Z_S_registered.nii.gz
+│   │   ├── Lumbar01_ClinicalCT_195X_195Y_1000Z_S_registered.nii.gz
+│   │   ├── Lumbar01_ClinicalCT_586X_586Y_500Z_S_registered.nii.gz
+│   │   ├── Lumbar01_ClinicalCT_586X_586Y_1000Z_S_registered.nii.gz
+│   │   └── Lumbar01_MicroPCCT_105um.nii.gz                          # Ground truth
+│   ├── Lumbar_02/
+│   │   └── ...
+│   └── Lumbar_30/
+│       └── ...
+└── README.md</code></pre>
+
+    <div class="info-box">
+        <strong>Key Points:</strong>
+        <ul style="margin: 10px 0;">
+            <li><code>original_dicom/</code>: Contains raw DICOM files for advanced users who want to process from scratch</li>
+            <li><code>registered_nifti/</code>: Pre-processed and registered NIfTI files, ready for training (recommended starting point)</li>
+            <li>All clinical CT sequences are rigidly registered to the Micro-PCCT space</li>
+            <li>Ground truth files are named <code>*_MicroPCCT_105um.nii.gz</code></li>
+        </ul>
+    </div>
 
     <h3>Data Statistics</h3>
     <table class="data-table">
