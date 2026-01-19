@@ -395,17 +395,24 @@ def save_results(case_results: List[CaseMetrics],
 
 
 if __name__ == "__main__":
-    # Example usage
-    DATA_ROOT = "/data/wangping_16T/LumbarChallenge2026/RegisteredData"
+    import argparse
+    parser = argparse.ArgumentParser(description="Calculate evaluation metrics")
+    parser.add_argument('--data-root', type=str, default='./data/registered_nifti',
+                        help='Root directory with registered data')
+    parser.add_argument('--sample', type=str, default='Lumbar_01',
+                        help='Sample name to evaluate')
+    parser.add_argument('--pred-seq', type=str, default='195X_195Y_500Z_B_registered',
+                        help='Prediction sequence name')
+    args = parser.parse_args()
 
     calculator = MetricsCalculator(use_mask=True)
 
     # Demo: evaluate single case
-    sample = "Lumbar_01"
+    sample = args.sample
     sample_id = sample.split("_")[-1]
 
-    gt_path = f"{DATA_ROOT}/{sample}/Lumbar{sample_id}_MicroPCCT_105um.nii.gz"
-    pred_path = f"{DATA_ROOT}/{sample}/Lumbar{sample_id}_ClinicalCT_195X_195Y_500Z_B_registered.nii.gz"
+    gt_path = f"{args.data_root}/{sample}/Lumbar{sample_id}_MicroPCCT_105um.nii.gz"
+    pred_path = f"{args.data_root}/{sample}/Lumbar{sample_id}_ClinicalCT_{args.pred_seq}.nii.gz"
 
     print(f"Loading {sample}...")
     gt = nib.load(gt_path).get_fdata()

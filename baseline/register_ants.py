@@ -298,15 +298,22 @@ def register_sample(
 
 
 if __name__ == "__main__":
-    INPUT_ROOT = "/data/wangping_16T/LumbarChallenge2026/CroppedData"
-    OUTPUT_ROOT = "/data/wangping_16T/LumbarChallenge2026/RegisteredData"
+    import argparse
+    parser = argparse.ArgumentParser(description="Register clinical CT to MicroPCCT")
+    parser.add_argument('--input-root', type=str, default='./data/original_dicom',
+                        help='Input directory with cropped data')
+    parser.add_argument('--output-root', type=str, default='./data/registered_nifti',
+                        help='Output directory for registered data')
+    parser.add_argument('--sample', type=str, default='Lumbar_01',
+                        help='Sample name to process')
+    args = parser.parse_args()
 
-    sample = "Lumbar_01"
+    sample = args.sample
     print(f"\n{'='*60}")
     print(f"Registering Clinical CT to MicroCT: {sample}")
     print(f"{'='*60}")
 
-    sample_name, success, results = register_sample(sample, INPUT_ROOT, OUTPUT_ROOT)
+    sample_name, success, results = register_sample(sample, args.input_root, args.output_root)
 
     print(f"\n{'='*60}")
     print(f"Result: {'OK' if success else 'FAILED'}")

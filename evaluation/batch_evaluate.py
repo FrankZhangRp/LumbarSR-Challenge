@@ -13,8 +13,8 @@ from metrics import WINDOWS, EVAL_WINDOWS, apply_window, get_valid_mask
 from metrics import compute_psnr, compute_ssim, compute_mae, compute_rmse, compute_ncc, compute_nrmse
 
 
-DATA_ROOT = "/data/wangping_16T/LumbarChallenge2026/RegisteredData"
-OUTPUT_DIR = "/data/wangping_16T/LumbarChallenge2026/EvaluationResults"
+DATA_ROOT = "./data/registered_nifti"
+OUTPUT_DIR = "./outputs/evaluation"
 
 SEQUENCES = [
     "195X_195Y_500Z_B",

@@ -9,10 +9,10 @@ from typing import List, Tuple
 from register_ants import register_sample
 
 
-INPUT_ROOT = "/data/wangping_16T/LumbarChallenge2026/CroppedData"
-OUTPUT_ROOT = "/data/wangping_16T/LumbarChallenge2026/RegisteredData"
 ALL_SAMPLES = [f"Lumbar_{i:02d}" for i in range(1, 31)]
 
+INPUT_ROOT = "./data/original_dicom"
+OUTPUT_ROOT = "./data/registered_nifti"
 TRY_ROTATIONS = False
 
 
@@ -21,13 +21,19 @@ def register_worker(sample_name: str) -> Tuple[str, bool, List]:
 
 
 def main():
-    global TRY_ROTATIONS
+    global INPUT_ROOT, OUTPUT_ROOT, TRY_ROTATIONS
     parser = argparse.ArgumentParser(description="Batch registration of Clinical CT to MicroCT")
+    parser.add_argument('--input-root', type=str, default='./data/original_dicom',
+                        help='Input directory with cropped data')
+    parser.add_argument('--output-root', type=str, default='./data/registered_nifti',
+                        help='Output directory for registered data')
     parser.add_argument('--workers', type=int, default=4)
     parser.add_argument('--samples', nargs='+', default=None)
     parser.add_argument('--try-rotations', action='store_true')
     args = parser.parse_args()
 
+    INPUT_ROOT = args.input_root
+    OUTPUT_ROOT = args.output_root
     TRY_ROTATIONS = args.try_rotations
     samples = args.samples if args.samples else ALL_SAMPLES
 

@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  lumbarsr:
+    build: .
+    image: lumbarsr:latest
+    container_name: lumbarsr_challenge
+
+    # GPU support
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+    # Mount directories
+    volumes:
+      - ./data:/workspace/data
+      - ./checkpoints:/workspace/checkpoints
+      - ./results:/workspace/results
+      - ./outputs:/workspace/outputs
+
+    # Interactive mode
+    stdin_open: true
+    tty: true
+
+    # Working directory
+    working_dir: /workspace
+
+    # Keep container running
+    command: /bin/bash

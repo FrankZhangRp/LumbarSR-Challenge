@@ -1,0 +1,28 @@
+# PyTorch and deep learning
+torch>=2.0.0
+torchvision>=0.15.0
+
+# Medical imaging
+nibabel>=5.0.0
+pydicom>=2.3.0
+SimpleITK>=2.2.0
+monai>=1.2.0
+
+# Numerical computing
+numpy>=1.24.0
+scipy>=1.10.0
+scikit-image>=0.21.0
+
+# Data processing
+pandas>=2.0.0
+openpyxl>=3.1.0
+
+# Progress bars
+tqdm>=4.65.0
+
+# Visualization
+matplotlib>=3.7.0
+
+# Jupyter (optional, for development)
+jupyter>=1.0.0
+ipykernel>=6.22.0

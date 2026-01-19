@@ -145,6 +145,15 @@
             color: white !important;
         }
 
+        .btn-primary {
+            background-color: #28a745;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background-color: #218838;
+        }
+
         ul {
             margin: 10px 0;
             padding-left: 25px;
@@ -296,6 +305,7 @@
         <a href="#overview" class="btn">Overview</a>
         <a href="#dataset" class="btn btn-outline">Dataset</a>
         <a href="#evaluation" class="btn btn-outline">Evaluation</a>
+        <a href="baseline_results.html" class="btn btn-primary">Baseline Results</a>
         <a href="#timeline" class="btn btn-outline">Timeline</a>
         <a href="https://github.com/FrankZhangRp/LumbarSR-Challenge" class="btn btn-outline">GitHub</a>
     </center>
@@ -551,6 +561,36 @@ tar -xzf LumbarSR_Dataset.tar.gz
     <div class="highlight-box">
         <strong>Final Ranking:</strong> The final ranking will be determined by a weighted combination of metrics across all three window settings.
     </div>
+
+    <h3>Baseline Performance</h3>
+    <p>
+        We provide baseline results using standard methods:
+    </p>
+    <ul>
+        <li><strong>Baseline:</strong> Registered clinical CT (no super-resolution)</li>
+        <li><strong>SRCNN:</strong> Super-Resolution Convolutional Neural Network</li>
+        <li><strong>UNet:</strong> U-shaped encoder-decoder architecture</li>
+        <li><strong>Nearest:</strong> Nearest neighbor interpolation</li>
+    </ul>
+
+    <div class="info-box">
+        <strong>Experimental Setup:</strong> Training on Lumbar_01 to Lumbar_25 (25 samples), evaluation on Lumbar_26 to Lumbar_30 (5 samples).
+    </div>
+
+    <p>
+        <strong>Key Findings:</strong>
+    </p>
+    <ul>
+        <li><strong>SRCNN</strong> achieves the best PSNR with 8-9% improvement over baseline</li>
+        <li><strong>UNet</strong> excels at structural preservation with the highest SSIM scores</li>
+        <li>Deep learning methods show consistent improvements across both Small and Large FOV configurations</li>
+    </ul>
+
+    <center>
+        <a href="baseline_results.html" class="btn btn-primary">View Full Baseline Results →</a>
+    </center>
+
+    <br>
 
     <hr>
 

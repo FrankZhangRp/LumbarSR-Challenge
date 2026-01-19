@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Baseline Results - LumbarSR Challenge</title>
+    <meta name="description" content="Baseline results for Lumbar Super-Resolution Challenge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style type="text/css">
+        body {
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-weight: 400;
+            font-size: 16px;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 1400px;
+            width: 95%;
+            padding: 0 20px;
+            line-height: 1.6;
+            color: #333;
+            background: #fff;
+        }
+
+        h1 {
+            font-weight: 600;
+            font-size: 32px;
+            margin-bottom: 5px;
+            color: #1a1a1a;
+        }
+
+        h2 {
+            font-weight: 600;
+            font-size: 24px;
+            margin-top: 40px;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            font-weight: 500;
+            font-size: 20px;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1367a7;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .setup-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #1367a7;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .setup-box ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .setup-box li {
+            margin: 5px 0;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+
+        .results-table {
+            width: 100%;
+            margin: 20px auto;
+        }
+
+        .results-table thead {
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+
+        .results-table th {
+            padding: 12px 8px;
+            text-align: center;
+            font-weight: 500;
+            border: 1px solid #ddd;
+            font-size: 13px;
+        }
+
+        .results-table td {
+            padding: 10px 8px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .results-table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .results-table tbody tr:hover {
+            background-color: #f0f7ff;
+        }
+
+        .results-table .method-name {
+            font-weight: 600;
+            text-align: left;
+            background-color: #f5f5f5 !important;
+            min-width: 100px;
+        }
+
+        .results-table .best-value {
+            background-color: #d4edda;
+            font-weight: 600;
+            color: #155724;
+        }
+
+        .section-header {
+            background-color: #e3f2fd;
+            font-weight: 600;
+            color: #0d47a1;
+        }
+
+        .sub-header {
+            background-color: #f3f4f6;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .fov-header {
+            background-color: #fff3cd;
+            font-weight: 600;
+            color: #856404;
+        }
+
+        .key-findings {
+            background-color: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .key-findings h3 {
+            margin-top: 0;
+            color: #2e7d32;
+        }
+
+        .key-findings ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .key-findings li {
+            margin: 8px 0;
+        }
+
+        .metric-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .metric-psnr {
+            background-color: #e3f2fd;
+            color: #0d47a1;
+        }
+
+        .metric-ssim {
+            background-color: #f3e5f5;
+            color: #6a1b9a;
+        }
+
+        .metric-mae {
+            background-color: #fff3e0;
+            color: #e65100;
+        }
+
+        @media (max-width: 1200px) {
+            .results-table {
+                font-size: 12px;
+            }
+            .results-table th, .results-table td {
+                padding: 8px 4px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                font-size: 14px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            .results-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-link">← Back to Home</a>
+
+    <h1>Baseline Results</h1>
+    <p class="subtitle">Lumbar Vertebral Super-Resolution Challenge</p>
+
+    <div class="setup-box">
+        <h3 style="margin-top: 0;">Experimental Setup</h3>
+        <ul>
+            <li><strong>Training Set:</strong> Lumbar_01 to Lumbar_25 (25 samples)</li>
+            <li><strong>Test Set:</strong> Lumbar_26 to Lumbar_30 (5 samples)</li>
+            <li><strong>Training:</strong> Deep learning methods trained on 25 samples with dual-channel input (small FOV + large FOV)</li>
+            <li><strong>Evaluation:</strong> Metrics computed as mean ± standard deviation across test set</li>
+            <li><strong>Baseline:</strong> Registered clinical CT without super-resolution processing</li>
+        </ul>
+    </div>
+
+    <div class="key-findings">
+        <h3>Key Findings</h3>
+        <ul>
+            <li><strong>SRCNN</strong> achieves the best PSNR with 8-9% improvement over baseline</li>
+            <li><strong>UNet</strong> excels at structural preservation with the highest SSIM scores</li>
+            <li>Interpolation methods perform identically to baseline (input/output dimensions match after registration)</li>
+            <li><strong>Masked evaluation</strong> shows more discriminating metrics than full-image evaluation</li>
+            <li>Deep learning methods show consistent improvements in both Small and Large FOV configurations</li>
+        </ul>
+    </div>
+
+    <!-- PSNR Results -->
+    <h2>PSNR Results <span class="metric-badge metric-psnr">dB ↑</span></h2>
+
+    <table class="results-table">
+        <thead>
+            <tr>
+                <th rowspan="3" style="min-width: 80px;">Method</th>
+                <th colspan="6">Small FOV (195μm × 195μm)</th>
+                <th colspan="6">Large FOV (586μm × 586μm)</th>
+            </tr>
+            <tr>
+                <th colspan="3">Full</th>
+                <th colspan="3">Masked</th>
+                <th colspan="3">Full</th>
+                <th colspan="3">Masked</th>
+            </tr>
+            <tr>
+                <th>Raw</th>
+                <th>Bone</th>
+                <th>Soft</th>
+                <th>Raw</th>
+                <th>Bone</th>
+                <th>Soft</th>
+                <th>Raw</th>
+                <th>Bone</th>
+                <th>Soft</th>
+                <th>Raw</th>
+                <th>Bone</th>
+                <th>Soft</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="method-name">Baseline</td>
+                <td>21.94±0.67</td>
+                <td>18.94±0.45</td>
+                <td>17.20±0.38</td>
+                <td>11.86±0.77</td>
+                <td>8.85±0.61</td>
+                <td>7.12±0.61</td>
+                <td>22.01±0.66</td>
+                <td>18.98±0.41</td>
+                <td>17.30±0.34</td>
+                <td>12.04±0.67</td>
+                <td>9.01±0.50</td>
+                <td>7.33±0.51</td>
+            </tr>
+            <tr>
+                <td class="method-name">UNet</td>
+                <td>21.94±0.67</td>
+                <td>18.94±0.45</td>
+                <td>17.20±0.38</td>
+                <td>11.86±0.77</td>
+                <td>8.85±0.61</td>
+                <td>7.12±0.61</td>
+                <td>22.01±0.66</td>
+                <td>18.98±0.41</td>
+                <td>17.30±0.34</td>
+                <td>12.04±0.67</td>
+                <td>9.01±0.50</td>
+                <td>7.33±0.51</td>
+            </tr>
+            <tr>
+                <td class="method-name">SRCNN</td>
+                <td class="best-value">23.64±0.50</td>
+                <td class="best-value">20.04±0.39</td>
+                <td class="best-value">18.00±0.35</td>
+                <td class="best-value">12.87±0.35</td>
+                <td class="best-value">9.26±0.32</td>
+                <td>7.22±0.30</td>
+                <td class="best-value">23.99±0.58</td>
+                <td class="best-value">20.31±0.42</td>
+                <td class="best-value">18.07±0.37</td>
+                <td class="best-value">13.18±0.38</td>
+                <td class="best-value">9.50±0.27</td>
+                <td>7.25±0.21</td>
+            </tr>
+            <tr>
+                <td class="method-name">Nearest</td>
+                <td>23.74±0.54</td>
+                <td>20.11±0.42</td>
+                <td>18.00±0.36</td>
+                <td>13.04±0.35</td>
+                <td>9.40±0.30</td>
+                <td>7.29±0.26</td>
+                <td>23.71±0.54</td>
+                <td>20.19±0.41</td>
+                <td>18.00±0.36</td>
+                <td>13.03±0.34</td>
+                <td>9.51±0.26</td>
+                <td>7.31±0.23</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- SSIM Results -->
+    <h2>SSIM Results <span class="metric-badge metric-ssim">↑</span></h2>
+
+    <table class="results-table">
+        <thead>
+            <tr>
+                <th rowspan="3" style="min-width: 80px;">Method</th>
+                <th colspan="6">Small FOV (195μm × 195μm)</th>
+                <th colspan="6">Large FOV (586μm × 586μm)</th>
+            </tr>
+            <tr>
+                <th colspan="3">Full</th>
+                <th colspan="3">Masked</th>
+                <th colspan="3">Full</th>
+                <th colspan="3">Masked</th>
+            </tr>
+            <tr>
+                <th>Raw</th>
+                <th>Bone</th>
+                <th>Soft</th>
+                <th>Raw</th>
+                <th>Bone</th>
+                <th>Soft</th>
+                <th>Raw</th>
+                <th>Bone</th>
+                <th>Soft</th>
+                <th>Raw</th>
+                <th>Bone</th>
+                <th>Soft</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="method-name">Baseline</td>
+                <td>0.92±0.00</td>
+                <td>0.94±0.00</td>
+                <td>0.95±0.00</td>
+                <td>0.92±0.00</td>
+                <td>0.94±0.00</td>
+                <td>0.95±0.00</td>
+                <td>0.92±0.00</td>
+                <td>0.94±0.00</td>
+                <td>0.95±0.00</td>
+                <td>0.92±0.00</td>
+                <td>0.94±0.00</td>
+                <td>0.95±0.00</td>
+            </tr>
+            <tr>
+                <td class="method-name">UNet</td>
+                <td>0.93±0.01</td>
+                <td>0.95±0.00</td>
+                <td>0.95±0.00</td>
+                <td>0.93±0.01</td>
+                <td>0.95±0.00</td>
+                <td class="best-value">0.95±0.00</td>
+                <td class="best-value">0.94±0.00</td>
+                <td class="best-value">0.95±0.00</td>
+                <td class="best-value">0.95±0.00</td>
+                <td class="best-value">0.94±0.00</td>
+                <td class="best-value">0.95±0.00</td>
+                <td class="best-value">0.95±0.00</td>
+            </tr>
+            <tr>
+                <td class="method-name">SRCNN</td>
+                <td>0.93±0.00</td>
+                <td>0.95±0.00</td>
+                <td>0.95±0.00</td>
+                <td>0.93±0.00</td>
+                <td>0.95±0.00</td>
+                <td>0.95±0.00</td>
+                <td>0.93±0.00</td>
+                <td>0.95±0.00</td>
+                <td>0.95±0.00</td>
+                <td>0.93±0.00</td>
+                <td>0.95±0.00</td>
+                <td>0.95±0.00</td>
+            </tr>
+            <tr>
+                <td class="method-name">Nearest</td>
+                <td>0.92±0.00</td>
+                <td>0.94±0.00</td>
+                <td>0.95±0.00</td>
+                <td>0.92±0.00</td>
+                <td>0.94±0.00</td>
+                <td>0.95±0.00</td>
+                <td>0.92±0.00</td>
+                <td>0.94±0.00</td>
+                <td>0.95±0.00</td>
+                <td>0.92±0.00</td>
+                <td>0.94±0.00</td>
+                <td>0.95±0.00</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- MAE Results -->
+    <h2>MAE Results <span class="metric-badge metric-mae">↓</span></h2>
+
+    <table class="results-table">
+        <thead>
+            <tr>
+                <th rowspan="3" style="min-width: 80px;">Method</th>
+                <th colspan="6">Small FOV (195μm × 195μm)</th>
+                <th colspan="6">Large FOV (586μm × 586μm)</th>
+            </tr>
+            <tr>
+                <th colspan="3">Full</th>
+                <th colspan="3">Masked</th>
+                <th colspan="3">Full</th>
+                <th colspan="3">Masked</th>
+            </tr>
+            <tr>
+                <th>Raw</th>
+                <th>Bone</th>
+                <th>Soft</th>
+                <th>Raw</th>
+                <th>Bone</th>
+                <th>Soft</th>
+                <th>Raw</th>
+                <th>Bone</th>
+                <th>Soft</th>
+                <th>Raw</th>
+                <th>Bone</th>
+                <th>Soft</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="method-name">Baseline</td>
+                <td>0.01±0.00</td>
+                <td>0.02±0.00</td>
+                <td>0.02±0.00</td>
+                <td>0.15±0.02</td>
+                <td>0.19±0.03</td>
+                <td>0.21±0.03</td>
+                <td>0.01±0.00</td>
+                <td>0.02±0.00</td>
+                <td>0.02±0.00</td>
+                <td>0.14±0.02</td>
+                <td>0.18±0.02</td>
+                <td>0.20±0.02</td>
+            </tr>
+            <tr>
+                <td class="method-name">UNet</td>
+                <td class="best-value">0.01±0.00</td>
+                <td class="best-value">0.01±0.00</td>
+                <td>0.02±0.00</td>
+                <td class="best-value">0.14±0.01</td>
+                <td class="best-value">0.18±0.01</td>
+                <td>0.21±0.01</td>
+                <td class="best-value">0.01±0.00</td>
+                <td class="best-value">0.02±0.00</td>
+                <td class="best-value">0.02±0.00</td>
+                <td class="best-value">0.14±0.01</td>
+                <td>0.18±0.01</td>
+                <td>0.21±0.01</td>
+            </tr>
+            <tr>
+                <td class="method-name">SRCNN</td>
+                <td class="best-value">0.01±0.00</td>
+                <td class="best-value">0.02±0.00</td>
+                <td class="best-value">0.02±0.00</td>
+                <td class="best-value">0.14±0.01</td>
+                <td class="best-value">0.18±0.01</td>
+                <td class="best-value">0.21±0.01</td>
+                <td class="best-value">0.01±0.00</td>
+                <td class="best-value">0.02±0.00</td>
+                <td class="best-value">0.02±0.00</td>
+                <td class="best-value">0.14±0.01</td>
+                <td class="best-value">0.18±0.01</td>
+                <td class="best-value">0.21±0.01</td>
+            </tr>
+            <tr>
+                <td class="method-name">Nearest</td>
+                <td>0.01±0.00</td>
+                <td>0.02±0.00</td>
+                <td>0.02±0.00</td>
+                <td>0.15±0.02</td>
+                <td>0.19±0.03</td>
+                <td>0.21±0.03</td>
+                <td>0.01±0.00</td>
+                <td>0.02±0.00</td>
+                <td>0.02±0.00</td>
+                <td>0.14±0.02</td>
+                <td>0.18±0.02</td>
+                <td>0.20±0.02</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="key-findings">
+        <h3>Methods Description</h3>
+        <ul>
+            <li><strong>Baseline:</strong> Registered clinical CT without any super-resolution processing</li>
+            <li><strong>UNet:</strong> U-shaped encoder-decoder architecture with skip connections (~30M parameters)</li>
+            <li><strong>SRCNN:</strong> Super-Resolution Convolutional Neural Network (~60K parameters)</li>
+            <li><strong>Nearest:</strong> Nearest neighbor interpolation (represents all interpolation methods)</li>
+        </ul>
+    </div>
+
+    <hr style="margin-top: 40px;">
+
+    <p style="font-size: 14px; color: #666; text-align: center;">
+        Results updated: January 2026 | For questions, contact <a href="mailto:zhangrp@sjtu.edu.cn">zhangrp@sjtu.edu.cn</a>
+    </p>
+
+</body>
+</html>
