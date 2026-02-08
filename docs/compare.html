@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Comparison - LumbarSR Challenge</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0d1117; color: #e6edf3;
+    font-family: "Inter", -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+  }
+  /* Nav bar */
+  nav {
+    display: flex; align-items: center; gap: 16px;
+    padding: 10px 24px; background: #161b22;
+    border-bottom: 1px solid #30363d; font-size: 13px;
+  }
+  nav a {
+    color: #8b949e; text-decoration: none; padding: 4px 10px;
+    border-radius: 6px; transition: all 0.15s;
+  }
+  nav a:hover, nav a.active { color: #e6edf3; background: #21262d; }
+  nav .sep { color: #30363d; }
+
+  header {
+    text-align: center; padding: 20px 16px 10px;
+    border-bottom: 1px solid #30363d;
+  }
+  header h1 { font-size: 22px; font-weight: 600; letter-spacing: 0.5px; }
+  header p { font-size: 13px; color: #8b949e; margin-top: 4px; }
+
+  .controls {
+    display: flex; justify-content: center; gap: 32px;
+    padding: 16px; flex-wrap: wrap;
+  }
+  .control-group { display: flex; align-items: center; gap: 10px; }
+  .control-group label {
+    font-size: 13px; color: #8b949e; font-weight: 500; white-space: nowrap;
+  }
+  .btn-group { display: flex; gap: 2px; }
+  .btn {
+    padding: 6px 14px; font-size: 13px;
+    background: #21262d; color: #c9d1d9; border: 1px solid #30363d;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .btn:first-child { border-radius: 6px 0 0 6px; }
+  .btn:last-child { border-radius: 0 6px 6px 0; }
+  .btn.active { background: #1f6feb; color: #fff; border-color: #1f6feb; }
+  .btn:hover:not(.active) { background: #30363d; }
+
+  select {
+    padding: 6px 12px; font-size: 13px;
+    background: #21262d; color: #c9d1d9; border: 1px solid #30363d;
+    border-radius: 6px; cursor: pointer; min-width: 220px;
+  }
+
+  .compare-container {
+    display: flex; justify-content: center; gap: 4px;
+    padding: 8px 16px 24px; align-items: flex-start;
+  }
+  .panel { flex: 1; max-width: 48%; text-align: center; }
+  .panel-header {
+    padding: 8px; font-size: 14px; font-weight: 600;
+    border-radius: 6px 6px 0 0;
+  }
+  .panel-header.ref { background: #1a3a2a; color: #3fb950; }
+  .panel-header.cmp { background: #3a1a1a; color: #f85149; }
+  .panel-img-wrap {
+    background: #010409; border: 1px solid #30363d;
+    border-radius: 0 0 6px 6px; overflow: hidden; position: relative;
+  }
+  .panel-img-wrap img {
+    width: 100%; height: auto; display: block;
+    image-rendering: -webkit-optimize-contrast;
+  }
+
+  .zoom-lens {
+    display: none; position: fixed;
+    width: 300px; height: 300px;
+    border: 2px solid #58a6ff; border-radius: 8px;
+    overflow: hidden; pointer-events: none;
+    z-index: 100; box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+  }
+  .zoom-lens img { position: absolute; image-rendering: pixelated; }
+
+  .info-bar {
+    text-align: center; padding: 8px;
+    font-size: 12px; color: #484f58;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">Home</a>
+  <span class="sep">|</span>
+  <a href="sr_overview.html">SR Overview</a>
+  <span class="sep">|</span>
+  <a href="compare.html" class="active">Interactive Compare</a>
+  <span class="sep">|</span>
+  <a href="baseline_results.html">Baseline Results</a>
+</nav>
+
+<header>
+  <h1>Lumbar CT Multi-Resolution Interactive Comparison</h1>
+  <p>Micro-PCCT (105μm) Reference vs Clinical CT Sequences — Lumbar02</p>
+</header>
+
+<div class="controls">
+  <div class="control-group">
+    <label>View:</label>
+    <div class="btn-group" id="viewBtns">
+      <button class="btn active" data-view="axial">Axial</button>
+      <button class="btn" data-view="coronal">Coronal</button>
+      <button class="btn" data-view="sagittal">Sagittal</button>
+    </div>
+  </div>
+  <div class="control-group">
+    <label>Compare with:</label>
+    <select id="seqSelect"></select>
+  </div>
+</div>
+
+<div class="compare-container">
+  <div class="panel">
+    <div class="panel-header ref" id="refLabel">Micro-PCCT 105μm (Reference)</div>
+    <div class="panel-img-wrap" id="refWrap">
+      <img id="refImg" src="" alt="Reference">
+    </div>
+  </div>
+  <div class="panel">
+    <div class="panel-header cmp" id="cmpLabel">&mdash;</div>
+    <div class="panel-img-wrap" id="cmpWrap">
+      <img id="cmpImg" src="" alt="Comparison">
+    </div>
+  </div>
+</div>
+
+<div class="zoom-lens" id="zoomRef"><img id="zoomRefImg"></div>
+<div class="zoom-lens" id="zoomCmp"><img id="zoomCmpImg"></div>
+
+<div class="info-bar">
+  Hover over images to zoom &middot; Mouse wheel to adjust zoom level
+</div>
+
+<script>
+const SEQUENCES = [
+  { id: 'ClinicalCT_195X_500Z_B',  label: '195μm × 500μm Bone Kernel' },
+  { id: 'ClinicalCT_195X_500Z_S',  label: '195μm × 500μm Soft Tissue' },
+  { id: 'ClinicalCT_195X_1000Z_B', label: '195μm × 1000μm Bone Kernel' },
+  { id: 'ClinicalCT_195X_1000Z_S', label: '195μm × 1000μm Soft Tissue' },
+  { id: 'ClinicalCT_586X_500Z_B',  label: '586μm × 500μm Bone Kernel' },
+  { id: 'ClinicalCT_586X_500Z_S',  label: '586μm × 500μm Soft Tissue' },
+  { id: 'ClinicalCT_586X_1000Z_B', label: '586μm × 1000μm Bone Kernel' },
+  { id: 'ClinicalCT_586X_1000Z_S', label: '586μm × 1000μm Soft Tissue' },
+];
+const REF_ID = 'MicroPCCT_105um';
+let currentView = 'axial', currentSeq = SEQUENCES[0].id, zoomLevel = 3;
+
+const sel = document.getElementById('seqSelect');
+SEQUENCES.forEach(s => {
+  const o = document.createElement('option');
+  o.value = s.id; o.textContent = s.label;
+  sel.appendChild(o);
+});
+
+function tilePath(seqId, view) {
+  return 'images/tiles/' + seqId + '_' + view + '.png';
+}
+
+function updateImages() {
+  document.getElementById('refImg').src = tilePath(REF_ID, currentView);
+  document.getElementById('cmpImg').src = tilePath(currentSeq, currentView);
+  const seq = SEQUENCES.find(s => s.id === currentSeq);
+  document.getElementById('cmpLabel').textContent = seq ? seq.label : currentSeq;
+  document.getElementById('zoomRefImg').src = tilePath(REF_ID, currentView);
+  document.getElementById('zoomCmpImg').src = tilePath(currentSeq, currentView);
+}
+
+document.getElementById('viewBtns').addEventListener('click', e => {
+  const btn = e.target.closest('.btn');
+  if (!btn) return;
+  document.querySelectorAll('#viewBtns .btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentView = btn.dataset.view;
+  updateImages();
+});
+
+sel.addEventListener('change', () => { currentSeq = sel.value; updateImages(); });
+
+function setupZoom(wrapId, lensId, lensImgId) {
+  const wrap = document.getElementById(wrapId);
+  const lens = document.getElementById(lensId);
+  const lensImg = document.getElementById(lensImgId);
+  wrap.addEventListener('mouseenter', () => { lens.style.display = 'block'; });
+  wrap.addEventListener('mouseleave', () => { lens.style.display = 'none'; });
+  wrap.addEventListener('mousemove', e => {
+    const rect = wrap.querySelector('img').getBoundingClientRect();
+    const rx = (e.clientX - rect.left) / rect.width;
+    const ry = (e.clientY - rect.top) / rect.height;
+    positionLens(lens, lensImg, e, rx, ry);
+  });
+  wrap.addEventListener('wheel', e => {
+    e.preventDefault();
+    zoomLevel = Math.max(1.5, Math.min(8, zoomLevel + (e.deltaY < 0 ? 0.5 : -0.5)));
+  });
+}
+
+function positionLens(lens, lensImg, e, rx, ry) {
+  const lw = 300, lh = 300;
+  lens.style.left = (e.clientX + 20) + 'px';
+  lens.style.top = (e.clientY - lh / 2) + 'px';
+  const natW = lensImg.naturalWidth || 800, natH = lensImg.naturalHeight || 800;
+  const zw = natW * zoomLevel, zh = natH * zoomLevel;
+  lensImg.style.width = zw + 'px'; lensImg.style.height = zh + 'px';
+  lensImg.style.left = -(rx * zw - lw / 2) + 'px';
+  lensImg.style.top = -(ry * zh - lh / 2) + 'px';
+}
+
+const refWrap = document.getElementById('refWrap'), cmpWrap = document.getElementById('cmpWrap');
+const zoomCmp = document.getElementById('zoomCmp'), zoomRef = document.getElementById('zoomRef');
+const zoomCmpImg = document.getElementById('zoomCmpImg'), zoomRefImg = document.getElementById('zoomRefImg');
+
+function syncZoom(srcWrap, tgtLens, tgtImg, e) {
+  const rect = srcWrap.querySelector('img').getBoundingClientRect();
+  const rx = (e.clientX - rect.left) / rect.width;
+  const ry = (e.clientY - rect.top) / rect.height;
+  tgtLens.style.display = 'block';
+  positionLens(tgtLens, tgtImg, { clientX: e.clientX - 320, clientY: e.clientY }, rx, ry);
+}
+
+refWrap.addEventListener('mousemove', e => syncZoom(refWrap, zoomCmp, zoomCmpImg, e));
+refWrap.addEventListener('mouseenter', () => { zoomCmp.style.display = 'block'; });
+refWrap.addEventListener('mouseleave', () => { zoomCmp.style.display = 'none'; });
+cmpWrap.addEventListener('mousemove', e => syncZoom(cmpWrap, zoomRef, zoomRefImg, e));
+cmpWrap.addEventListener('mouseenter', () => { zoomRef.style.display = 'block'; });
+cmpWrap.addEventListener('mouseleave', () => { zoomRef.style.display = 'none'; });
+
+setupZoom('refWrap', 'zoomRef', 'zoomRefImg');
+setupZoom('cmpWrap', 'zoomCmp', 'zoomCmpImg');
+updateImages();
+</script>
+</body>
+</html>
