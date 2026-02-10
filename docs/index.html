@@ -554,14 +554,34 @@ tar -xzf LumbarSR_Dataset.tar.gz
     </table>
 
     <h3>Metrics</h3>
+
+    <h4>Image Quality Metrics</h4>
+    <p>Computed under Bone and Soft Tissue CT windows in masked mode (non-air region):</p>
     <ul>
-        <li><strong>PSNR</strong> - Peak Signal-to-Noise Ratio (dB)</li>
-        <li><strong>SSIM</strong> - Structural Similarity Index</li>
-        <li><strong>MAE</strong> - Mean Absolute Error</li>
+        <li><strong>PSNR</strong> - Peak Signal-to-Noise Ratio (dB) ↑</li>
+        <li><strong>SSIM</strong> - Structural Similarity Index ↑</li>
+        <li><strong>MAE</strong> - Mean Absolute Error ↓</li>
     </ul>
 
+    <h4>Local Bone Contrast (LBC)</h4>
+    <p>
+        LBC is a microstructure-specific metric that measures the local intensity dynamic range within bone regions.
+        A 16×16 pixel sliding window (stride 8) scans across bone mask regions (HU > −500).
+        Within each window, the percentile range P95 − P5 is computed.
+        The <strong>LBC Ratio</strong> (Pred / GT, closer to 1.0 is better) quantifies how much of the ground truth's
+        local bone contrast is preserved by the super-resolution method.
+    </p>
+
     <div class="highlight-box">
-        <strong>Final Ranking:</strong> The final ranking will be determined by a weighted combination of metrics across all three window settings.
+        <strong>Ranking System:</strong> The final ranking is determined by <strong>average rank</strong> across four metric categories:
+        <ol style="margin: 10px 0;">
+            <li><strong>PSNR Rank</strong> — Mean of PSNR values across windows and FOVs (↑ higher is better)</li>
+            <li><strong>SSIM Rank</strong> — Mean of SSIM values across windows and FOVs (↑ higher is better)</li>
+            <li><strong>MAE Rank</strong> — Mean of MAE values across windows and FOVs (↓ lower is better)</li>
+            <li><strong>LBC Rank</strong> — Mean LBC Ratio across input sequences (↑ closer to 1.0 is better)</li>
+        </ol>
+        <strong>Final Score = (PSNR_Rank + SSIM_Rank + MAE_Rank + LBC_Rank) / 4</strong><br>
+        The team with the lowest average rank wins.
     </div>
 
     <h3>Baseline Performance</h3>

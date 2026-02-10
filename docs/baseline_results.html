@@ -201,6 +201,11 @@
             color: #e65100;
         }
 
+        .metric-lbc {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
         @media (max-width: 1200px) {
             .results-table {
                 font-size: 12px;
@@ -540,6 +545,109 @@
             </tr>
         </tbody>
     </table>
+
+    <!-- LBC Results -->
+    <h2>Local Bone Contrast (LBC) <span class="metric-badge metric-lbc">Ratio ↑</span></h2>
+
+    <p>LBC measures the local intensity dynamic range (P95 − P5) within 16×16 sliding windows across bone regions.
+    <strong>LBC Ratio</strong> = Pred_LBC / GT_LBC (closer to 1.0 is better).</p>
+
+    <table class="results-table">
+        <thead>
+            <tr>
+                <th rowspan="2" style="min-width: 80px;">Method</th>
+                <th colspan="3">Small FOV (195μm)</th>
+                <th colspan="3">Large FOV (586μm)</th>
+            </tr>
+            <tr>
+                <th>Pred LBC (HU)</th>
+                <th>LBC Ratio</th>
+                <th>Diff (dB)</th>
+                <th>Pred LBC (HU)</th>
+                <th>LBC Ratio</th>
+                <th>Diff (dB)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="method-name">GT Reference</td>
+                <td colspan="3" style="text-align:center; color:#666;">~2903 HU (69.3 dB)</td>
+                <td colspan="3" style="text-align:center; color:#666;">~2903 HU (69.3 dB)</td>
+            </tr>
+            <tr>
+                <td class="method-name">Baseline</td>
+                <td>295±17</td><td>0.10±0.01</td><td>-19.9±0.5</td>
+                <td>295±17</td><td>0.10±0.01</td><td>-19.9±0.5</td>
+            </tr>
+            <tr>
+                <td class="method-name">UNet</td>
+                <td class="best-value">1355±120</td>
+                <td class="best-value">0.47±0.04</td>
+                <td class="best-value">-6.6±0.7</td>
+                <td class="best-value">1355±120</td>
+                <td class="best-value">0.47±0.04</td>
+                <td class="best-value">-6.6±0.7</td>
+            </tr>
+            <tr>
+                <td class="method-name">SRCNN</td>
+                <td>1168±95</td><td>0.40±0.03</td><td>-7.9±0.6</td>
+                <td>1168±95</td><td>0.40±0.03</td><td>-7.9±0.6</td>
+            </tr>
+            <tr>
+                <td class="method-name">Nearest</td>
+                <td>295±17</td><td>0.10±0.01</td><td>-19.9±0.5</td>
+                <td>295±17</td><td>0.10±0.01</td><td>-19.9±0.5</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Ranking System -->
+    <h2>Ranking System</h2>
+
+    <div class="setup-box">
+        <h3 style="margin-top: 0;">How Rankings Are Computed</h3>
+        <p>Final ranking = <strong>average rank</strong> across four categories:</p>
+        <table class="results-table" style="font-size: 14px;">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Metric</th>
+                    <th>Direction</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>PSNR Rank</strong></td>
+                    <td>Mean of 4 PSNR values</td>
+                    <td>↑ Higher</td>
+                    <td>2 windows × 2 FOV, masked</td>
+                </tr>
+                <tr>
+                    <td><strong>SSIM Rank</strong></td>
+                    <td>Mean of 4 SSIM values</td>
+                    <td>↑ Higher</td>
+                    <td>2 windows × 2 FOV, masked</td>
+                </tr>
+                <tr>
+                    <td><strong>MAE Rank</strong></td>
+                    <td>Mean of 4 MAE values</td>
+                    <td>↓ Lower</td>
+                    <td>2 windows × 2 FOV, masked</td>
+                </tr>
+                <tr>
+                    <td><strong>LBC Rank</strong></td>
+                    <td>Mean LBC Ratio</td>
+                    <td>↑ Closer to 1.0</td>
+                    <td>Across all sequences</td>
+                </tr>
+            </tbody>
+        </table>
+        <p style="margin-top:15px;">
+            <strong>Final Score = (PSNR_Rank + SSIM_Rank + MAE_Rank + LBC_Rank) / 4</strong><br>
+            Lowest average rank wins. LBC Rank breaks ties.
+        </p>
+    </div>
 
     <div class="key-findings">
         <h3>Methods Description</h3>

@@ -126,21 +126,49 @@ For each sample, we provide 4 sequences with soft tissue kernel:
 
 ## Evaluation Metrics
 
-### Metrics
+### Image Quality Metrics
 
-- **PSNR** (Peak Signal-to-Noise Ratio) - measured in dB
-- **SSIM** (Structural Similarity Index)
-- **MAE** (Mean Absolute Error)
+The following metrics are computed under **two CT window settings** (Bone, Soft Tissue) in **masked mode** (non-air region only):
+
+- **PSNR** (Peak Signal-to-Noise Ratio) - measured in dB, higher is better ↑
+- **SSIM** (Structural Similarity Index) - range [0, 1], higher is better ↑
+- **MAE** (Mean Absolute Error) - lower is better ↓
+
+### Local Bone Contrast (LBC)
+
+LBC is a microstructure-specific metric that measures the local intensity dynamic range within bone regions using a sliding window approach. It quantifies how well the super-resolution result preserves fine bone microstructure details (e.g., trabecular bone boundaries).
+
+**Computation:**
+1. A 16×16 pixel sliding window (stride 8) scans across bone mask regions (HU > -500)
+2. Within each window, the percentile dynamic range P95 − P5 is computed
+3. The mean dynamic range across all valid windows gives the LBC value (in HU)
+4. **LBC Ratio** = Pred_LBC / GT_LBC (closer to 1.0 is better)
+
+Higher LBC indicates sharper bone-air boundaries and better microstructure visibility. The LBC Ratio measures how much of the ground truth's local contrast is preserved by the super-resolution method.
 
 ### CT Window Settings
 
-All metrics are computed under three different CT window settings:
+All image quality metrics (PSNR, SSIM, MAE) are computed under two CT window settings:
 
 | Window | Window Center (WC) | Window Width (WW) | Description |
 |--------|-------------------|-------------------|-------------|
-| Raw | - | - | Original HU values (-1024 ~ 3071) |
 | Bone | 400 | 1800 | Bone structure visualization |
 | Soft Tissue | 40 | 400 | Soft tissue visualization |
+
+### Ranking System
+
+The final ranking is determined by **average rank** across four metric categories:
+
+| Rank Category | Metric | Direction | Description |
+|---------------|--------|-----------|-------------|
+| PSNR Rank | Mean of 4 PSNR values | ↑ Higher is better | 2 windows × 2 FOV, masked mode |
+| SSIM Rank | Mean of 4 SSIM values | ↑ Higher is better | 2 windows × 2 FOV, masked mode |
+| MAE Rank | Mean of 4 MAE values | ↓ Lower is better | 2 windows × 2 FOV, masked mode |
+| LBC Rank | Mean LBC Ratio | ↑ Closer to 1.0 is better | Across all input sequences |
+
+**Final Score = (PSNR_Rank + SSIM_Rank + MAE_Rank + LBC_Rank) / 4**
+
+The team with the **lowest average rank** wins. In case of a tie, the LBC Rank is used as the tiebreaker.
 
 ## Getting Started
 

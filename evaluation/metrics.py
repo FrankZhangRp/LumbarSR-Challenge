@@ -56,6 +56,7 @@ class CaseMetrics:
     rmse: Dict[str, float] = field(default_factory=dict)
     ncc: Dict[str, float] = field(default_factory=dict)
     nrmse: Dict[str, float] = field(default_factory=dict)
+    lbc: Dict[str, float] = field(default_factory=dict)
 
     def to_dict(self) -> Dict:
         return asdict(self)
@@ -67,6 +68,8 @@ class DatasetMetrics:
     n_cases: int
     metrics: Dict[str, Dict[str, Dict[str, float]]] = field(default_factory=dict)
     # Structure: {metric_name: {window: {mean, std}}}
+    lbc: Dict[str, Dict[str, float]] = field(default_factory=dict)
+    # Aggregated LBC: {metric_name: {mean, std}}
 
     def to_dict(self) -> Dict:
         return asdict(self)
@@ -230,6 +233,193 @@ def compute_ncc(gt: np.ndarray, pred: np.ndarray,
     return np.mean((gt - gt_mean) * (pred - pred_mean)) / (gt_std * pred_std)
 
 
+# ============================================================================
+# Local Bone Contrast (LBC) - Microstructure resolution metric
+# ============================================================================
+
+LBC_WINDOW_SIZE = 16        # Sliding window size (pixels)
+LBC_STRIDE = 8              # Sliding window stride (50% overlap)
+LBC_MIN_MASK_RATIO = 0.05   # Min fraction of mask voxels in window
+
+
+def _compute_lbc_slice(
+    slice_data: np.ndarray,
+    bone_mask_slice: np.ndarray,
+    window_size: int = LBC_WINDOW_SIZE,
+    stride: int = LBC_STRIDE,
+    min_mask_ratio: float = LBC_MIN_MASK_RATIO,
+) -> List[float]:
+    """Compute local bone contrast for a single 2D slice.
+
+    Slides a window across the bone mask region and computes the
+    percentile dynamic range (P95 - P5) within each window.
+
+    Args:
+        slice_data: 2D HU data (H, W)
+        bone_mask_slice: 2D boolean mask of bone region (H, W)
+        window_size: Sliding window size in pixels
+        stride: Sliding window stride
+        min_mask_ratio: Min fraction of mask voxels required in window
+
+    Returns:
+        List of P95-P5 dynamic range values (HU) for valid windows
+    """
+    h, w = slice_data.shape
+    min_voxels = int(window_size * window_size * min_mask_ratio)
+    contrasts = []
+
+    for y in range(0, h - window_size + 1, stride):
+        for x in range(0, w - window_size + 1, stride):
+            mask_patch = bone_mask_slice[y:y + window_size, x:x + window_size]
+            mask_count = mask_patch.sum()
+            if mask_count < max(min_voxels, 10):
+                continue
+
+            values = slice_data[y:y + window_size, x:x + window_size][mask_patch]
+            p95 = np.percentile(values, 95)
+            p5 = np.percentile(values, 5)
+            contrasts.append(float(p95 - p5))
+
+    return contrasts
+
+
+def _compute_lbc_slice_args(args: Tuple) -> List[float]:
+    """Wrapper for multiprocessing."""
+    slice_data, bone_mask_slice, window_size, stride, min_mask_ratio = args
+    return _compute_lbc_slice(slice_data, bone_mask_slice,
+                              window_size, stride, min_mask_ratio)
+
+
+def compute_lbc(
+    data: np.ndarray,
+    bone_mask: np.ndarray,
+    window_size: int = LBC_WINDOW_SIZE,
+    stride: int = LBC_STRIDE,
+    n_workers: int = None,
+    sample_ratio: float = None,
+) -> Dict[str, float]:
+    """Compute Local Bone Contrast for a 3D volume.
+
+    Measures the percentile dynamic range (P95 - P5) within sliding
+    windows across the bone mask region. Higher values indicate better
+    microstructure visibility.
+
+    Args:
+        data: 3D CT data in HU (H, W, D)
+        bone_mask: 3D boolean mask of bone region (H, W, D)
+        window_size: Sliding window size in pixels
+        stride: Sliding window stride
+        n_workers: Number of parallel workers
+        sample_ratio: If set, sample this fraction of slices
+
+    Returns:
+        Dict with lbc_mean, lbc_std, lbc_db, n_windows
+    """
+    n_slices = data.shape[2]
+
+    if sample_ratio and 0 < sample_ratio < 1.0:
+        n_sample = max(int(n_slices * sample_ratio), 10)
+        indices = np.linspace(0, n_slices - 1, n_sample, dtype=int)
+    else:
+        indices = range(n_slices)
+
+    valid_indices = [z for z in indices if bone_mask[:, :, z].any()]
+
+    if not valid_indices:
+        return {'lbc_mean': 0.0, 'lbc_std': 0.0, 'lbc_db': -np.inf,
+                'n_windows': 0}
+
+    if n_workers and n_workers > 1:
+        args_list = [
+            (data[:, :, z].copy(), bone_mask[:, :, z].copy(),
+             window_size, stride, LBC_MIN_MASK_RATIO)
+            for z in valid_indices
+        ]
+        with ProcessPoolExecutor(max_workers=n_workers) as executor:
+            slice_results = list(executor.map(
+                _compute_lbc_slice_args, args_list))
+        all_contrasts = []
+        for r in slice_results:
+            all_contrasts.extend(r)
+    else:
+        all_contrasts = []
+        for z in valid_indices:
+            contrasts = _compute_lbc_slice(
+                data[:, :, z], bone_mask[:, :, z],
+                window_size=window_size, stride=stride,
+            )
+            all_contrasts.extend(contrasts)
+
+    if not all_contrasts:
+        return {'lbc_mean': 0.0, 'lbc_std': 0.0, 'lbc_db': -np.inf,
+                'n_windows': 0}
+
+    arr = np.array(all_contrasts)
+    mean_val = float(np.mean(arr))
+    std_val = float(np.std(arr))
+    lbc_db = float(20 * np.log10(max(mean_val, 1e-10)))
+
+    return {
+        'lbc_mean': mean_val,
+        'lbc_std': std_val,
+        'lbc_db': lbc_db,
+        'n_windows': len(all_contrasts),
+    }
+
+
+def compute_lbc_comparison(
+    gt: np.ndarray,
+    pred: np.ndarray,
+    bone_mask: np.ndarray,
+    window_size: int = LBC_WINDOW_SIZE,
+    stride: int = LBC_STRIDE,
+    n_workers: int = None,
+    sample_ratio: float = None,
+    gt_lbc_cache: Optional[Dict[str, float]] = None,
+) -> Dict[str, float]:
+    """Compute LBC for both GT and prediction, return comparison metrics.
+
+    Args:
+        gt: Ground truth 3D CT data in HU
+        pred: Prediction 3D CT data in HU
+        bone_mask: 3D boolean mask of bone region
+        window_size: Sliding window size
+        stride: Sliding window stride
+        n_workers: Number of parallel workers
+        sample_ratio: Fraction of slices to sample
+        gt_lbc_cache: Pre-computed GT LBC to avoid redundant computation
+
+    Returns:
+        Dict with lbc_gt_mean, lbc_pred_mean, lbc_ratio, lbc_diff_db, etc.
+    """
+    gt_lbc = gt_lbc_cache if gt_lbc_cache else compute_lbc(
+        gt, bone_mask, window_size, stride, n_workers, sample_ratio)
+    pred_lbc = compute_lbc(
+        pred, bone_mask, window_size, stride, n_workers, sample_ratio)
+
+    gt_mean = gt_lbc['lbc_mean']
+    pred_mean = pred_lbc['lbc_mean']
+
+    if gt_mean > 1e-10:
+        ratio = pred_mean / gt_mean
+    else:
+        ratio = 0.0
+
+    return {
+        'lbc_gt_mean': gt_lbc['lbc_mean'],
+        'lbc_gt_std': gt_lbc['lbc_std'],
+        'lbc_gt_db': gt_lbc['lbc_db'],
+        'lbc_gt_n_windows': gt_lbc['n_windows'],
+        'lbc_pred_mean': pred_lbc['lbc_mean'],
+        'lbc_pred_std': pred_lbc['lbc_std'],
+        'lbc_pred_db': pred_lbc['lbc_db'],
+        'lbc_pred_n_windows': pred_lbc['n_windows'],
+        'lbc_ratio': float(ratio),
+        'lbc_diff': float(abs(pred_mean - gt_mean)),
+        'lbc_diff_db': float(pred_lbc['lbc_db'] - gt_lbc['lbc_db']),
+    }
+
+
 class MetricsCalculator:
     """Calculator for super-resolution evaluation metrics."""
 
@@ -273,13 +463,15 @@ class MetricsCalculator:
         }
 
     def evaluate_case(self, gt: np.ndarray, pred: np.ndarray,
-                      case_id: str) -> CaseMetrics:
+                      case_id: str,
+                      compute_lbc_flag: bool = True) -> CaseMetrics:
         """Evaluate a single case across bone and soft tissue windows.
 
         Args:
             gt: Ground truth in HU
             pred: Prediction in HU
             case_id: Case identifier
+            compute_lbc_flag: Whether to compute LBC metrics
 
         Returns:
             CaseMetrics with all metrics
@@ -294,6 +486,10 @@ class MetricsCalculator:
             result.rmse[window_name] = metrics['rmse']
             result.ncc[window_name] = metrics['ncc']
             result.nrmse[window_name] = metrics['nrmse']
+
+        if compute_lbc_flag:
+            bone_mask = get_valid_mask(gt, pred, threshold=-500)
+            result.lbc = compute_lbc_comparison(gt, pred, bone_mask)
 
         return result
 
@@ -322,6 +518,23 @@ class MetricsCalculator:
                     'std': float(np.std(values)),
                 }
 
+        # Aggregate LBC metrics
+        lbc_keys = [
+            'lbc_gt_mean', 'lbc_gt_std', 'lbc_gt_db',
+            'lbc_pred_mean', 'lbc_pred_std', 'lbc_pred_db',
+            'lbc_ratio', 'lbc_diff', 'lbc_diff_db',
+        ]
+        cases_with_lbc = [c for c in case_results if c.lbc]
+        if cases_with_lbc:
+            for key in lbc_keys:
+                values = [c.lbc[key] for c in cases_with_lbc
+                          if key in c.lbc and np.isfinite(c.lbc[key])]
+                if values:
+                    dataset.lbc[key] = {
+                        'mean': float(np.mean(values)),
+                        'std': float(np.std(values)),
+                    }
+
         return dataset
 
 
@@ -338,6 +551,16 @@ def format_case_report(case: CaseMetrics) -> str:
         lines.append(f"  RMSE:  {case.rmse[window]:.4f}")
         lines.append(f"  NCC:   {case.ncc[window]:.4f}")
         lines.append(f"  NRMSE: {case.nrmse[window]:.4f}")
+
+    if case.lbc:
+        lbc = case.lbc
+        lines.append(f"\n[LOCAL BONE CONTRAST]")
+        lines.append(f"  GT:   LBC={lbc.get('lbc_gt_mean', 0):.1f} HU "
+                     f"({lbc.get('lbc_gt_db', 0):.2f} dB)")
+        lines.append(f"  Pred: LBC={lbc.get('lbc_pred_mean', 0):.1f} HU "
+                     f"({lbc.get('lbc_pred_db', 0):.2f} dB)")
+        lines.append(f"  Ratio={lbc.get('lbc_ratio', 0):.4f}  "
+                     f"Diff_dB={lbc.get('lbc_diff_db', 0):.2f}")
 
     return '\n'.join(lines)
 
@@ -362,6 +585,20 @@ def format_dataset_report(dataset: DatasetMetrics) -> str:
             lines.append(
                 f"  {metric.upper():6s}: {stats['mean']:.4f} +/- {stats['std']:.4f} {unit}"
             )
+
+    if dataset.lbc:
+        lines.append(f"\n[LOCAL BONE CONTRAST]")
+        lbc = dataset.lbc
+        for key, label in [
+            ('lbc_gt_mean', 'GT LBC (HU)'),
+            ('lbc_pred_mean', 'Pred LBC (HU)'),
+            ('lbc_ratio', 'LBC Ratio'),
+            ('lbc_diff_db', 'LBC Diff (dB)'),
+        ]:
+            if key in lbc:
+                stats = lbc[key]
+                lines.append(f"  {label:<16}: "
+                             f"{stats['mean']:.4f} +/- {stats['std']:.4f}")
 
     return '\n'.join(lines)
 

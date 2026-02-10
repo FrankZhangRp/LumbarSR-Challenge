@@ -11,6 +11,7 @@ import nibabel as nib
 
 from metrics import WINDOWS, EVAL_WINDOWS, apply_window, get_valid_mask
 from metrics import compute_psnr, compute_ssim, compute_mae, compute_rmse, compute_ncc, compute_nrmse
+from metrics import compute_lbc_comparison
 
 
 DATA_ROOT = "./data/registered_nifti"
@@ -114,11 +115,16 @@ def evaluate_sample(
                 metrics = compute_metrics_fast(gt_data, pred_data, window_name)
             seq_results[window_name] = metrics
 
+        # Compute LBC on raw HU
+        bone_mask = get_valid_mask(gt_data, pred_data, threshold=-500)
+        seq_results['lbc'] = compute_lbc_comparison(gt_data, pred_data, bone_mask)
+
         results[seq] = seq_results
 
         m = seq_results['bone']
         ssim_str = f", SSIM={m.get('ssim', 0):.4f}" if compute_ssim else ""
-        print(f"  {seq}: PSNR={m['psnr']:.2f}dB{ssim_str}, NCC={m['ncc']:.4f}")
+        lbc_ratio = seq_results['lbc'].get('lbc_ratio', 0)
+        print(f"  {seq}: PSNR={m['psnr']:.2f}dB{ssim_str}, NCC={m['ncc']:.4f}, LBC_ratio={lbc_ratio:.4f}")
 
         del pred_data
         gc.collect()
@@ -205,6 +211,38 @@ def batch_evaluate(
                     line += f"{agg['ssim']['mean']:.4f}±{agg['ssim']['std']:.4f}"
                 print(line)
 
+    # Aggregate LBC by sequence
+    lbc_aggregates = {}
+    lbc_keys = ['lbc_gt_mean', 'lbc_gt_db', 'lbc_pred_mean', 'lbc_pred_db',
+                'lbc_ratio', 'lbc_diff', 'lbc_diff_db']
+    for seq in SEQUENCES:
+        lbc_lists = {k: [] for k in lbc_keys}
+        for sample, results in all_results.items():
+            if seq in results and 'lbc' in results[seq]:
+                lbc = results[seq]['lbc']
+                for k in lbc_keys:
+                    val = lbc.get(k)
+                    if val is not None and np.isfinite(val):
+                        lbc_lists[k].append(val)
+        if lbc_lists['lbc_gt_mean']:
+            lbc_aggregates[seq] = {
+                k: {'mean': float(np.mean(v)), 'std': float(np.std(v))}
+                for k, v in lbc_lists.items() if v
+            }
+
+    # Print LBC summary
+    print(f"\n[LOCAL BONE CONTRAST]")
+    print(f"{'Sequence':<20} {'GT (HU)':<15} {'Pred (HU)':<15} {'Ratio':<15} {'Diff_dB':<15}")
+    print("-" * 80)
+    for seq in SEQUENCES:
+        if seq in lbc_aggregates:
+            a = lbc_aggregates[seq]
+            gt_m = a.get('lbc_gt_mean', {}).get('mean', 0)
+            pred_m = a.get('lbc_pred_mean', {}).get('mean', 0)
+            ratio = a.get('lbc_ratio', {}).get('mean', 0)
+            diff_db = a.get('lbc_diff_db', {}).get('mean', 0)
+            print(f"{seq:<20} {gt_m:<15.1f} {pred_m:<15.1f} {ratio:<15.4f} {diff_db:<15.2f}")
+
     # Save results
     os.makedirs(output_dir, exist_ok=True)
     import json
@@ -216,6 +254,7 @@ def batch_evaluate(
         'n_samples': len(all_results),
         'samples': list(all_results.keys()),
         'sequences': seq_aggregates,
+        'lbc': lbc_aggregates,
     }
     with open(f"{output_dir}/summary_metrics.json", 'w') as f:
         json.dump(summary, f, indent=2)
