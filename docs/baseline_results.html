@@ -206,6 +206,50 @@
             color: #2e7d32;
         }
 
+        .medal-gold { color: #b8860b; font-weight: 700; }
+        .medal-silver { color: #708090; font-weight: 700; }
+        .medal-bronze { color: #cd7f32; font-weight: 700; }
+
+        .ranking-table {
+            width: auto;
+            margin: 20px auto;
+            min-width: 700px;
+        }
+
+        .ranking-table th {
+            padding: 10px 16px;
+            text-align: center;
+            font-weight: 500;
+            border: 1px solid #ddd;
+            font-size: 14px;
+        }
+
+        .ranking-table td {
+            padding: 10px 16px;
+            text-align: center;
+            border: 1px solid #ddd;
+            font-size: 14px;
+        }
+
+        .ranking-table thead {
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+
+        .ranking-table tbody tr:hover {
+            background-color: #f0f7ff;
+        }
+
+        .ranking-table .method-name {
+            font-weight: 600;
+            text-align: left;
+            background-color: #f5f5f5 !important;
+        }
+
+        .rank-1 { background-color: #fff8dc; font-weight: 600; }
+        .rank-2 { background-color: #f0f0f0; font-weight: 600; }
+        .rank-3 { background-color: #fdf0e0; font-weight: 600; }
+
         @media (max-width: 1200px) {
             .results-table {
                 font-size: 12px;
@@ -325,17 +369,17 @@
             </tr>
             <tr>
                 <td class="method-name">SRCNN</td>
-                <td class="best-value">23.64±0.50</td>
-                <td class="best-value">20.04±0.39</td>
-                <td class="best-value">18.00±0.35</td>
-                <td class="best-value">12.87±0.35</td>
-                <td class="best-value">9.26±0.32</td>
+                <td>23.64±0.50</td>
+                <td>20.04±0.39</td>
+                <td>18.00±0.35</td>
+                <td>12.87±0.35</td>
+                <td>9.26±0.32</td>
                 <td>7.22±0.30</td>
-                <td class="best-value">23.99±0.58</td>
-                <td class="best-value">20.31±0.42</td>
-                <td class="best-value">18.07±0.37</td>
-                <td class="best-value">13.18±0.38</td>
-                <td class="best-value">9.50±0.27</td>
+                <td>23.99±0.58</td>
+                <td>20.31±0.42</td>
+                <td>18.07±0.37</td>
+                <td>13.18±0.38</td>
+                <td>9.50±0.27</td>
                 <td>7.25±0.21</td>
             </tr>
             <tr>
@@ -410,13 +454,13 @@
                 <td>0.95±0.00</td>
                 <td>0.93±0.01</td>
                 <td>0.95±0.00</td>
-                <td class="best-value">0.95±0.00</td>
-                <td class="best-value">0.94±0.00</td>
-                <td class="best-value">0.95±0.00</td>
-                <td class="best-value">0.95±0.00</td>
-                <td class="best-value">0.94±0.00</td>
-                <td class="best-value">0.95±0.00</td>
-                <td class="best-value">0.95±0.00</td>
+                <td>0.95±0.00</td>
+                <td>0.94±0.00</td>
+                <td>0.95±0.00</td>
+                <td>0.95±0.00</td>
+                <td>0.94±0.00</td>
+                <td>0.95±0.00</td>
+                <td>0.95±0.00</td>
             </tr>
             <tr>
                 <td class="method-name">SRCNN</td>
@@ -500,33 +544,33 @@
             </tr>
             <tr>
                 <td class="method-name">UNet</td>
-                <td class="best-value">0.01±0.00</td>
-                <td class="best-value">0.01±0.00</td>
+                <td>0.01±0.00</td>
+                <td>0.01±0.00</td>
                 <td>0.02±0.00</td>
-                <td class="best-value">0.14±0.01</td>
-                <td class="best-value">0.18±0.01</td>
+                <td>0.14±0.01</td>
+                <td>0.18±0.01</td>
                 <td>0.21±0.01</td>
-                <td class="best-value">0.01±0.00</td>
-                <td class="best-value">0.02±0.00</td>
-                <td class="best-value">0.02±0.00</td>
-                <td class="best-value">0.14±0.01</td>
+                <td>0.01±0.00</td>
+                <td>0.02±0.00</td>
+                <td>0.02±0.00</td>
+                <td>0.14±0.01</td>
                 <td>0.18±0.01</td>
                 <td>0.21±0.01</td>
             </tr>
             <tr>
                 <td class="method-name">SRCNN</td>
-                <td class="best-value">0.01±0.00</td>
-                <td class="best-value">0.02±0.00</td>
-                <td class="best-value">0.02±0.00</td>
-                <td class="best-value">0.14±0.01</td>
-                <td class="best-value">0.18±0.01</td>
-                <td class="best-value">0.21±0.01</td>
-                <td class="best-value">0.01±0.00</td>
-                <td class="best-value">0.02±0.00</td>
-                <td class="best-value">0.02±0.00</td>
-                <td class="best-value">0.14±0.01</td>
-                <td class="best-value">0.18±0.01</td>
-                <td class="best-value">0.21±0.01</td>
+                <td>0.01±0.00</td>
+                <td>0.02±0.00</td>
+                <td>0.02±0.00</td>
+                <td>0.14±0.01</td>
+                <td>0.18±0.01</td>
+                <td>0.21±0.01</td>
+                <td>0.01±0.00</td>
+                <td>0.02±0.00</td>
+                <td>0.02±0.00</td>
+                <td>0.14±0.01</td>
+                <td>0.18±0.01</td>
+                <td>0.21±0.01</td>
             </tr>
             <tr>
                 <td class="method-name">Nearest</td>
@@ -641,6 +685,111 @@
             <em>Example: If a team ranks 1st in PSNR, 2nd in SSIM, 1st in MAE, 3rd in LBC → Final Score = (1+2+1+3)/4 = 1.75</em>
         </p>
     </div>
+
+    <!-- Ranking Demo -->
+    <h2>Ranking Demo (Baseline Methods)</h2>
+
+    <p>Below is a worked example showing how the ranking system applies to the four baseline methods.</p>
+
+    <h3>Step 1: Aggregate Scores</h3>
+    <p>Each metric is averaged across <strong>2 CT windows (Bone, Soft Tissue) × 2 FOV (Small, Large)</strong> in masked mode:</p>
+
+    <table class="ranking-table">
+        <thead>
+            <tr>
+                <th>Method</th>
+                <th>PSNR Score (dB) ↑</th>
+                <th>SSIM Score ↑</th>
+                <th>MAE Score ↓</th>
+                <th>LBC Score ↑</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="method-name">Baseline</td>
+                <td>8.08</td>
+                <td>0.9450</td>
+                <td>0.1950</td>
+                <td>0.10</td>
+            </tr>
+            <tr>
+                <td class="method-name">UNet</td>
+                <td>8.08</td>
+                <td>0.9500</td>
+                <td>0.1950</td>
+                <td>0.47</td>
+            </tr>
+            <tr>
+                <td class="method-name">SRCNN</td>
+                <td>8.31</td>
+                <td>0.9500</td>
+                <td>0.1950</td>
+                <td>0.40</td>
+            </tr>
+            <tr>
+                <td class="method-name">Nearest</td>
+                <td>8.38</td>
+                <td>0.9450</td>
+                <td>0.1950</td>
+                <td>0.10</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Step 2: Per-Metric Ranking &amp; Final Score</h3>
+    <p>Each metric is ranked independently. Ties receive the average rank.</p>
+
+    <table class="ranking-table">
+        <thead>
+            <tr>
+                <th>Method</th>
+                <th>PSNR Rank</th>
+                <th>SSIM Rank</th>
+                <th>MAE Rank</th>
+                <th>LBC Rank</th>
+                <th>Avg Rank</th>
+                <th>Award</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="rank-1">
+                <td class="method-name">SRCNN</td>
+                <td>2</td>
+                <td>1.5</td>
+                <td>2.5</td>
+                <td>2</td>
+                <td><strong>2.00</strong></td>
+                <td class="medal-gold">🥇 Gold</td>
+            </tr>
+            <tr class="rank-2">
+                <td class="method-name">UNet</td>
+                <td>3.5</td>
+                <td>1.5</td>
+                <td>2.5</td>
+                <td>1</td>
+                <td><strong>2.13</strong></td>
+                <td class="medal-silver">🥈 Silver</td>
+            </tr>
+            <tr class="rank-3">
+                <td class="method-name">Nearest</td>
+                <td>1</td>
+                <td>3.5</td>
+                <td>2.5</td>
+                <td>3.5</td>
+                <td><strong>2.63</strong></td>
+                <td class="medal-bronze">🥉 Bronze</td>
+            </tr>
+            <tr>
+                <td class="method-name">Baseline</td>
+                <td>3.5</td>
+                <td>3.5</td>
+                <td>2.5</td>
+                <td>3.5</td>
+                <td><strong>3.25</strong></td>
+                <td>—</td>
+            </tr>
+        </tbody>
+    </table>
 
     <div class="key-findings">
         <h3>Methods Description</h3>
