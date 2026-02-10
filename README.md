@@ -157,18 +157,28 @@ All image quality metrics (PSNR, SSIM, MAE) are computed under two CT window set
 
 ### Ranking System
 
-The final ranking is determined by **average rank** across four metric categories:
+The ranking follows a two-step process:
 
-| Rank Category | Metric | Direction | Description |
-|---------------|--------|-----------|-------------|
-| PSNR Rank | Mean of 4 PSNR values | ↑ Higher is better | 2 windows × 2 FOV, masked mode |
-| SSIM Rank | Mean of 4 SSIM values | ↑ Higher is better | 2 windows × 2 FOV, masked mode |
-| MAE Rank | Mean of 4 MAE values | ↓ Lower is better | 2 windows × 2 FOV, masked mode |
-| LBC Rank | Mean LBC Ratio | ↑ Closer to 1.0 is better | Across all input sequences |
+**Step 1: Compute a single aggregate score per metric for each team**
+
+For each submitted result, we compute one aggregate value per metric category by averaging across all FOV and window combinations:
+
+| Metric Category | Aggregate Score | Direction |
+|-----------------|----------------|-----------|
+| PSNR Score | Mean of 4 PSNR values (2 windows × 2 FOV, masked) | ↑ Higher is better |
+| SSIM Score | Mean of 4 SSIM values (2 windows × 2 FOV, masked) | ↑ Higher is better |
+| MAE Score | Mean of 4 MAE values (2 windows × 2 FOV, masked) | ↓ Lower is better |
+| LBC Score | Mean LBC Ratio across all input sequences | ↑ Closer to 1.0 is better |
+
+**Step 2: Rank teams per metric, then average ranks**
+
+For each metric category, all teams are ranked independently (Rank 1 = best, Rank 2 = second best, ...). The final score is the average of the four per-metric ranks:
 
 **Final Score = (PSNR_Rank + SSIM_Rank + MAE_Rank + LBC_Rank) / 4**
 
 The team with the **lowest average rank** wins. In case of a tie, the LBC Rank is used as the tiebreaker.
+
+**Example:** If Team A ranks 1st in PSNR, 2nd in SSIM, 1st in MAE, and 3rd in LBC, their final score = (1+2+1+3)/4 = 1.75.
 
 ## Getting Started
 
