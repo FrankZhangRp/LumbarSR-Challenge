@@ -222,9 +222,53 @@ Required packages:
 - nibabel, pydicom, SimpleITK
 - numpy, scipy, scikit-image
 
+## Public Code Components
+
+The current public repository includes four main parts:
+
+| Directory | Status | Description |
+|-----------|--------|-------------|
+| `baseline/` | Public | Rigid registration baseline based on ANTs, including `register_ants.py` and `batch_register.py` |
+| `methods/` | Public | Interpolation, SRCNN, and UNet baselines with training and inference scripts |
+| `evaluation/` | Public | Image quality evaluation scripts for PSNR, SSIM, MAE, and LBC |
+| `docs/` | Public | GitHub Pages website, visualizations, and benchmark result pages |
+
+The current public release does not yet include ESRGAN or SwinIR, and it does not yet expose the latest dense close-set registration mask workflow used in our internal evaluation pipeline.
+
+## Registration Baseline and Mask Evaluation
+
+The public repository already includes rigid registration code in [`baseline/register_ants.py`](baseline/register_ants.py) and [`baseline/batch_register.py`](baseline/batch_register.py).
+
+### Current Public Mask Logic
+
+- Public registration `Dice` in `baseline/register_ants.py` uses a simple binary bone mask with `HU > 200`
+- This overlap is currently reported on the registered `500Z_B` reference sequence
+- Public SR evaluation uses a non-air validity mask defined as `(gt > -1000) | (pred > -1000)`
+- Public `LBC` uses a bone-region mask with threshold `HU > -500`
+
+### Planned Mask Update
+
+We plan to replace the simple thresholded registration mask with the latest dense close-set bone mask workflow:
+
+1. Threshold the bone volume
+2. Keep the largest connected component
+3. Crop around the component with a physical margin
+4. Resample to a coarse isotropic grid
+5. Apply binary morphological closing with a physical radius in millimeters
+6. Fill internal holes
+7. Resample back to the original grid
+8. Compute `Dice`, `HD95`, and `HD`
+
+### Registration Metric Placeholder
+
+| Method | Mask Definition | Dice ↑ | HD95 ↓ | HD ↓ |
+|--------|-----------------|--------|--------|------|
+| ANTs rigid baseline | Public release: `HU > 200` binary overlap | Public Dice only | Not released | Not released |
+| ANTs rigid baseline | Planned update: dense close-set bone mask | TBD | TBD | TBD |
+
 ## Baseline Methods
 
-We provide three baseline implementations in the [`methods/`](methods/) directory:
+We currently provide three released baseline implementations in the [`methods/`](methods/) directory:
 
 ### 1. Interpolation Baselines
 
@@ -284,6 +328,13 @@ python methods/inference.py \
   --output-root ./results
 ```
 
+### Planned Additions
+
+| Method | Status | Notes |
+|--------|--------|-------|
+| ESRGAN | Placeholder | RRDB-based adversarial super-resolution baseline will be added in a future public update |
+| SwinIR | Placeholder | Transformer-based super-resolution baseline will be added in a future public update |
+
 ### Baseline Performance
 
 **Experimental Setup:**
@@ -324,6 +375,13 @@ python methods/inference.py \
 | **UNet** | **0.01±0.00** | 0.01±0.00 | 0.02±0.00 | 0.14±0.01 | 0.18±0.01 | 0.21±0.01 | **0.01±0.00** | **0.02±0.00** | **0.02±0.00** | **0.14±0.01** | 0.18±0.01 | 0.21±0.01 |
 | **SRCNN** | **0.01±0.00** | **0.02±0.00** | **0.02±0.00** | **0.14±0.01** | **0.18±0.01** | **0.21±0.01** | **0.01±0.00** | **0.02±0.00** | **0.02±0.00** | **0.14±0.01** | **0.18±0.01** | **0.21±0.01** |
 | **Nearest** | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.15±0.02 | 0.19±0.03 | 0.21±0.03 | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.14±0.02 | 0.18±0.02 | 0.20±0.02 |
+
+### Planned Method Slots
+
+| Method | PSNR | SSIM | MAE |
+|--------|------|------|-----|
+| **ESRGAN** | TBD | TBD | TBD |
+| **SwinIR** | TBD | TBD | TBD |
 
 **Key Findings:**
 - **SRCNN** achieves the best PSNR across most configurations (8-9% improvement over baseline)

@@ -305,6 +305,68 @@
         </ul>
     </div>
 
+    <div class="setup-box">
+        <h3 style="margin-top: 0;">Planned Method Slots</h3>
+        <table class="results-table" style="font-size: 14px;">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Status</th>
+                    <th>Result Slot</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="method-name">ESRGAN</td>
+                    <td>Placeholder</td>
+                    <td>TBD</td>
+                </tr>
+                <tr>
+                    <td class="method-name">SwinIR</td>
+                    <td>Placeholder</td>
+                    <td>TBD</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="setup-box">
+        <h3 style="margin-top: 0;">Registration Evaluation Placeholder</h3>
+        <p>
+            The public repository already includes ANTs-based rigid registration code in <code>baseline/register_ants.py</code> and <code>baseline/batch_register.py</code>. The current public release computes only a simple thresholded Dice overlap in the registration baseline script. A future update will expose dense close-set masks together with Dice, HD95, and HD.
+        </p>
+        <table class="results-table" style="font-size: 14px;">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Mask Definition</th>
+                    <th>Dice ↑</th>
+                    <th>HD95 ↓</th>
+                    <th>HD ↓</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="method-name">ANTs rigid baseline</td>
+                    <td>Public release: simple binary bone overlap (<code>HU &gt; 200</code>)</td>
+                    <td>Public Dice only</td>
+                    <td>Not released</td>
+                    <td>Not released</td>
+                </tr>
+                <tr>
+                    <td class="method-name">ANTs rigid baseline</td>
+                    <td>Planned update: dense close-set bone mask</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                    <td>TBD</td>
+                </tr>
+            </tbody>
+        </table>
+        <p style="margin-top: 12px; margin-bottom: 0;">
+            Current public mask logic: SR validity mask = <code>(gt &gt; -1000) | (pred &gt; -1000)</code>, LBC bone mask = <code>HU &gt; -500</code>, registration Dice mask in the public baseline = <code>HU &gt; 200</code>. The planned registration update will switch to a dense close-set bone mask generated from thresholding, largest-component filtering, coarse-grid morphological closing, and hole filling.
+        </p>
+    </div>
+
     <!-- PSNR Results -->
     <h2>PSNR Results <span class="metric-badge metric-psnr">dB ↑</span></h2>
 
@@ -644,7 +706,7 @@
 
     <div class="setup-box">
         <h3 style="margin-top: 0;">How Rankings Are Computed</h3>
-        <p><strong>Step 1:</strong> For each team, compute one aggregate score per metric by averaging across all FOV and window combinations:</p>
+        <p><strong>Step 1:</strong> For each method, compute one aggregate score per metric by averaging across all FOV and window combinations:</p>
         <table class="results-table" style="font-size: 14px;">
             <thead>
                 <tr>
@@ -677,12 +739,12 @@
             </tbody>
         </table>
         <p style="margin-top:15px;">
-            <strong>Step 2:</strong> For each metric, all teams are ranked independently (Rank 1 = best, Rank 2 = second best, ...).
+            <strong>Step 2:</strong> For each metric, methods are ranked independently (Rank 1 = best, Rank 2 = second best, ...).
         </p>
         <p>
-            <strong>Final Score = (PSNR_Rank + SSIM_Rank + MAE_Rank + LBC_Rank) / 4</strong><br>
-            Lowest average rank wins. LBC Rank breaks ties.<br>
-            <em>Example: If a team ranks 1st in PSNR, 2nd in SSIM, 1st in MAE, 3rd in LBC → Final Score = (1+2+1+3)/4 = 1.75</em>
+            <strong>Average Rank = (PSNR_Rank + SSIM_Rank + MAE_Rank + LBC_Rank) / 4</strong><br>
+            Lowest average rank indicates better overall performance. LBC rank can be used as a tiebreaker if needed.<br>
+            <em>Example: If one method ranks 1st in PSNR, 2nd in SSIM, 1st in MAE, and 3rd in LBC, its average rank is (1+2+1+3)/4 = 1.75.</em>
         </p>
     </div>
 

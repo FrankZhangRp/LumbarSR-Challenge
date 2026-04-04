@@ -519,6 +519,43 @@ tar -xzf LumbarSR_Dataset.tar.gz
 
     <hr>
 
+    <!-- Public Code Section -->
+    <h2>Public Code Release</h2>
+
+    <table class="data-table">
+        <tr>
+            <th>Directory</th>
+            <th>Status</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td><code>baseline/</code></td>
+            <td>Public</td>
+            <td>Rigid registration baseline based on ANTs, including <code>register_ants.py</code> and <code>batch_register.py</code></td>
+        </tr>
+        <tr>
+            <td><code>methods/</code></td>
+            <td>Public</td>
+            <td>Interpolation, SRCNN, and UNet baselines with training and inference scripts</td>
+        </tr>
+        <tr>
+            <td><code>evaluation/</code></td>
+            <td>Public</td>
+            <td>Image quality evaluation code for PSNR, SSIM, MAE, and LBC</td>
+        </tr>
+        <tr>
+            <td><code>docs/</code></td>
+            <td>Public</td>
+            <td>Website pages, visualization assets, and benchmark result summaries</td>
+        </tr>
+    </table>
+
+    <p class="note">
+        The current public release does not yet include ESRGAN or SwinIR, and it does not yet expose the latest dense close-set registration mask workflow used in our internal registration evaluation.
+    </p>
+
+    <hr>
+
     <!-- Evaluation Section -->
     <h2 id="evaluation">Evaluation</h2>
 
@@ -615,6 +652,58 @@ tar -xzf LumbarSR_Dataset.tar.gz
     </center>
 
     <br>
+
+    <h3>Planned Method Slots</h3>
+    <table class="data-table">
+        <tr>
+            <th>Method</th>
+            <th>Status</th>
+            <th>Public Results</th>
+        </tr>
+        <tr>
+            <td><strong>ESRGAN</strong></td>
+            <td>Placeholder</td>
+            <td>TBD</td>
+        </tr>
+        <tr>
+            <td><strong>SwinIR</strong></td>
+            <td>Placeholder</td>
+            <td>TBD</td>
+        </tr>
+    </table>
+
+    <h3>Registration Evaluation Placeholder</h3>
+    <p>
+        The public repository already includes ANTs-based rigid registration code in <code>baseline/</code>. The current public release reports only a simple thresholded Dice overlap in the registration baseline script. A future update will expose the latest dense close-set bone mask workflow together with surface-distance metrics.
+    </p>
+
+    <table class="data-table">
+        <tr>
+            <th>Method</th>
+            <th>Mask Definition</th>
+            <th>Dice ↑</th>
+            <th>HD95 ↓</th>
+            <th>HD ↓</th>
+        </tr>
+        <tr>
+            <td>ANTs rigid baseline</td>
+            <td>Public release: simple binary bone overlap (`HU &gt; 200`)</td>
+            <td>Public Dice only</td>
+            <td>Not released</td>
+            <td>Not released</td>
+        </tr>
+        <tr>
+            <td>ANTs rigid baseline</td>
+            <td>Planned update: dense close-set bone mask</td>
+            <td>TBD</td>
+            <td>TBD</td>
+            <td>TBD</td>
+        </tr>
+    </table>
+
+    <p class="note">
+        Current public mask logic: SR validity mask = <code>(gt &gt; -1000) | (pred &gt; -1000)</code>, LBC bone mask = <code>HU &gt; -500</code>, registration Dice mask in the public baseline = <code>HU &gt; 200</code>. The planned registration update will replace this with a dense close-set mask built from thresholding, largest-component filtering, coarse-grid morphological closing, and hole filling.
+    </p>
 
     <hr>
 

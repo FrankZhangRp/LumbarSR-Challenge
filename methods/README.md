@@ -1,6 +1,6 @@
 # Super-Resolution Methods
 
-This directory contains baseline implementations for the LumbarSR Challenge.
+This directory contains baseline implementations for the LumbarSR dataset and benchmark.
 
 ## Quick Start
 
@@ -43,6 +43,12 @@ data/
 ```
 
 ## Methods
+
+Currently released methods:
+
+- Interpolation baselines
+- SRCNN
+- UNet
 
 ### 1. Interpolation Baselines
 
@@ -126,6 +132,17 @@ python methods/inference.py \
   --output-root results
 ```
 
+### 4. Planned Additions
+
+The following method slots are reserved for future public updates:
+
+| Method | Status | Notes |
+|--------|--------|-------|
+| ESRGAN | Placeholder | RRDB-based adversarial baseline |
+| SwinIR | Placeholder | Transformer-based super-resolution baseline |
+
+Registration baseline code is available separately in [`../baseline/`](../baseline/), while image quality evaluation code is available in [`../evaluation/`](../evaluation/).
+
 ## Model Architecture
 
 ### SRCNN
@@ -204,6 +221,8 @@ methods/
 | UNet | 8.85-9.50 | **0.9489-0.9500** | 0.179-0.214 |
 | SRCNN | **9.26-9.51** | 0.9450-0.9489 | **0.178-0.210** |
 | Nearest Interpolation | 8.85-9.51 | 0.9427-0.9450 | 0.178-0.196 |
+| ESRGAN | TBD | TBD | TBD |
+| SwinIR | TBD | TBD | TBD |
 
 *Range shows performance across different FOV (Small/Large) and window (Raw/Bone/Soft) configurations in masked evaluation*
 
@@ -238,7 +257,7 @@ If you use these baseline methods, please cite:
 
 ```bibtex
 @misc{lumbarsr2026,
-  title={LumbarSR: Lumbar Vertebral Super-Resolution Challenge},
+  title={LumbarSR: Lumbar Vertebral Super-Resolution Dataset and Benchmark},
   year={2026},
   url={https://github.com/frankzhangrp/LumbarSR-Challenge}
 }
