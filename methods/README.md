@@ -6,26 +6,31 @@ This directory contains baseline implementations for the LumbarSR dataset and be
 
 ### 1. Setup Environment
 
-**Option A: Docker (Recommended)**
+We recommend a standard local Python environment:
+
 ```bash
-# Build Docker image
-docker build -t lumbarsr:latest .
+conda create -n lumbarsr python=3.10 -y
+conda activate lumbarsr
 
-# Run container
-docker run --gpus all -it \
-  -v $(pwd)/data:/workspace/data \
-  -v $(pwd)/results:/workspace/results \
-  lumbarsr:latest
-
-# Or use docker-compose
-docker-compose up -d
-docker-compose exec lumbarsr bash
+pip install --upgrade pip
+pip install -r requirements.txt
 ```
 
-**Option B: Local Installation**
+Environment checklist:
+- PyTorch >= 2.0
+- MONAI >= 1.2
+- nibabel
+- pydicom
+- SimpleITK
+- numpy
+- scipy
+- scikit-image
+
+Optional checks:
 ```bash
-# Install dependencies
-pip install -r requirements.txt
+python -c "import torch; print(torch.__version__)"
+python -c "import monai; print(monai.__version__)"
+python -c "import nibabel, pydicom, SimpleITK, scipy, skimage; print('deps ok')"
 ```
 
 ### 2. Prepare Data

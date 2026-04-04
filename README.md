@@ -161,45 +161,34 @@ All image quality metrics (PSNR, SSIM, MAE) are computed under two CT window set
 
 ## Getting Started
 
-### Quick Start with Docker
+### Environment Setup
 
-The easiest way to get started is using Docker:
+We recommend a standard local Python environment for training and evaluation:
 
 ```bash
-# Clone repository
 git clone https://github.com/frankzhangrp/LumbarSR-Challenge.git
 cd LumbarSR-Challenge
 
-# Build Docker image (includes PyTorch, MONAI, medical imaging libraries)
-docker build -t lumbarsr:latest .
+conda create -n lumbarsr python=3.10 -y
+conda activate lumbarsr
 
-# Run container with GPU support
-docker run --gpus all -it \
-  -v $(pwd)/data:/workspace/data \
-  -v $(pwd)/results:/workspace/results \
-  lumbarsr:latest
-```
-
-Or use docker-compose:
-
-```bash
-docker-compose up -d
-docker-compose exec lumbarsr bash
-```
-
-### Local Installation
-
-Alternatively, install dependencies locally:
-
-```bash
+pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-Required packages:
+Environment checklist:
 - PyTorch ≥ 2.0
 - MONAI ≥ 1.2
 - nibabel, pydicom, SimpleITK
 - numpy, scipy, scikit-image
+
+Optional checks:
+
+```bash
+python -c "import torch; print(torch.__version__)"
+python -c "import monai; print(monai.__version__)"
+python -c "import nibabel, pydicom, SimpleITK, scipy, skimage; print('deps ok')"
+```
 
 ## Repository Contents
 
