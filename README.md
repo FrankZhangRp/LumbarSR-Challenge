@@ -1,4 +1,4 @@
-# Lumbar Vertebral Super-Resolution Dataset and Benchmark
+# LumbarSR: A Paired Clinical CT and Photon-Counting Micro-CT Dataset for Human Lumbar Vertebrae
 
 <p align="center">
   <img src="docs/images/logo_512.png" alt="LumbarSR Logo" width="200">
@@ -48,6 +48,10 @@ Reconstruct the corresponding high-resolution Micro-PCCT image (105um isotropic 
 ### Download
 
 **[Download Dataset (tar.gz)](https://drive.google.com/file/d/1mPK0_i15XPzp1pyydV2uhsMfBuYGjJGy/view?usp=sharing)**
+
+[![Zenodo](https://img.shields.io/badge/Zenodo-Uploading-1682D4?logo=zenodo&logoColor=white)](https://zenodo.org/)
+
+Zenodo release page placeholder: [https://zenodo.org/](https://zenodo.org/)
 
 The dataset is provided as a compressed tar.gz archive. After downloading, extract it using:
 
@@ -442,7 +446,7 @@ If you use this dataset, please cite:
 
 ```bibtex
 @misc{lumbarsr2026,
-  title={LumbarSR: Lumbar Vertebral Super-Resolution Dataset and Benchmark},
+  title={LumbarSR: A Paired Clinical CT and Photon-Counting Micro-CT Dataset for Human Lumbar Vertebrae},
   year={2026},
   url={https://github.com/frankzhangrp/LumbarSR-Challenge}
 }

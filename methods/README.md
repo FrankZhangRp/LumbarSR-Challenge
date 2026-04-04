@@ -259,7 +259,7 @@ If you use these baseline methods, please cite:
 
 ```bibtex
 @misc{lumbarsr2026,
-  title={LumbarSR: Lumbar Vertebral Super-Resolution Dataset and Benchmark},
+  title={LumbarSR: A Paired Clinical CT and Photon-Counting Micro-CT Dataset for Human Lumbar Vertebrae},
   year={2026},
   url={https://github.com/frankzhangrp/LumbarSR-Challenge}
 }
