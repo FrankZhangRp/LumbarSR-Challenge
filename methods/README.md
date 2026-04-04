@@ -260,6 +260,7 @@ If you use these baseline methods, please cite:
 ```bibtex
 @misc{lumbarsr2026,
   title={LumbarSR: A Paired Clinical CT and Photon-Counting Micro-CT Dataset for Human Lumbar Vertebrae},
+  author={Wang, Ping and Zhang, Ruipeng and Wang, Mengfei and Cao, Zhenzhen and Hu, Xuefei and Li, Yuehua},
   year={2026},
   url={https://github.com/frankzhangrp/LumbarSR-Challenge}
 }

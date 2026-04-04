@@ -427,12 +427,14 @@ This summary is provided only as a convenient cross-metric overview. The per-met
 
 ## Organizers
 
-- **Ruipeng Zhang**, Institute of Diagnostic and Interventional Radiology, Shanghai Sixth People's Hospital Affiliated to Shanghai Jiao Tong University School of Medicine
-- **Ping Wang**, Institute of Diagnostic and Interventional Radiology, Shanghai Sixth People's Hospital Affiliated to Shanghai Jiao Tong University School of Medicine
+- **Ping Wang***, Institute of Diagnostic and Interventional Radiology, Shanghai Sixth People's Hospital Affiliated to Shanghai Jiao Tong University School of Medicine
+- **Ruipeng Zhang***, Institute of Diagnostic and Interventional Radiology, Shanghai Sixth People's Hospital Affiliated to Shanghai Jiao Tong University School of Medicine
 - **Mengfei Wang**, School of Information and Intelligent Science, Donghua University
 - **Zhenzhen Cao**, Basic Medical Science, Kunming Medical University
 - **Xuefei Hu**, Basic Medical Science, Tarim University School of Medicine
 - **Yuehua Li**✉, Institute of Diagnostic and Interventional Radiology, Shanghai Sixth People's Hospital Affiliated to Shanghai Jiao Tong University School of Medicine (liyuehua77@sjtu.edu.cn)
+
+\* Equal contribution
 
 ## Citation
 
@@ -441,6 +443,7 @@ If you use this dataset, please cite:
 ```bibtex
 @misc{lumbarsr2026,
   title={LumbarSR: A Paired Clinical CT and Photon-Counting Micro-CT Dataset for Human Lumbar Vertebrae},
+  author={Wang, Ping and Zhang, Ruipeng and Wang, Mengfei and Cao, Zhenzhen and Hu, Xuefei and Li, Yuehua},
   year={2026},
   url={https://github.com/frankzhangrp/LumbarSR-Challenge}
 }
