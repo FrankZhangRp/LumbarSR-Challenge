@@ -306,7 +306,7 @@
     </div>
 
     <div class="setup-box">
-        <h3 style="margin-top: 0;">Planned Method Slots</h3>
+        <h3 style="margin-top: 0;">Additional Baselines</h3>
         <table class="results-table" style="font-size: 14px;">
             <thead>
                 <tr>
@@ -318,22 +318,22 @@
             <tbody>
                 <tr>
                     <td class="method-name">ESRGAN</td>
-                    <td>Placeholder</td>
-                    <td>TBD</td>
+                    <td>Reserved</td>
+                    <td>To be added</td>
                 </tr>
                 <tr>
                     <td class="method-name">SwinIR</td>
-                    <td>Placeholder</td>
-                    <td>TBD</td>
+                    <td>Reserved</td>
+                    <td>To be added</td>
                 </tr>
             </tbody>
         </table>
     </div>
 
     <div class="setup-box">
-        <h3 style="margin-top: 0;">Registration Evaluation Placeholder</h3>
+        <h3 style="margin-top: 0;">Registration Evaluation</h3>
         <p>
-            The public repository already includes ANTs-based rigid registration code in <code>baseline/register_ants.py</code> and <code>baseline/batch_register.py</code>. The current public release computes only a simple thresholded Dice overlap in the registration baseline script. A future update will expose dense close-set masks together with Dice, HD95, and HD.
+            The public repository already includes ANTs-based rigid registration code in <code>baseline/register_ants.py</code> and <code>baseline/batch_register.py</code>. The current public release computes a simple thresholded Dice overlap in the registration baseline script. The next documentation update will add dense close-set masks together with Dice, HD95, and HD.
         </p>
         <table class="results-table" style="font-size: 14px;">
             <thead>
@@ -355,22 +355,22 @@
                 </tr>
                 <tr>
                     <td class="method-name">ANTs rigid baseline</td>
-                    <td>Planned update: dense close-set bone mask</td>
-                    <td>TBD</td>
-                    <td>TBD</td>
-                    <td>TBD</td>
+                    <td>Dense close-set bone mask (public release in preparation)</td>
+                    <td>To be added</td>
+                    <td>To be added</td>
+                    <td>To be added</td>
                 </tr>
             </tbody>
         </table>
         <p style="margin-top: 12px; margin-bottom: 0;">
-            Current public mask logic: SR validity mask = <code>(gt &gt; -1000) | (pred &gt; -1000)</code>, LBC bone mask = <code>HU &gt; -500</code>, registration Dice mask in the public baseline = <code>HU &gt; 200</code>. The planned registration update will switch to a dense close-set bone mask generated from thresholding, largest-component filtering, coarse-grid morphological closing, and hole filling.
+            Current public mask logic: SR validity mask = <code>(gt &gt; -1000) | (pred &gt; -1000)</code>, LBC bone mask = <code>HU &gt; -500</code>, registration Dice mask in the public baseline = <code>HU &gt; 200</code>. The dense close-set version used in our internal evaluation is generated from thresholding, largest-component filtering, coarse-grid morphological closing, and hole filling.
         </p>
     </div>
 
     <div class="setup-box">
-        <h3 style="margin-top: 0;">Trabecular Bone Metric Placeholder</h3>
+        <h3 style="margin-top: 0;">Bone Morphometry</h3>
         <p>
-            Our internal <code>trabecular_analysis</code> workflow computes bone-related morphometry parameters from CT volumes. Planned public benchmark summaries will include placeholders for the following metrics.
+            Our internal <code>trabecular_analysis</code> workflow computes bone-related morphometry parameters from CT volumes. The public benchmark pages reserve space for the following metrics.
         </p>
         <table class="results-table" style="font-size: 14px;">
             <thead>
@@ -388,32 +388,32 @@
             <tbody>
                 <tr>
                     <td class="method-name">Micro-PCCT reference</td>
-                    <td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td>
+                    <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
                 </tr>
                 <tr>
                     <td class="method-name">Registered clinical CT baseline</td>
-                    <td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td>
+                    <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
                 </tr>
                 <tr>
                     <td class="method-name">SRCNN</td>
-                    <td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td>
+                    <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
                 </tr>
                 <tr>
                     <td class="method-name">UNet</td>
-                    <td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td>
+                    <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
                 </tr>
                 <tr>
                     <td class="method-name">ESRGAN</td>
-                    <td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td>
+                    <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
                 </tr>
                 <tr>
                     <td class="method-name">SwinIR</td>
-                    <td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td>
+                    <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
                 </tr>
             </tbody>
         </table>
         <p style="margin-top: 12px; margin-bottom: 0;">
-            Planned trabecular-morphometry outputs include core measures such as <code>BV/TV</code>, <code>Tb.Th</code>, <code>Tb.Sp</code>, and <code>Tb.N</code>, together with topology-related quantities such as <code>Connectivity</code>, <code>Conn.D</code>, fractal dimension, and anisotropy.
+            The reserved trabecular-morphometry outputs cover core measures such as <code>BV/TV</code>, <code>Tb.Th</code>, <code>Tb.Sp</code>, and <code>Tb.N</code>, together with topology-related quantities such as <code>Connectivity</code>, <code>Conn.D</code>, fractal dimension, and anisotropy.
         </p>
     </div>
 

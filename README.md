@@ -222,9 +222,9 @@ Required packages:
 - nibabel, pydicom, SimpleITK
 - numpy, scipy, scikit-image
 
-## Public Code Components
+## Repository Contents
 
-The current public repository includes four main parts:
+The public repository currently contains four main parts:
 
 | Directory | Status | Description |
 |-----------|--------|-------------|
@@ -233,22 +233,22 @@ The current public repository includes four main parts:
 | `evaluation/` | Public | Image quality evaluation scripts for PSNR, SSIM, MAE, and LBC |
 | `docs/` | Public | GitHub Pages website, visualizations, and benchmark result pages |
 
-The current public release does not yet include ESRGAN or SwinIR, it does not yet expose the latest dense close-set registration mask workflow used in our internal evaluation pipeline, and it does not yet include the internal `trabecular_analysis` module used for bone morphometry.
+The current release covers the registration baseline, super-resolution baselines, evaluation scripts, and the project website. ESRGAN, SwinIR, the dense close-set registration mask workflow, and the internal `trabecular_analysis` module are being prepared for a later public update.
 
 ## Registration Baseline and Mask Evaluation
 
 The public repository already includes rigid registration code in [`baseline/register_ants.py`](baseline/register_ants.py) and [`baseline/batch_register.py`](baseline/batch_register.py).
 
-### Current Public Mask Logic
+### Current Public Evaluation Masks
 
 - Public registration `Dice` in `baseline/register_ants.py` uses a simple binary bone mask with `HU > 200`
 - This overlap is currently reported on the registered `500Z_B` reference sequence
 - Public SR evaluation uses a non-air validity mask defined as `(gt > -1000) | (pred > -1000)`
 - Public `LBC` uses a bone-region mask with threshold `HU > -500`
 
-### Planned Mask Update
+### Dense Close-Set Mask Workflow
 
-We plan to replace the simple thresholded registration mask with the latest dense close-set bone mask workflow:
+Our current internal registration evaluation uses a dense close-set bone mask with the following steps:
 
 1. Threshold the bone volume
 2. Keep the largest connected component
@@ -259,16 +259,16 @@ We plan to replace the simple thresholded registration mask with the latest dens
 7. Resample back to the original grid
 8. Compute `Dice`, `HD95`, and `HD`
 
-### Registration Metric Placeholder
+### Registration Evaluation
 
 | Method | Mask Definition | Dice ↑ | HD95 ↓ | HD ↓ |
 |--------|-----------------|--------|--------|------|
 | ANTs rigid baseline | Public release: `HU > 200` binary overlap | Public Dice only | Not released | Not released |
-| ANTs rigid baseline | Planned update: dense close-set bone mask | TBD | TBD | TBD |
+| ANTs rigid baseline | Dense close-set bone mask (public release in preparation) | To be added | To be added | To be added |
 
-### Trabecular Bone Metric Placeholder
+### Bone Morphometry
 
-Our internal `trabecular_analysis` workflow is used to compute bone-related morphometry parameters from CT volumes. Planned public benchmark summaries will include placeholders for the following quantities:
+Our internal `trabecular_analysis` workflow computes bone morphometry measurements directly from CT volumes. The public benchmark pages reserve space for the following quantities:
 
 | Category | Metrics |
 |----------|---------|
@@ -278,16 +278,16 @@ Our internal `trabecular_analysis` workflow is used to compute bone-related morp
 | Structural complexity | `Fractal dimension`, `Principal-axis anisotropy` |
 | Slice-wise summaries | `2D BV/TV mean`, `2D Tb.Th mean`, `2D Tb.Sp mean`, `2D Tb.N mean` |
 
-Planned result table:
+Reserved result table:
 
 | Method / Data | BV/TV | Tb.Th (mm) | Tb.Sp (mm) | Tb.N (mm^-1) | Conn.D (mm^-3) | Fractal Dim. | Anisotropy |
 |---------------|-------|------------|------------|--------------|----------------|--------------|------------|
-| Micro-PCCT reference | TBD | TBD | TBD | TBD | TBD | TBD | TBD |
-| Registered clinical CT baseline | TBD | TBD | TBD | TBD | TBD | TBD | TBD |
-| SRCNN | TBD | TBD | TBD | TBD | TBD | TBD | TBD |
-| UNet | TBD | TBD | TBD | TBD | TBD | TBD | TBD |
-| ESRGAN | TBD | TBD | TBD | TBD | TBD | TBD | TBD |
-| SwinIR | TBD | TBD | TBD | TBD | TBD | TBD | TBD |
+| Micro-PCCT reference | To be added | To be added | To be added | To be added | To be added | To be added | To be added |
+| Registered clinical CT baseline | To be added | To be added | To be added | To be added | To be added | To be added | To be added |
+| SRCNN | To be added | To be added | To be added | To be added | To be added | To be added | To be added |
+| UNet | To be added | To be added | To be added | To be added | To be added | To be added | To be added |
+| ESRGAN | To be added | To be added | To be added | To be added | To be added | To be added | To be added |
+| SwinIR | To be added | To be added | To be added | To be added | To be added | To be added | To be added |
 
 ## Baseline Methods
 
@@ -351,12 +351,12 @@ python methods/inference.py \
   --output-root ./results
 ```
 
-### Planned Additions
+### Additional Baselines
 
 | Method | Status | Notes |
 |--------|--------|-------|
-| ESRGAN | Placeholder | RRDB-based adversarial super-resolution baseline will be added in a future public update |
-| SwinIR | Placeholder | Transformer-based super-resolution baseline will be added in a future public update |
+| ESRGAN | Reserved | RRDB-based adversarial super-resolution baseline |
+| SwinIR | Reserved | Transformer-based super-resolution baseline |
 
 ### Baseline Performance
 
@@ -399,12 +399,12 @@ python methods/inference.py \
 | **SRCNN** | **0.01±0.00** | **0.02±0.00** | **0.02±0.00** | **0.14±0.01** | **0.18±0.01** | **0.21±0.01** | **0.01±0.00** | **0.02±0.00** | **0.02±0.00** | **0.14±0.01** | **0.18±0.01** | **0.21±0.01** |
 | **Nearest** | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.15±0.02 | 0.19±0.03 | 0.21±0.03 | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.14±0.02 | 0.18±0.02 | 0.20±0.02 |
 
-### Planned Method Slots
+### Reserved Result Entries
 
 | Method | PSNR | SSIM | MAE |
 |--------|------|------|-----|
-| **ESRGAN** | TBD | TBD | TBD |
-| **SwinIR** | TBD | TBD | TBD |
+| **ESRGAN** | To be added | To be added | To be added |
+| **SwinIR** | To be added | To be added | To be added |
 
 **Key Findings:**
 - **SRCNN** achieves the best PSNR across most configurations (8-9% improvement over baseline)

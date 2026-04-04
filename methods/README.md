@@ -132,18 +132,18 @@ python methods/inference.py \
   --output-root results
 ```
 
-### 4. Planned Additions
+### 4. Additional Baselines
 
-The following method slots are reserved for future public updates:
+The following method entries are reserved in the public benchmark:
 
 | Method | Status | Notes |
 |--------|--------|-------|
-| ESRGAN | Placeholder | RRDB-based adversarial baseline |
-| SwinIR | Placeholder | Transformer-based super-resolution baseline |
+| ESRGAN | Reserved | RRDB-based adversarial baseline |
+| SwinIR | Reserved | Transformer-based super-resolution baseline |
 
 Registration baseline code is available separately in [`../baseline/`](../baseline/), while image quality evaluation code is available in [`../evaluation/`](../evaluation/).
 
-Planned future public updates will also add benchmark placeholders for bone morphometry derived from the internal `trabecular_analysis` workflow, including `BV/TV`, `Tb.Th`, `Tb.Sp`, `Tb.N`, `Connectivity`, `Conn.D`, `Fractal dimension`, and anisotropy-related measurements.
+The benchmark pages also reserve space for bone morphometry summaries derived from the internal `trabecular_analysis` workflow, including `BV/TV`, `Tb.Th`, `Tb.Sp`, `Tb.N`, `Connectivity`, `Conn.D`, fractal dimension, and anisotropy-related measurements.
 
 ## Model Architecture
 
@@ -223,8 +223,8 @@ methods/
 | UNet | 8.85-9.50 | **0.9489-0.9500** | 0.179-0.214 |
 | SRCNN | **9.26-9.51** | 0.9450-0.9489 | **0.178-0.210** |
 | Nearest Interpolation | 8.85-9.51 | 0.9427-0.9450 | 0.178-0.196 |
-| ESRGAN | TBD | TBD | TBD |
-| SwinIR | TBD | TBD | TBD |
+| ESRGAN | To be added | To be added | To be added |
+| SwinIR | To be added | To be added | To be added |
 
 *Range shows performance across different FOV (Small/Large) and window (Raw/Bone/Soft) configurations in masked evaluation*
 

@@ -520,7 +520,7 @@ tar -xzf LumbarSR_Dataset.tar.gz
     <hr>
 
     <!-- Public Code Section -->
-    <h2>Public Code Release</h2>
+    <h2>Repository Contents</h2>
 
     <table class="data-table">
         <tr>
@@ -551,7 +551,7 @@ tar -xzf LumbarSR_Dataset.tar.gz
     </table>
 
     <p class="note">
-        The current public release does not yet include ESRGAN or SwinIR, it does not yet expose the latest dense close-set registration mask workflow used in our internal registration evaluation, and it does not yet include the internal trabecular-analysis module used for bone morphometry.
+        The current release covers the registration baseline, super-resolution baselines, evaluation scripts, and the website. ESRGAN, SwinIR, the dense close-set registration mask workflow, and the internal trabecular-analysis module are being organized for a later public update.
     </p>
 
     <hr>
@@ -653,7 +653,7 @@ tar -xzf LumbarSR_Dataset.tar.gz
 
     <br>
 
-    <h3>Planned Method Slots</h3>
+    <h3>Additional Baselines</h3>
     <table class="data-table">
         <tr>
             <th>Method</th>
@@ -662,19 +662,19 @@ tar -xzf LumbarSR_Dataset.tar.gz
         </tr>
         <tr>
             <td><strong>ESRGAN</strong></td>
-            <td>Placeholder</td>
-            <td>TBD</td>
+            <td>Reserved</td>
+            <td>To be added</td>
         </tr>
         <tr>
             <td><strong>SwinIR</strong></td>
-            <td>Placeholder</td>
-            <td>TBD</td>
+            <td>Reserved</td>
+            <td>To be added</td>
         </tr>
     </table>
 
-    <h3>Registration Evaluation Placeholder</h3>
+    <h3>Registration Evaluation</h3>
     <p>
-        The public repository already includes ANTs-based rigid registration code in <code>baseline/</code>. The current public release reports only a simple thresholded Dice overlap in the registration baseline script. A future update will expose the latest dense close-set bone mask workflow together with surface-distance metrics.
+        The public repository already includes ANTs-based rigid registration code in <code>baseline/</code>. The current public release reports a simple thresholded Dice overlap in the registration baseline script. The next documentation update will add the dense close-set bone mask evaluation together with surface-distance metrics.
     </p>
 
     <table class="data-table">
@@ -694,20 +694,20 @@ tar -xzf LumbarSR_Dataset.tar.gz
         </tr>
         <tr>
             <td>ANTs rigid baseline</td>
-            <td>Planned update: dense close-set bone mask</td>
-            <td>TBD</td>
-            <td>TBD</td>
-            <td>TBD</td>
+            <td>Dense close-set bone mask (public release in preparation)</td>
+            <td>To be added</td>
+            <td>To be added</td>
+            <td>To be added</td>
         </tr>
     </table>
 
     <p class="note">
-        Current public mask logic: SR validity mask = <code>(gt &gt; -1000) | (pred &gt; -1000)</code>, LBC bone mask = <code>HU &gt; -500</code>, registration Dice mask in the public baseline = <code>HU &gt; 200</code>. The planned registration update will replace this with a dense close-set mask built from thresholding, largest-component filtering, coarse-grid morphological closing, and hole filling.
+        Current public mask logic: SR validity mask = <code>(gt &gt; -1000) | (pred &gt; -1000)</code>, LBC bone mask = <code>HU &gt; -500</code>, registration Dice mask in the public baseline = <code>HU &gt; 200</code>. The dense close-set version used in our internal evaluation is built from thresholding, largest-component filtering, coarse-grid morphological closing, and hole filling.
     </p>
 
-    <h3>Trabecular Bone Metric Placeholder</h3>
+    <h3>Bone Morphometry</h3>
     <p>
-        Our internal <code>trabecular_analysis</code> workflow is used to compute bone-related morphometry parameters from CT volumes. Planned public benchmark summaries will include the following trabecular and topology-related metrics.
+        Our internal <code>trabecular_analysis</code> workflow is used to compute bone-related morphometry parameters from CT volumes. The public benchmark pages reserve space for the following trabecular and topology-related metrics.
     </p>
 
     <table class="data-table">
@@ -750,27 +750,27 @@ tar -xzf LumbarSR_Dataset.tar.gz
         </tr>
         <tr>
             <td>Micro-PCCT reference</td>
-            <td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td>
+            <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
         </tr>
         <tr>
             <td>Registered clinical CT baseline</td>
-            <td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td>
+            <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
         </tr>
         <tr>
             <td>SRCNN</td>
-            <td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td>
+            <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
         </tr>
         <tr>
             <td>UNet</td>
-            <td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td>
+            <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
         </tr>
         <tr>
             <td>ESRGAN</td>
-            <td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td>
+            <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
         </tr>
         <tr>
             <td>SwinIR</td>
-            <td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td>
+            <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
         </tr>
     </table>
 
