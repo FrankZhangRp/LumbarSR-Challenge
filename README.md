@@ -209,30 +209,16 @@ The public repository already includes rigid registration code in [`baseline/reg
 
 ### Current Public Evaluation Masks
 
-- Public registration `Dice` in `baseline/register_ants.py` uses a simple binary bone mask with `HU > 200`
-- This overlap is currently reported on the registered `500Z_B` reference sequence
 - Public SR evaluation uses a non-air validity mask defined as `(gt > -1000) | (pred > -1000)`
 - Public `LBC` uses a bone-region mask with threshold `HU > -500`
 
-### Dense Close-Set Mask Workflow
-
-Our current internal registration evaluation uses a dense close-set bone mask with the following steps:
-
-1. Threshold the bone volume
-2. Keep the largest connected component
-3. Crop around the component with a physical margin
-4. Resample to a coarse isotropic grid
-5. Apply binary morphological closing with a physical radius in millimeters
-6. Fill internal holes
-7. Resample back to the original grid
-8. Compute `Dice`, `HD95`, and `HD`
-
 ### Registration Evaluation
 
-| Method | Mask Definition | Dice ↑ | HD95 ↓ | HD ↓ |
-|--------|-----------------|--------|--------|------|
-| ANTs rigid baseline | Public release: `HU > 200` binary overlap | Public Dice only | Not released | Not released |
-| ANTs rigid baseline | Dense close-set bone mask (public release in preparation) | To be added | To be added | To be added |
+We report registration quality within a bone-mask ROI using `Dice`, `HD95`, and `HD`. These metrics are provided as a practical reference for the final registration quality.
+
+| Method | ROI | Dice ↑ | HD95 ↓ | HD ↓ |
+|--------|-----|--------|--------|------|
+| ANTs rigid baseline | Bone mask ROI | To be added | To be added | To be added |
 
 ### Bone Morphometry
 

@@ -679,36 +679,25 @@ tar -xzf LumbarSR_Dataset.tar.gz
 
     <h3>Registration Evaluation</h3>
     <p>
-        The public repository already includes ANTs-based rigid registration code in <code>baseline/</code>. The current public release reports a simple thresholded Dice overlap in the registration baseline script. The next documentation update will add the dense close-set bone mask evaluation together with surface-distance metrics.
+        We report registration quality within a bone-mask ROI using <code>Dice</code>, <code>HD95</code>, and <code>HD</code>. These metrics are provided as a practical reference for the final registration quality.
     </p>
 
     <table class="data-table">
         <tr>
             <th>Method</th>
-            <th>Mask Definition</th>
+            <th>ROI</th>
             <th>Dice ↑</th>
             <th>HD95 ↓</th>
             <th>HD ↓</th>
         </tr>
         <tr>
             <td>ANTs rigid baseline</td>
-            <td>Public release: simple binary bone overlap (`HU &gt; 200`)</td>
-            <td>Public Dice only</td>
-            <td>Not released</td>
-            <td>Not released</td>
-        </tr>
-        <tr>
-            <td>ANTs rigid baseline</td>
-            <td>Dense close-set bone mask (public release in preparation)</td>
+            <td>To be added</td>
             <td>To be added</td>
             <td>To be added</td>
             <td>To be added</td>
         </tr>
     </table>
-
-    <p class="note">
-        Current public mask logic: SR validity mask = <code>(gt &gt; -1000) | (pred &gt; -1000)</code>, LBC bone mask = <code>HU &gt; -500</code>, registration Dice mask in the public baseline = <code>HU &gt; 200</code>. The dense close-set version used in our internal evaluation is built from thresholding, largest-component filtering, coarse-grid morphological closing, and hole filling.
-    </p>
 
     <h3>Bone Morphometry</h3>
     <p>
