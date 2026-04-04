@@ -159,31 +159,6 @@ All image quality metrics (PSNR, SSIM, MAE) are computed under two CT window set
 | Bone | 400 | 1800 | Bone structure visualization |
 | Soft Tissue | 40 | 400 | Soft tissue visualization |
 
-### Ranking System
-
-The ranking follows a two-step process:
-
-**Step 1: Compute a single aggregate score per metric for each team**
-
-For each submitted result, we compute one aggregate value per metric category by averaging across all FOV and window combinations:
-
-| Metric Category | Aggregate Score | Direction |
-|-----------------|----------------|-----------|
-| PSNR Score | Mean of 4 PSNR values (2 windows × 2 FOV, masked) | ↑ Higher is better |
-| SSIM Score | Mean of 4 SSIM values (2 windows × 2 FOV, masked) | ↑ Higher is better |
-| MAE Score | Mean of 4 MAE values (2 windows × 2 FOV, masked) | ↓ Lower is better |
-| LBC Score | Mean LBC Ratio across all input sequences | ↑ Closer to 1.0 is better |
-
-**Step 2: Rank teams per metric, then average ranks**
-
-For each metric category, all teams are ranked independently (Rank 1 = best, Rank 2 = second best, ...). The final score is the average of the four per-metric ranks:
-
-**Final Score = (PSNR_Rank + SSIM_Rank + MAE_Rank + LBC_Rank) / 4**
-
-The team with the **lowest average rank** wins. In case of a tie, the LBC Rank is used as the tiebreaker.
-
-**Example:** If Team A ranks 1st in PSNR, 2nd in SSIM, 1st in MAE, and 3rd in LBC, their final score = (1+2+1+3)/4 = 1.75.
-
 ## Getting Started
 
 ### Quick Start with Docker
@@ -418,6 +393,25 @@ python methods/inference.py \
 - Deep learning methods show consistent improvements in both Small and Large FOV configurations
 
 For detailed instructions, see [`methods/README.md`](methods/README.md).
+
+### Reference Aggregate Summary
+
+If a single summary number is needed for quick comparison, we use the following reference aggregation:
+
+1. Compute one aggregate value per metric by averaging across all FOV and window combinations.
+2. Order methods independently for `PSNR`, `SSIM`, `MAE`, and `LBC`.
+3. Average the four per-metric orders to obtain a compact reference summary.
+
+| Metric Category | Aggregate Score | Direction |
+|-----------------|----------------|-----------|
+| PSNR Score | Mean of 4 PSNR values (2 windows × 2 FOV, masked) | ↑ Higher is better |
+| SSIM Score | Mean of 4 SSIM values (2 windows × 2 FOV, masked) | ↑ Higher is better |
+| MAE Score | Mean of 4 MAE values (2 windows × 2 FOV, masked) | ↓ Lower is better |
+| LBC Score | Mean LBC Ratio across all input sequences | ↑ Closer to 1.0 is better |
+
+**Reference aggregate = (PSNR_Order + SSIM_Order + MAE_Order + LBC_Order) / 4**
+
+This summary is provided only as a convenient cross-metric overview. The per-metric results remain the primary basis for reporting and interpretation.
 
 ## Recommended Usage Policy
 

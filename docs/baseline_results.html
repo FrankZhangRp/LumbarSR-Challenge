@@ -751,11 +751,11 @@
         </tbody>
     </table>
 
-    <!-- Ranking System -->
-    <h2>Ranking System</h2>
+    <!-- Reference Aggregate Summary -->
+    <h2>Reference Aggregate Summary</h2>
 
     <div class="setup-box">
-        <h3 style="margin-top: 0;">How Rankings Are Computed</h3>
+        <h3 style="margin-top: 0;">How The Summary Is Computed</h3>
         <p><strong>Step 1:</strong> For each method, compute one aggregate score per metric by averaging across all FOV and window combinations:</p>
         <table class="results-table" style="font-size: 14px;">
             <thead>
@@ -789,19 +789,19 @@
             </tbody>
         </table>
         <p style="margin-top:15px;">
-            <strong>Step 2:</strong> For each metric, methods are ranked independently (Rank 1 = best, Rank 2 = second best, ...).
+            <strong>Step 2:</strong> For each metric, methods are ordered independently and the four orders are averaged.
         </p>
         <p>
-            <strong>Average Rank = (PSNR_Rank + SSIM_Rank + MAE_Rank + LBC_Rank) / 4</strong><br>
-            Lowest average rank indicates better overall performance. LBC rank can be used as a tiebreaker if needed.<br>
-            <em>Example: If one method ranks 1st in PSNR, 2nd in SSIM, 1st in MAE, and 3rd in LBC, its average rank is (1+2+1+3)/4 = 1.75.</em>
+            <strong>Reference aggregate = (PSNR_Order + SSIM_Order + MAE_Order + LBC_Order) / 4</strong><br>
+            This value is intended only as a compact cross-metric summary. The metric-specific tables above remain the primary results for interpretation.<br>
+            <em>Example: If one method is ordered 1st in PSNR, 2nd in SSIM, 1st in MAE, and 3rd in LBC, its reference aggregate is (1+2+1+3)/4 = 1.75.</em>
         </p>
     </div>
 
-    <!-- Ranking Demo -->
-    <h2>Ranking Demo (Baseline Methods)</h2>
+    <!-- Aggregate Example -->
+    <h2>Aggregate Example (Baseline Methods)</h2>
 
-    <p>Below is a worked example showing how the ranking system applies to the four baseline methods.</p>
+    <p>Below is a worked example showing how this reference aggregation applies to the four baseline methods.</p>
 
     <h3>Step 1: Aggregate Scores</h3>
     <p>Each metric is averaged across <strong>2 CT windows (Bone, Soft Tissue) × 2 FOV (Small, Large)</strong> in masked mode:</p>
@@ -848,19 +848,18 @@
         </tbody>
     </table>
 
-    <h3>Step 2: Per-Metric Ranking &amp; Final Score</h3>
-    <p>Each metric is ranked independently. Ties receive the average rank.</p>
+    <h3>Step 2: Per-Metric Order &amp; Reference Aggregate</h3>
+    <p>Each metric is ordered independently. Ties receive the average order.</p>
 
     <table class="ranking-table">
         <thead>
             <tr>
                 <th>Method</th>
-                <th>PSNR Rank</th>
-                <th>SSIM Rank</th>
-                <th>MAE Rank</th>
-                <th>LBC Rank</th>
-                <th>Avg Rank</th>
-                <th>Award</th>
+                <th>PSNR Order</th>
+                <th>SSIM Order</th>
+                <th>MAE Order</th>
+                <th>LBC Order</th>
+                <th>Reference Aggregate</th>
             </tr>
         </thead>
         <tbody>
@@ -871,7 +870,6 @@
                 <td>2.5</td>
                 <td>2</td>
                 <td><strong>2.00</strong></td>
-                <td class="medal-gold">🥇 Gold</td>
             </tr>
             <tr class="rank-2">
                 <td class="method-name">UNet</td>
@@ -880,7 +878,6 @@
                 <td>2.5</td>
                 <td>1</td>
                 <td><strong>2.13</strong></td>
-                <td class="medal-silver">🥈 Silver</td>
             </tr>
             <tr class="rank-3">
                 <td class="method-name">Nearest</td>
@@ -889,7 +886,6 @@
                 <td>2.5</td>
                 <td>3.5</td>
                 <td><strong>2.63</strong></td>
-                <td class="medal-bronze">🥉 Bronze</td>
             </tr>
             <tr>
                 <td class="method-name">Baseline</td>
@@ -898,7 +894,6 @@
                 <td>2.5</td>
                 <td>3.5</td>
                 <td><strong>3.25</strong></td>
-                <td>—</td>
             </tr>
         </tbody>
     </table>
