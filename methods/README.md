@@ -143,6 +143,8 @@ The following method slots are reserved for future public updates:
 
 Registration baseline code is available separately in [`../baseline/`](../baseline/), while image quality evaluation code is available in [`../evaluation/`](../evaluation/).
 
+Planned future public updates will also add benchmark placeholders for bone morphometry derived from the internal `trabecular_analysis` workflow, including `BV/TV`, `Tb.Th`, `Tb.Sp`, `Tb.N`, `Connectivity`, `Conn.D`, `Fractal dimension`, and anisotropy-related measurements.
+
 ## Model Architecture
 
 ### SRCNN

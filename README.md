@@ -233,7 +233,7 @@ The current public repository includes four main parts:
 | `evaluation/` | Public | Image quality evaluation scripts for PSNR, SSIM, MAE, and LBC |
 | `docs/` | Public | GitHub Pages website, visualizations, and benchmark result pages |
 
-The current public release does not yet include ESRGAN or SwinIR, and it does not yet expose the latest dense close-set registration mask workflow used in our internal evaluation pipeline.
+The current public release does not yet include ESRGAN or SwinIR, it does not yet expose the latest dense close-set registration mask workflow used in our internal evaluation pipeline, and it does not yet include the internal `trabecular_analysis` module used for bone morphometry.
 
 ## Registration Baseline and Mask Evaluation
 
@@ -265,6 +265,29 @@ We plan to replace the simple thresholded registration mask with the latest dens
 |--------|-----------------|--------|--------|------|
 | ANTs rigid baseline | Public release: `HU > 200` binary overlap | Public Dice only | Not released | Not released |
 | ANTs rigid baseline | Planned update: dense close-set bone mask | TBD | TBD | TBD |
+
+### Trabecular Bone Metric Placeholder
+
+Our internal `trabecular_analysis` workflow is used to compute bone-related morphometry parameters from CT volumes. Planned public benchmark summaries will include placeholders for the following quantities:
+
+| Category | Metrics |
+|----------|---------|
+| Core trabecular morphometry | `BV/TV`, `Tb.Th`, `Tb.Sp`, `Tb.N` |
+| Volume statistics | `BV (mm^3)`, `TV (mm^3)` |
+| Topology | `Connected components`, `Euler number`, `Connectivity`, `Conn.D` |
+| Structural complexity | `Fractal dimension`, `Principal-axis anisotropy` |
+| Slice-wise summaries | `2D BV/TV mean`, `2D Tb.Th mean`, `2D Tb.Sp mean`, `2D Tb.N mean` |
+
+Planned result table:
+
+| Method / Data | BV/TV | Tb.Th (mm) | Tb.Sp (mm) | Tb.N (mm^-1) | Conn.D (mm^-3) | Fractal Dim. | Anisotropy |
+|---------------|-------|------------|------------|--------------|----------------|--------------|------------|
+| Micro-PCCT reference | TBD | TBD | TBD | TBD | TBD | TBD | TBD |
+| Registered clinical CT baseline | TBD | TBD | TBD | TBD | TBD | TBD | TBD |
+| SRCNN | TBD | TBD | TBD | TBD | TBD | TBD | TBD |
+| UNet | TBD | TBD | TBD | TBD | TBD | TBD | TBD |
+| ESRGAN | TBD | TBD | TBD | TBD | TBD | TBD | TBD |
+| SwinIR | TBD | TBD | TBD | TBD | TBD | TBD | TBD |
 
 ## Baseline Methods
 

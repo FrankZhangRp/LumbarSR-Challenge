@@ -551,7 +551,7 @@ tar -xzf LumbarSR_Dataset.tar.gz
     </table>
 
     <p class="note">
-        The current public release does not yet include ESRGAN or SwinIR, and it does not yet expose the latest dense close-set registration mask workflow used in our internal registration evaluation.
+        The current public release does not yet include ESRGAN or SwinIR, it does not yet expose the latest dense close-set registration mask workflow used in our internal registration evaluation, and it does not yet include the internal trabecular-analysis module used for bone morphometry.
     </p>
 
     <hr>
@@ -704,6 +704,75 @@ tar -xzf LumbarSR_Dataset.tar.gz
     <p class="note">
         Current public mask logic: SR validity mask = <code>(gt &gt; -1000) | (pred &gt; -1000)</code>, LBC bone mask = <code>HU &gt; -500</code>, registration Dice mask in the public baseline = <code>HU &gt; 200</code>. The planned registration update will replace this with a dense close-set mask built from thresholding, largest-component filtering, coarse-grid morphological closing, and hole filling.
     </p>
+
+    <h3>Trabecular Bone Metric Placeholder</h3>
+    <p>
+        Our internal <code>trabecular_analysis</code> workflow is used to compute bone-related morphometry parameters from CT volumes. Planned public benchmark summaries will include the following trabecular and topology-related metrics.
+    </p>
+
+    <table class="data-table">
+        <tr>
+            <th>Category</th>
+            <th>Metrics</th>
+        </tr>
+        <tr>
+            <td>Core trabecular morphometry</td>
+            <td><code>BV/TV</code>, <code>Tb.Th</code>, <code>Tb.Sp</code>, <code>Tb.N</code></td>
+        </tr>
+        <tr>
+            <td>Volume statistics</td>
+            <td><code>BV (mm^3)</code>, <code>TV (mm^3)</code></td>
+        </tr>
+        <tr>
+            <td>Topology</td>
+            <td><code>Connected components</code>, <code>Euler number</code>, <code>Connectivity</code>, <code>Conn.D</code></td>
+        </tr>
+        <tr>
+            <td>Structural complexity</td>
+            <td><code>Fractal dimension</code>, <code>Principal-axis anisotropy</code></td>
+        </tr>
+        <tr>
+            <td>Slice-wise summaries</td>
+            <td><code>2D BV/TV mean</code>, <code>2D Tb.Th mean</code>, <code>2D Tb.Sp mean</code>, <code>2D Tb.N mean</code></td>
+        </tr>
+    </table>
+
+    <table class="data-table">
+        <tr>
+            <th>Method / Data</th>
+            <th>BV/TV</th>
+            <th>Tb.Th (mm)</th>
+            <th>Tb.Sp (mm)</th>
+            <th>Tb.N (mm^-1)</th>
+            <th>Conn.D (mm^-3)</th>
+            <th>Fractal Dim.</th>
+            <th>Anisotropy</th>
+        </tr>
+        <tr>
+            <td>Micro-PCCT reference</td>
+            <td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td>
+        </tr>
+        <tr>
+            <td>Registered clinical CT baseline</td>
+            <td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td>
+        </tr>
+        <tr>
+            <td>SRCNN</td>
+            <td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td>
+        </tr>
+        <tr>
+            <td>UNet</td>
+            <td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td>
+        </tr>
+        <tr>
+            <td>ESRGAN</td>
+            <td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td>
+        </tr>
+        <tr>
+            <td>SwinIR</td>
+            <td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td>
+        </tr>
+    </table>
 
     <hr>
 
