@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Lumbar Vertebral Super-Resolution Structure Reconstruction Challenge</title>
-    <meta name="description" content="Lumbar Vertebral Super-Resolution Structure Reconstruction Challenge">
+    <title>Lumbar Vertebral Super-Resolution Dataset and Benchmark</title>
+    <meta name="description" content="Lumbar vertebral super-resolution dataset and benchmark">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Google Fonts - Inter -->
@@ -298,7 +298,7 @@
         <!-- Logo -->
         <img src="images/logo_512.png" alt="LumbarSR Logo" style="width: 200px; margin-bottom: 20px;">
         <br>
-        <span style="font-size:34px; font-weight:600;">Lumbar Vertebral Super-Resolution Structure Reconstruction Challenge</span>
+        <span style="font-size:34px; font-weight:600;">Lumbar Vertebral Super-Resolution Dataset and Benchmark</span>
         <br><br>
 
         <!-- Quick Links -->
@@ -308,7 +308,6 @@
         <a href="baseline_results.html" class="btn btn-primary">Baseline Results</a>
         <a href="sr_overview.html" class="btn btn-outline">SR Overview</a>
         <a href="compare.html" class="btn btn-outline">Interactive Compare</a>
-        <a href="#timeline" class="btn btn-outline">Timeline</a>
         <a href="https://github.com/FrankZhangRp/LumbarSR-Challenge" class="btn btn-outline">GitHub</a>
     </center>
 
@@ -323,11 +322,11 @@
     </p>
 
     <div class="info-box">
-        <strong>Challenge Goal:</strong> Develop algorithms capable of reconstructing high-resolution bone microstructure from paired regular clinical helical CT lumbar vertebral images to match the quality of state-of-the-art Micro-PCCT.
+        <strong>Project Goal:</strong> Develop algorithms capable of reconstructing high-resolution bone microstructure from paired regular clinical helical CT lumbar vertebral images to match the quality of state-of-the-art Micro-PCCT.
     </div>
 
     <p>
-        The LumbarSR challenge provides a unique dataset of <strong>30 paired human dry lumbar vertebrae</strong> scanned with both clinical helical CT (at multiple resolution and reconstruction configurations) and Micro-PCCT at 0.1mm super-resolution. This novel benchmark enables development and evaluation of super-resolution reconstruction algorithms in musculoskeletal imaging, with potential applications in:
+        The LumbarSR project provides a unique dataset of <strong>30 paired human dry lumbar vertebrae</strong> scanned with both clinical helical CT (at multiple resolution and reconstruction configurations) and Micro-PCCT at 0.1mm super-resolution. This benchmark enables development and evaluation of super-resolution reconstruction algorithms in musculoskeletal imaging, with potential applications in:
     </p>
 
     <ul>
@@ -381,9 +380,9 @@
     <!-- Flowchart -->
     <center>
         <a href="images/flowchart.png" target="_blank">
-            <img src="images/flowchart_preview.png" alt="Challenge Flowchart" class="rounded" style="max-width: 100%; margin: 20px 0;">
+            <img src="images/flowchart_preview.png" alt="Pipeline Flowchart" class="rounded" style="max-width: 100%; margin: 20px 0;">
         </a>
-        <p class="note">Challenge pipeline overview (<a href="images/flowchart.png" target="_blank">Full resolution</a>)</p>
+        <p class="note">Pipeline overview (<a href="images/flowchart.png" target="_blank">Full resolution</a>)</p>
     </center>
 
     <hr>
@@ -573,18 +572,18 @@ tar -xzf LumbarSR_Dataset.tar.gz
     </p>
 
     <div class="highlight-box">
-        <strong>Ranking System:</strong>
-        <p style="margin: 10px 0;"><strong>Step 1:</strong> For each team, compute one aggregate score per metric by averaging across all FOV and window combinations:</p>
+        <strong>Aggregate Benchmark Score:</strong>
+        <p style="margin: 10px 0;"><strong>Step 1:</strong> For each method, compute one aggregate score per metric by averaging across all FOV and window combinations:</p>
         <ol style="margin: 10px 0;">
             <li><strong>PSNR Score</strong> — Mean of 4 PSNR values (2 windows × 2 FOV, masked mode, ↑ higher is better)</li>
             <li><strong>SSIM Score</strong> — Mean of 4 SSIM values (2 windows × 2 FOV, masked mode, ↑ higher is better)</li>
             <li><strong>MAE Score</strong> — Mean of 4 MAE values (2 windows × 2 FOV, masked mode, ↓ lower is better)</li>
             <li><strong>LBC Score</strong> — Mean LBC Ratio across all input sequences (↑ closer to 1.0 is better)</li>
         </ol>
-        <p style="margin: 10px 0;"><strong>Step 2:</strong> For each metric, all teams are ranked independently (Rank 1 = best, Rank 2 = second best, ...). The final score is the average of the four per-metric ranks:</p>
-        <strong>Final Score = (PSNR_Rank + SSIM_Rank + MAE_Rank + LBC_Rank) / 4</strong><br>
-        The team with the <strong>lowest average rank</strong> wins. LBC Rank breaks ties.<br>
-        <em>Example: If a team ranks 1st in PSNR, 2nd in SSIM, 1st in MAE, 3rd in LBC → Final Score = (1+2+1+3)/4 = 1.75</em>
+        <p style="margin: 10px 0;"><strong>Step 2:</strong> Methods can then be compared either by the individual metric aggregates above or by average rank across metrics.</p>
+        <strong>Average Rank = (PSNR_Rank + SSIM_Rank + MAE_Rank + LBC_Rank) / 4</strong><br>
+        Lower average rank indicates better overall performance. LBC rank can be used as a tiebreaker when needed.<br>
+        <em>Example: If one method ranks 1st in PSNR, 2nd in SSIM, 1st in MAE, and 3rd in LBC, its average rank is (1+2+1+3)/4 = 1.75.</em>
     </div>
 
     <h3>Baseline Performance</h3>
@@ -619,70 +618,16 @@ tar -xzf LumbarSR_Dataset.tar.gz
 
     <hr>
 
-    <!-- Training Data Policy -->
-    <h2>Training Data Policy</h2>
+    <!-- Recommended Usage Policy -->
+    <h2>Recommended Usage Policy</h2>
 
     <ol>
-        <li><strong>Challenge Data:</strong> Participants are encouraged to use the official LumbarSR training set as the core development data.</li>
-        <li><strong>External Data (Allowed):</strong> External datasets are allowed for pre-training and/or supplementary training. Teams must disclose the external data sources.</li>
-        <li><strong>Pre-trained / Foundation Models (Allowed):</strong> Use of any publicly available pre-trained models and foundation models is permitted. Model name/version must be disclosed.</li>
-        <li><strong>Synthetic Data (Allowed):</strong> Synthetic data generation (e.g., augmentation, simulation, self-training) is allowed and should be briefly described.</li>
-        <li><strong>Fair-Play / No Test Leakage:</strong> No use of hidden test ground truth or any form of test-set leakage. Inference must be fully automatic.</li>
+        <li><strong>Official Data:</strong> Use the released LumbarSR training set as the core development data.</li>
+        <li><strong>External Data:</strong> External datasets may be used for pre-training or supplementary training, but should be clearly documented.</li>
+        <li><strong>Pre-trained / Foundation Models:</strong> Publicly available pre-trained models and foundation models may be used, and the exact model or checkpoint should be documented.</li>
+        <li><strong>Synthetic Data:</strong> Synthetic data generation, augmentation, simulation, or self-training strategies may be used and should be briefly described.</li>
+        <li><strong>Evaluation Integrity:</strong> Avoid any hidden-ground-truth usage or test leakage, and keep evaluation fully automatic.</li>
     </ol>
-
-    <hr>
-
-    <!-- Timeline Section -->
-    <h2 id="timeline">Timeline</h2>
-
-    <p class="note">Note: Schedule is tentative and subject to change.</p>
-
-    <table class="data-table">
-        <tr>
-            <th>Milestone</th>
-            <th>Date</th>
-        </tr>
-        <tr>
-            <td>Challenge website launch</td>
-            <td>April 1-10, 2026</td>
-        </tr>
-        <tr>
-            <td>Training data release</td>
-            <td>April 15, 2026</td>
-        </tr>
-        <tr>
-            <td>Registration opens</td>
-            <td>April 15, 2026</td>
-        </tr>
-        <tr>
-            <td>Validation data release</td>
-            <td>May 1, 2026</td>
-        </tr>
-        <tr>
-            <td>Submission system opens</td>
-            <td>June 1, 2026</td>
-        </tr>
-        <tr>
-            <td>Public test phase begins</td>
-            <td>July 1, 2026</td>
-        </tr>
-        <tr>
-            <td>Submission deadline</td>
-            <td>August 15, 2026</td>
-        </tr>
-        <tr>
-            <td>Hidden test evaluation</td>
-            <td>August 16-31, 2026</td>
-        </tr>
-        <tr>
-            <td>Results notification</td>
-            <td>September 5, 2026</td>
-        </tr>
-        <tr>
-            <td>Challenge Event</td>
-            <td>TBD</td>
-        </tr>
-    </table>
 
     <hr>
 
@@ -704,7 +649,7 @@ tar -xzf LumbarSR_Dataset.tar.gz
     <h2>Contact</h2>
 
     <p>
-        For questions about the challenge, please contact:<br>
+        For questions about the dataset or benchmark, please contact:<br>
         <strong>Email:</strong> <a href="mailto:zhangrp@sjtu.edu.cn">zhangrp@sjtu.edu.cn</a><br>
         <strong>GitHub:</strong> <a href="https://github.com/FrankZhangRp">@FrankZhangRp</a>
     </p>
@@ -717,7 +662,7 @@ tar -xzf LumbarSR_Dataset.tar.gz
     <p>If you use this dataset, please cite:</p>
 
     <pre><code>@misc{lumbarsr2026,
-  title={LumbarSR: Lumbar Vertebral Super-Resolution Challenge},
+  title={LumbarSR: Lumbar Vertebral Super-Resolution Dataset and Benchmark},
   author={Zhang, Ruipeng and Wang, Ping and Wang, Mengfei and Cao, Zhenzhen and Hu, Xuefei and Li, Yuehua},
   year={2026},
   url={https://github.com/FrankZhangRp/LumbarSR-Challenge}
@@ -727,7 +672,7 @@ tar -xzf LumbarSR_Dataset.tar.gz
 
     <center>
         <p style="font-size:14px; color:#999;">
-            LumbarSR Challenge
+            LumbarSR Dataset and Benchmark
         </p>
     </center>
 

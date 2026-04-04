@@ -1,4 +1,4 @@
-# Lumbar Vertebral Super-Resolution Structure Reconstruction Challenge
+# Lumbar Vertebral Super-Resolution Dataset and Benchmark
 
 <p align="center">
   <img src="docs/images/logo_512.png" alt="LumbarSR Logo" width="200">
@@ -15,9 +15,9 @@
 
 Medical computed tomography (CT) plays a crucial role in disease diagnosis, with CT technology having undergone significant evolution over the past half-century—from primary CT to energy-integrating detector CT, and now to photon-counting detector CT (PCCT) systems being deployed in clinical centers worldwide. Low back pain is a prevalent symptom affecting approximately 540 million people globally at any given time, with lumbar vertebral microstructure changes being a potential osseous factor contributing to this condition. However, these microstructural morphological changes remain largely undetectable due to current limitations in standard clinical CT equipment resolution.
 
-This challenge addresses the critical need for algorithms capable of reconstructing high-resolution bone microstructure from paired regular clinical helical CT lumbar vertebral images to match the quality of state-of-the-art Micro-PCCT. The LumbarSR challenge provides a unique dataset of 30 paired human dry lumbar vertebrae scanned with both clinical helical CT (at multiple resolution and reconstruction configurations) and Micro-PCCT at 0.1mm super-resolution. This novel benchmark enables development and evaluation of super-resolution reconstruction algorithms in musculoskeletal imaging, with potential applications in osteoporosis screening, fracture risk assessment, and low back pain investigation.
+This project addresses the critical need for algorithms capable of reconstructing high-resolution bone microstructure from paired regular clinical helical CT lumbar vertebral images to match the quality of state-of-the-art Micro-PCCT. The LumbarSR project provides a unique dataset of 30 paired human dry lumbar vertebrae scanned with both clinical helical CT (at multiple resolution and reconstruction configurations) and Micro-PCCT at 0.1mm super-resolution. This benchmark enables development and evaluation of super-resolution reconstruction algorithms in musculoskeletal imaging, with potential applications in osteoporosis screening, fracture risk assessment, and low back pain investigation.
 
-The technical objective is to develop algorithms that can transform clinical helical CT images (0.5-1.0 mm resolution) into high-resolution images comparable to Micro-PCCT (0.1 mm), representing a 10-200× super-resolution enhancement factor. Success in this challenge could transform routine lumbar CT scans into diagnostic tools for bone microstructure assessment, advancing AI-based image reconstruction in musculoskeletal radiology.
+The technical objective is to develop algorithms that can transform clinical helical CT images (0.5-1.0 mm resolution) into high-resolution images comparable to Micro-PCCT (0.1 mm), representing a 10-200× super-resolution enhancement factor. Success on this benchmark could transform routine lumbar CT scans into diagnostic tools for bone microstructure assessment, advancing AI-based image reconstruction in musculoskeletal radiology.
 
 <p align="center">
   <a href="docs/images/showcase.gif">
@@ -37,10 +37,10 @@ Reconstruct the corresponding high-resolution Micro-PCCT image (105um isotropic 
 
 <p align="center">
   <a href="docs/images/flowchart.png">
-    <img src="docs/images/flowchart_preview.png" alt="Challenge Flowchart" width="100%">
+    <img src="docs/images/flowchart_preview.png" alt="Pipeline Flowchart" width="100%">
   </a>
   <br>
-  <em>Challenge pipeline overview (<a href="docs/images/flowchart.png">Full resolution</a>)</em>
+  <em>Pipeline overview (<a href="docs/images/flowchart.png">Full resolution</a>)</em>
 </p>
 
 ## Dataset
@@ -334,38 +334,17 @@ python methods/inference.py \
 
 For detailed instructions, see [`methods/README.md`](methods/README.md).
 
-## Submission
+## Recommended Usage Policy
 
-Details coming soon.
+1. **Official Data**: Use the released LumbarSR training set as the primary development data.
 
-## Timeline
+2. **External Data**: External datasets may be used for pre-training or supplementary training. Please clearly document the data sources and approximate scale in any report or publication.
 
-> **Note**: Schedule is tentative and subject to change.
+3. **Pre-trained / Foundation Models**: Publicly available pre-trained models and foundation models may be used. Please document the model name, version, and checkpoint when applicable.
 
-| Milestone | Date |
-|-----------|------|
-| Challenge website launch | April 1-10, 2026 |
-| Training data release | April 15, 2026 |
-| Registration opens | April 15, 2026 |
-| Validation data release | May 1, 2026 |
-| Submission system opens | June 1, 2026 |
-| Public test phase begins | July 1, 2026 |
-| Submission deadline | August 15, 2026 |
-| Hidden test evaluation | August 16-31, 2026 |
-| Results notification | September 5, 2026 |
-| Challenge Event | TBD |
+4. **Synthetic Data**: Synthetic data generation, simulation, augmentation, or self-training strategies may be used and should be briefly described.
 
-## Training Data Policy
-
-1. **Challenge Data**: Participants are encouraged to use the official LumbarSR training set as the core development data.
-
-2. **External Data (Allowed)**: To maximize performance, external datasets are allowed for pre-training and/or supplementary training (public or legally/ethically permitted institutional data). Teams must disclose the external data sources in their method description (name/type and approximate scale).
-
-3. **Pre-trained / Foundation Models (Allowed)**: Use of any publicly available pre-trained models and foundation models is permitted. Model name/version (or checkpoint) must be disclosed.
-
-4. **Synthetic Data (Allowed)**: Synthetic data generation (e.g., augmentation, simulation, self-training) is allowed and should be briefly described.
-
-5. **Fair-Play / No Test Leakage**: No use of hidden test ground truth or any form of test-set leakage. Inference must be fully automatic with no case-by-case manual tuning.
+5. **Evaluation Integrity**: Do not use hidden ground truth or any form of test leakage. Evaluation should remain fully automatic and reproducible.
 
 ## Organizers
 
@@ -382,7 +361,7 @@ If you use this dataset, please cite:
 
 ```bibtex
 @misc{lumbarsr2026,
-  title={LumbarSR: Lumbar Vertebral Super-Resolution Structure Reconstruction Challenge},
+  title={LumbarSR: Lumbar Vertebral Super-Resolution Dataset and Benchmark},
   year={2026},
   url={https://github.com/frankzhangrp/LumbarSR-Challenge}
 }
