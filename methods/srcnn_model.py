@@ -26,7 +26,7 @@ class SRCNN(nn.Module):
         """Initialize SRCNN.
 
         Args:
-            in_channels: Number of input channels (1=grayscale, 2=dual-channel)
+            in_channels: Number of input channels (1=single sequence, 2=optional same-FOV B+S pair)
             num_features: Number of feature maps in first layer
         """
         super(SRCNN, self).__init__()

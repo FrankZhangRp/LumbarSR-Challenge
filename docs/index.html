@@ -425,7 +425,7 @@ tar -xzf LumbarSR_Dataset.tar.gz
 │   │   └── ...
 │   └── Lumbar_30/
 │       └── ...
-├── registered_nifti/            # Processed NIfTI data (ready to use)
+├── RegisteredData/              # Processed NIfTI data (ready to use)
 │   ├── Lumbar_01/
 │   │   ├── Lumbar01_ClinicalCT_195X_195Y_500Z_S_registered.nii.gz
 │   │   ├── Lumbar01_ClinicalCT_195X_195Y_1000Z_S_registered.nii.gz
@@ -436,15 +436,21 @@ tar -xzf LumbarSR_Dataset.tar.gz
 │   │   └── ...
 │   └── Lumbar_30/
 │       └── ...
+├── BoneMask/                    # Released binary bone ROI aligned to Micro-PCCT
+│   ├── Lumbar_01/
+│   │   └── Lumbar01_MicroPCCT_105um_BoneMask.nii.gz
+│   └── ...
 └── README.md</code></pre>
 
     <div class="info-box">
         <strong>Key Points:</strong>
         <ul style="margin: 10px 0;">
             <li><code>original_dicom/</code>: Contains raw DICOM files for advanced users who want to process from scratch</li>
-            <li><code>registered_nifti/</code>: Pre-processed and registered NIfTI files, ready for training (recommended starting point)</li>
+            <li><code>RegisteredData/</code>: Pre-processed and registered NIfTI files, ready for training (recommended starting point)</li>
+            <li><code>BoneMask/</code>: Binary bone ROI volumes aligned to the released Micro-PCCT images</li>
             <li>All clinical CT sequences are rigidly registered to the Micro-PCCT space</li>
             <li>Ground truth files are named <code>*_MicroPCCT_105um.nii.gz</code></li>
+            <li>Bone ROI files are named <code>*_MicroPCCT_105um_BoneMask.nii.gz</code></li>
         </ul>
     </div>
 
@@ -457,22 +463,16 @@ tar -xzf LumbarSR_Dataset.tar.gz
             <th>Micro-PCCT</th>
         </tr>
         <tr>
-            <td>Training</td>
-            <td>30</td>
+            <td>Training / development</td>
+            <td>25</td>
             <td>Available</td>
             <td>Available</td>
         </tr>
         <tr>
-            <td>Validation Phase 1</td>
+            <td>Reference test set</td>
             <td>5</td>
             <td>Available</td>
             <td>Available</td>
-        </tr>
-        <tr>
-            <td>Validation Phase 2</td>
-            <td>5</td>
-            <td>Available</td>
-            <td>Hidden</td>
         </tr>
     </table>
 
@@ -558,7 +558,7 @@ tar -xzf LumbarSR_Dataset.tar.gz
     </table>
 
     <p class="note">
-        The current release covers the registration baseline, super-resolution baselines, evaluation scripts, and the website. ESRGAN, SwinIR, the dense close-set registration mask workflow, and the internal trabecular-analysis module are being organized for a later public update.
+        The current release covers the registration baseline, super-resolution baselines, evaluation scripts, the released BoneMask ROI files, and the website. ESRGAN and SwinIR result entries are reserved on the benchmark pages and will be filled in a later update.
     </p>
 
     <hr>
@@ -599,7 +599,7 @@ tar -xzf LumbarSR_Dataset.tar.gz
     <h3>Metrics</h3>
 
     <h4>Image Quality Metrics</h4>
-    <p>Computed under Bone and Soft Tissue CT windows in masked mode (non-air region):</p>
+    <p>Computed under Bone and Soft Tissue CT windows within the released BoneMask ROI:</p>
     <ul>
         <li><strong>PSNR</strong> - Peak Signal-to-Noise Ratio (dB) ↑</li>
         <li><strong>SSIM</strong> - Structural Similarity Index ↑</li>
@@ -609,7 +609,7 @@ tar -xzf LumbarSR_Dataset.tar.gz
     <h4>Local Bone Contrast (LBC)</h4>
     <p>
         LBC is a microstructure-specific metric that measures the local intensity dynamic range within bone regions.
-        A 16×16 pixel sliding window (stride 8) scans across bone mask regions (HU > −500).
+        A 16×16 pixel sliding window (stride 8) scans across the released BoneMask ROI.
         Within each window, the percentile range P95 − P5 is computed.
         The <strong>LBC Ratio</strong> (Pred / GT, closer to 1.0 is better) quantifies how much of the ground truth's
         local bone contrast is preserved by the super-resolution method.
@@ -649,9 +649,9 @@ tar -xzf LumbarSR_Dataset.tar.gz
         <strong>Reference Aggregate Summary:</strong>
         <p style="margin: 10px 0;">If a compact cross-metric summary is useful, we report one aggregate value per metric by averaging across all FOV and window combinations, then average the per-metric method order:</p>
         <ol style="margin: 10px 0;">
-            <li><strong>PSNR Score</strong> — Mean of 4 PSNR values (2 windows × 2 FOV, masked mode, ↑ higher is better)</li>
-            <li><strong>SSIM Score</strong> — Mean of 4 SSIM values (2 windows × 2 FOV, masked mode, ↑ higher is better)</li>
-            <li><strong>MAE Score</strong> — Mean of 4 MAE values (2 windows × 2 FOV, masked mode, ↓ lower is better)</li>
+            <li><strong>PSNR Score</strong> — Mean of 4 PSNR values (2 windows × 2 FOV, BoneMask ROI, ↑ higher is better)</li>
+            <li><strong>SSIM Score</strong> — Mean of 4 SSIM values (2 windows × 2 FOV, BoneMask ROI, ↑ higher is better)</li>
+            <li><strong>MAE Score</strong> — Mean of 4 MAE values (2 windows × 2 FOV, BoneMask ROI, ↓ lower is better)</li>
             <li><strong>LBC Score</strong> — Mean LBC Ratio across all input sequences (↑ closer to 1.0 is better)</li>
         </ol>
         <strong>Reference aggregate = (PSNR_Order + SSIM_Order + MAE_Order + LBC_Order) / 4</strong><br>
@@ -679,7 +679,7 @@ tar -xzf LumbarSR_Dataset.tar.gz
 
     <h3>Registration Evaluation</h3>
     <p>
-        We report registration quality within a bone-mask ROI using <code>Dice</code>, <code>HD95</code>, and <code>HD</code>. These metrics are provided as a practical reference for the final registration quality.
+        We report registration quality within the released <code>BoneMask</code> ROI using <code>Dice</code>, <code>HD95</code>, and <code>HD</code>. These metrics are provided as a practical reference for the final registration quality.
     </p>
 
     <table class="data-table">
@@ -691,17 +691,31 @@ tar -xzf LumbarSR_Dataset.tar.gz
             <th>HD ↓</th>
         </tr>
         <tr>
-            <td>ANTs rigid baseline</td>
-            <td>To be added</td>
-            <td>To be added</td>
-            <td>To be added</td>
-            <td>To be added</td>
+            <td>ANTs rigid baseline (195X_195Y_500Z_B)</td>
+            <td>BoneMask ROI</td>
+            <td>0.9826 ± 0.0017</td>
+            <td>0.2266 ± 0.0131 mm</td>
+            <td>1.1476 ± 0.5960 mm</td>
+        </tr>
+        <tr>
+            <td>ANTs rigid baseline (586X_586Y_500Z_B)</td>
+            <td>BoneMask ROI</td>
+            <td>0.9811 ± 0.0023</td>
+            <td>0.2887 ± 0.0358 mm</td>
+            <td>0.9095 ± 0.2725 mm</td>
+        </tr>
+        <tr>
+            <td>ANTs rigid baseline (overall)</td>
+            <td>BoneMask ROI</td>
+            <td>0.9818 ± 0.0021</td>
+            <td>0.2576 ± 0.0411 mm</td>
+            <td>1.0285 ± 0.4785 mm</td>
         </tr>
     </table>
 
     <h3>Bone Morphometry</h3>
     <p>
-        Our internal <code>trabecular_analysis</code> workflow is used to compute bone-related morphometry parameters from CT volumes. The public benchmark pages reserve space for the following trabecular and topology-related metrics.
+        The public benchmark pages reserve space for a compact set of bone-related morphometry parameters.
     </p>
 
     <table class="data-table">
@@ -714,16 +728,8 @@ tar -xzf LumbarSR_Dataset.tar.gz
             <td><code>BV/TV</code>, <code>Tb.Th</code>, <code>Tb.Sp</code>, <code>Tb.N</code></td>
         </tr>
         <tr>
-            <td>Volume statistics</td>
-            <td><code>BV (mm^3)</code>, <code>TV (mm^3)</code></td>
-        </tr>
-        <tr>
-            <td>Topology</td>
-            <td><code>Connected components</code>, <code>Euler number</code>, <code>Connectivity</code>, <code>Conn.D</code></td>
-        </tr>
-        <tr>
-            <td>Structural complexity</td>
-            <td><code>Fractal dimension</code>, <code>Principal-axis anisotropy</code></td>
+            <td>ROI volume</td>
+            <td><code>TV</code> derived from the released <code>BoneMask</code></td>
         </tr>
         <tr>
             <td>Slice-wise summaries</td>
@@ -738,33 +744,31 @@ tar -xzf LumbarSR_Dataset.tar.gz
             <th>Tb.Th (mm)</th>
             <th>Tb.Sp (mm)</th>
             <th>Tb.N (mm^-1)</th>
-            <th>Conn.D (mm^-3)</th>
-            <th>Fractal Dim.</th>
-            <th>Anisotropy</th>
+            <th>TV (mm^3)</th>
         </tr>
         <tr>
             <td>Micro-PCCT reference</td>
-            <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
+            <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
         </tr>
         <tr>
             <td>Registered clinical CT baseline</td>
-            <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
+            <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
         </tr>
         <tr>
             <td>SRCNN</td>
-            <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
+            <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
         </tr>
         <tr>
             <td>UNet</td>
-            <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
+            <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
         </tr>
         <tr>
             <td>ESRGAN</td>
-            <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
+            <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
         </tr>
         <tr>
             <td>SwinIR</td>
-            <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
+            <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
         </tr>
     </table>
 

@@ -9,12 +9,12 @@ from typing import List, Dict, Tuple, Optional
 import numpy as np
 import nibabel as nib
 
-from metrics import WINDOWS, EVAL_WINDOWS, apply_window, get_valid_mask
+from metrics import WINDOWS, EVAL_WINDOWS, apply_window, get_evaluation_mask, get_valid_mask
 from metrics import compute_psnr, compute_ssim, compute_mae, compute_rmse, compute_ncc, compute_nrmse
 from metrics import compute_lbc_comparison
 
 
-DATA_ROOT = "./data/registered_nifti"
+DATA_ROOT = "./data/RegisteredData"
 OUTPUT_DIR = "./outputs/evaluation"
 
 SEQUENCES = [
@@ -33,19 +33,20 @@ def compute_metrics_fast(
     gt: np.ndarray,
     pred: np.ndarray,
     window_name: str = 'bone',
+    mask: Optional[np.ndarray] = None,
     mask_threshold: float = -1000
 ) -> Dict[str, float]:
     window = WINDOWS.get(window_name)
     gt_w = apply_window(gt, window)
     pred_w = apply_window(pred, window)
-    mask = get_valid_mask(gt, pred, mask_threshold)
+    actual_mask = mask if mask is not None else get_valid_mask(gt, pred, mask_threshold)
 
     return {
-        'psnr': compute_psnr(gt_w, pred_w, mask),
-        'mae': compute_mae(gt_w, pred_w, mask),
-        'rmse': compute_rmse(gt_w, pred_w, mask),
-        'ncc': compute_ncc(gt_w, pred_w, mask),
-        'nrmse': compute_nrmse(gt_w, pred_w, mask),
+        'psnr': compute_psnr(gt_w, pred_w, actual_mask),
+        'mae': compute_mae(gt_w, pred_w, actual_mask),
+        'rmse': compute_rmse(gt_w, pred_w, actual_mask),
+        'ncc': compute_ncc(gt_w, pred_w, actual_mask),
+        'nrmse': compute_nrmse(gt_w, pred_w, actual_mask),
     }
 
 
@@ -53,21 +54,22 @@ def compute_metrics_full(
     gt: np.ndarray,
     pred: np.ndarray,
     window_name: str = 'bone',
+    mask: Optional[np.ndarray] = None,
     mask_threshold: float = -1000,
     ssim_workers: int = None
 ) -> Dict[str, float]:
     window = WINDOWS.get(window_name)
     gt_w = apply_window(gt, window)
     pred_w = apply_window(pred, window)
-    mask = get_valid_mask(gt, pred, mask_threshold)
+    actual_mask = mask if mask is not None else get_valid_mask(gt, pred, mask_threshold)
 
     return {
-        'psnr': compute_psnr(gt_w, pred_w, mask),
-        'ssim': compute_ssim(gt_w, pred_w, mask, n_workers=ssim_workers),
-        'mae': compute_mae(gt_w, pred_w, mask),
-        'rmse': compute_rmse(gt_w, pred_w, mask),
-        'ncc': compute_ncc(gt_w, pred_w, mask),
-        'nrmse': compute_nrmse(gt_w, pred_w, mask),
+        'psnr': compute_psnr(gt_w, pred_w, actual_mask),
+        'ssim': compute_ssim(gt_w, pred_w, actual_mask, n_workers=ssim_workers),
+        'mae': compute_mae(gt_w, pred_w, actual_mask),
+        'rmse': compute_rmse(gt_w, pred_w, actual_mask),
+        'ncc': compute_ncc(gt_w, pred_w, actual_mask),
+        'nrmse': compute_nrmse(gt_w, pred_w, actual_mask),
     }
 
 
@@ -75,7 +77,7 @@ def evaluate_sample(
     sample_name: str,
     data_root: str,
     sequences: List[str] = None,
-    compute_ssim: bool = True,
+    compute_ssim_flag: bool = True,
     ssim_workers: int = None
 ) -> Dict[str, Dict[str, Dict[str, float]]]:
     if sequences is None:
@@ -91,6 +93,7 @@ def evaluate_sample(
 
     gt_nii = nib.load(gt_path)
     gt_data = gt_nii.get_fdata().astype(np.float32)
+    bone_mask = get_evaluation_mask(sample_name, gt_data)
 
     results = {}
 
@@ -109,20 +112,19 @@ def evaluate_sample(
 
         seq_results = {}
         for window_name in EVAL_WINDOWS:
-            if compute_ssim:
-                metrics = compute_metrics_full(gt_data, pred_data, window_name, ssim_workers=ssim_workers)
+            if compute_ssim_flag:
+                metrics = compute_metrics_full(gt_data, pred_data, window_name, mask=bone_mask, ssim_workers=ssim_workers)
             else:
-                metrics = compute_metrics_fast(gt_data, pred_data, window_name)
+                metrics = compute_metrics_fast(gt_data, pred_data, window_name, mask=bone_mask)
             seq_results[window_name] = metrics
 
-        # Compute LBC on raw HU
-        bone_mask = get_valid_mask(gt_data, pred_data, threshold=-500)
+        # Compute LBC inside the released BoneMask ROI
         seq_results['lbc'] = compute_lbc_comparison(gt_data, pred_data, bone_mask)
 
         results[seq] = seq_results
 
         m = seq_results['bone']
-        ssim_str = f", SSIM={m.get('ssim', 0):.4f}" if compute_ssim else ""
+        ssim_str = f", SSIM={m.get('ssim', 0):.4f}" if compute_ssim_flag else ""
         lbc_ratio = seq_results['lbc'].get('lbc_ratio', 0)
         print(f"  {seq}: PSNR={m['psnr']:.2f}dB{ssim_str}, NCC={m['ncc']:.4f}, LBC_ratio={lbc_ratio:.4f}")
 
@@ -155,7 +157,7 @@ def batch_evaluate(
         print(f"\n[{sample}]")
         results = evaluate_sample(
             sample, data_root, SEQUENCES,
-            compute_ssim=compute_ssim_flag,
+            compute_ssim_flag=compute_ssim_flag,
             ssim_workers=ssim_workers
         )
         if results:

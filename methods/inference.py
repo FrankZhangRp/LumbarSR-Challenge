@@ -15,7 +15,16 @@ from tqdm import tqdm
 import torch
 
 
-def load_model(checkpoint_path, model_type, device):
+def infer_paired_sequence(sequence):
+    """Infer the same-FOV paired kernel sequence."""
+    if sequence.endswith("_S"):
+        return sequence[:-2] + "_B"
+    if sequence.endswith("_B"):
+        return sequence[:-2] + "_S"
+    raise ValueError(f"Cannot infer paired sequence from: {sequence}")
+
+
+def load_model(checkpoint_path, model_type, device, in_channels=1):
     """Load trained model.
 
     Args:
@@ -28,10 +37,10 @@ def load_model(checkpoint_path, model_type, device):
     """
     if model_type == 'srcnn':
         from srcnn_model import get_model
-        model = get_model('2d', in_channels=2, num_features=64)
+        model = get_model('2d', in_channels=in_channels, num_features=64)
     elif model_type == 'unet':
         from unet_model import get_model
-        model = get_model('2d', in_channels=2, base_features=64)
+        model = get_model('2d', in_channels=in_channels, base_features=64)
     else:
         raise ValueError(f"Unknown model_type: {model_type}")
 
@@ -59,15 +68,15 @@ def normalize_hu(x):
     return (x + 1024) / 4095.0
 
 
-def inference_volume(model, lr_small_path, lr_large_path, gt_path, device, patch_size=256, overlap=32):
+def inference_volume(model, lr_path, gt_path, device, paired_path=None, patch_size=256, overlap=32):
     """Run inference on a single volume.
 
     Args:
         model: Trained SR model
-        lr_small_path: Path to small FOV LR
-        lr_large_path: Path to large FOV LR
+        lr_path: Path to primary LR input
         gt_path: Path to GT (for reference shape)
         device: torch.device
+        paired_path: Optional path to same-FOV paired kernel input
         patch_size: Patch size for inference
         overlap: Overlap between patches
 
@@ -75,32 +84,29 @@ def inference_volume(model, lr_small_path, lr_large_path, gt_path, device, patch
         Super-resolved volume (numpy array)
     """
     # Load volumes
-    lr_small = nib.load(lr_small_path).get_fdata().astype(np.float32)
-    lr_large = nib.load(lr_large_path).get_fdata().astype(np.float32)
+    lr = nib.load(lr_path).get_fdata().astype(np.float32)
+    paired = nib.load(paired_path).get_fdata().astype(np.float32) if paired_path is not None else None
     gt_nii = nib.load(gt_path)
 
     # Normalize
-    lr_small = normalize_hu(lr_small)
-    lr_large = normalize_hu(lr_large)
+    lr = normalize_hu(lr)
+    if paired is not None:
+        paired = normalize_hu(paired)
+        if paired.shape != lr.shape:
+            raise ValueError(f"Paired sequence shape mismatch: {paired.shape} vs {lr.shape}")
 
     # Get dimensions
-    H, W, D = lr_small.shape
-
-    # Resize large FOV to match small FOV
-    from scipy.ndimage import zoom
-    scale_h = H / lr_large.shape[0]
-    scale_w = W / lr_large.shape[1]
-    lr_large = zoom(lr_large, (scale_h, scale_w, 1.0), order=1)
+    H, W, D = lr.shape
 
     # Initialize output
-    sr_volume = np.zeros_like(lr_small)
-    count_map = np.zeros_like(lr_small)
+    sr_volume = np.zeros_like(lr)
+    count_map = np.zeros_like(lr)
 
     # Process slice by slice
     with torch.no_grad():
         for d in tqdm(range(D), desc="Processing slices"):
-            lr_small_slice = lr_small[:, :, d]
-            lr_large_slice = lr_large[:, :, d]
+            lr_slice = lr[:, :, d]
+            paired_slice = paired[:, :, d] if paired is not None else None
 
             # Extract patches
             for y in range(0, H, patch_size - overlap):
@@ -109,18 +115,21 @@ def inference_volume(model, lr_small_path, lr_large_path, gt_path, device, patch
                     y_end = min(y + patch_size, H)
                     x_end = min(x + patch_size, W)
 
-                    lr_small_patch = lr_small_slice[y:y_end, x:x_end]
-                    lr_large_patch = lr_large_slice[y:y_end, x:x_end]
+                    lr_patch = lr_slice[y:y_end, x:x_end]
+                    paired_patch = paired_slice[y:y_end, x:x_end] if paired_slice is not None else None
 
                     # Resize to patch_size if needed
-                    if lr_small_patch.shape[0] < patch_size or lr_small_patch.shape[1] < patch_size:
-                        pad_h = patch_size - lr_small_patch.shape[0]
-                        pad_w = patch_size - lr_small_patch.shape[1]
-                        lr_small_patch = np.pad(lr_small_patch, ((0, pad_h), (0, pad_w)), mode='constant')
-                        lr_large_patch = np.pad(lr_large_patch, ((0, pad_h), (0, pad_w)), mode='constant')
+                    if lr_patch.shape[0] < patch_size or lr_patch.shape[1] < patch_size:
+                        pad_h = patch_size - lr_patch.shape[0]
+                        pad_w = patch_size - lr_patch.shape[1]
+                        lr_patch = np.pad(lr_patch, ((0, pad_h), (0, pad_w)), mode='constant')
+                        if paired_patch is not None:
+                            paired_patch = np.pad(paired_patch, ((0, pad_h), (0, pad_w)), mode='constant')
 
-                    # Stack channels
-                    lr_input = np.stack([lr_small_patch, lr_large_patch], axis=0)
+                    if paired_patch is None:
+                        lr_input = lr_patch[np.newaxis, ...]
+                    else:
+                        lr_input = np.stack([lr_patch, paired_patch], axis=0)
                     lr_tensor = torch.from_numpy(lr_input).unsqueeze(0).float().to(device)
 
                     # Predict
@@ -153,6 +162,9 @@ def batch_inference(
     output_root,
     samples,
     device,
+    sequence,
+    dual_channel=False,
+    paired_sequence=None,
     patch_size=256,
     overlap=32
 ):
@@ -176,19 +188,28 @@ def batch_inference(
         sample_dir = Path(data_root) / sample
 
         # Paths
-        lr_small = sample_dir / f"Lumbar{sample_id}_ClinicalCT_195X_195Y_1000Z_S_registered.nii.gz"
-        lr_large = sample_dir / f"Lumbar{sample_id}_ClinicalCT_586X_586Y_1000Z_S_registered.nii.gz"
+        lr_path = sample_dir / f"Lumbar{sample_id}_ClinicalCT_{sequence}_registered.nii.gz"
+        resolved_paired_sequence = paired_sequence or infer_paired_sequence(sequence)
+        paired_path = sample_dir / f"Lumbar{sample_id}_ClinicalCT_{resolved_paired_sequence}_registered.nii.gz" if dual_channel else None
         gt = sample_dir / f"Lumbar{sample_id}_MicroPCCT_105um.nii.gz"
 
-        if not all([lr_small.exists(), lr_large.exists(), gt.exists()]):
+        required_paths = [lr_path, gt]
+        if paired_path is not None:
+            required_paths.append(paired_path)
+        if not all(path.exists() for path in required_paths):
             print(f"  [SKIP] {sample} - missing files")
             continue
 
         # Run inference
         print(f"\n[{sample}]")
         sr_volume, sr_affine = inference_volume(
-            model, str(lr_small), str(lr_large), str(gt),
-            device, patch_size, overlap
+            model,
+            str(lr_path),
+            str(gt),
+            device,
+            paired_path=str(paired_path) if paired_path is not None else None,
+            patch_size=patch_size,
+            overlap=overlap,
         )
 
         # Save result
@@ -211,9 +232,12 @@ def main():
     parser = argparse.ArgumentParser(description="SR model inference")
     parser.add_argument('--checkpoint', type=str, required=True, help="Path to model checkpoint")
     parser.add_argument('--model', type=str, default='srcnn', choices=['srcnn', 'unet'])
-    parser.add_argument('--data-root', type=str, default='/data/LumbarSR/registered_nifti')
-    parser.add_argument('--output-root', type=str, default='/data/LumbarSR/results')
+    parser.add_argument('--data-root', type=str, default='./data/RegisteredData')
+    parser.add_argument('--output-root', type=str, default='./results')
     parser.add_argument('--samples', nargs='+', default=None, help="Samples to process (default: Lumbar_26-30)")
+    parser.add_argument('--sequence', type=str, default='195X_195Y_1000Z_S')
+    parser.add_argument('--paired-sequence', type=str, default=None)
+    parser.add_argument('--dual-channel', action='store_true')
     parser.add_argument('--patch-size', type=int, default=256)
     parser.add_argument('--overlap', type=int, default=32)
     parser.add_argument('--device', type=str, default='cuda')
@@ -232,7 +256,7 @@ def main():
     print(f"Processing {len(samples)} samples")
 
     # Load model
-    model = load_model(args.checkpoint, args.model, device)
+    model = load_model(args.checkpoint, args.model, device, in_channels=2 if args.dual_channel else 1)
 
     # Run inference
     batch_inference(
@@ -241,6 +265,9 @@ def main():
         args.output_root,
         samples,
         device,
+        sequence=args.sequence,
+        dual_channel=args.dual_channel,
+        paired_sequence=args.paired_sequence,
         patch_size=args.patch_size,
         overlap=args.overlap
     )

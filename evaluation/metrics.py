@@ -18,6 +18,7 @@ Metrics computed:
 
 import os
 import json
+from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass, field, asdict
 from concurrent.futures import ProcessPoolExecutor
@@ -36,6 +37,9 @@ WINDOWS = {
 
 # Windows to evaluate (bone and soft tissue only)
 EVAL_WINDOWS = ['bone', 'soft_tissue']
+
+DEFAULT_BONE_MASK_ROOT = Path("./data/BoneMask")
+BONE_MASK_FILENAME_TEMPLATE = "Lumbar{sample_id}_MicroPCCT_105um_BoneMask.nii.gz"
 
 
 @dataclass
@@ -101,7 +105,7 @@ def apply_window(data: np.ndarray, window: Optional[Dict]) -> np.ndarray:
 
 def get_valid_mask(gt: np.ndarray, pred: np.ndarray,
                    threshold: float = -1000) -> np.ndarray:
-    """Get mask of valid voxels (non-air regions).
+    """Get fallback mask of valid voxels from the intensity volumes.
 
     Args:
         gt: Ground truth array
@@ -112,6 +116,58 @@ def get_valid_mask(gt: np.ndarray, pred: np.ndarray,
         Boolean mask of valid voxels
     """
     return (gt > threshold) | (pred > threshold)
+
+
+def _normalize_sample_name(sample_or_case_id: str) -> tuple[str, str]:
+    if sample_or_case_id.startswith("Lumbar_"):
+        sample = sample_or_case_id
+        sample_id = sample.split("_")[-1]
+        return sample, sample_id
+    if sample_or_case_id.startswith("Lumbar"):
+        sample_id = sample_or_case_id.replace("Lumbar", "")
+        return f"Lumbar_{sample_id}", sample_id
+    sample_id = f"{int(sample_or_case_id):02d}"
+    return f"Lumbar_{sample_id}", sample_id
+
+
+def get_bone_mask_path(
+    sample_or_case_id: str,
+    bone_mask_root: str | Path = DEFAULT_BONE_MASK_ROOT,
+) -> Path:
+    sample, sample_id = _normalize_sample_name(sample_or_case_id)
+    return Path(bone_mask_root) / sample / BONE_MASK_FILENAME_TEMPLATE.format(sample_id=sample_id)
+
+
+def load_bone_mask(
+    sample_or_case_id: str,
+    bone_mask_root: str | Path = DEFAULT_BONE_MASK_ROOT,
+    reference_shape: Optional[tuple[int, ...]] = None,
+) -> Optional[np.ndarray]:
+    mask_path = get_bone_mask_path(sample_or_case_id, bone_mask_root)
+    if not mask_path.exists():
+        return None
+    mask = nib.load(str(mask_path)).get_fdata() > 0
+    if reference_shape is not None and tuple(mask.shape) != tuple(reference_shape):
+        raise ValueError(
+            f"BoneMask shape mismatch for {sample_or_case_id}: "
+            f"{tuple(mask.shape)} vs {tuple(reference_shape)}"
+        )
+    return mask
+
+
+def get_evaluation_mask(
+    sample_or_case_id: str,
+    gt: np.ndarray,
+    pred: Optional[np.ndarray] = None,
+    bone_mask_root: str | Path = DEFAULT_BONE_MASK_ROOT,
+    fallback_threshold: float = -1000,
+) -> np.ndarray:
+    mask = load_bone_mask(sample_or_case_id, bone_mask_root, reference_shape=gt.shape)
+    if mask is not None:
+        return mask
+    if pred is None:
+        return gt > fallback_threshold
+    return get_valid_mask(gt, pred, threshold=fallback_threshold)
 
 
 def compute_psnr(gt: np.ndarray, pred: np.ndarray,
@@ -634,7 +690,7 @@ def save_results(case_results: List[CaseMetrics],
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Calculate evaluation metrics")
-    parser.add_argument('--data-root', type=str, default='./data/registered_nifti',
+    parser.add_argument('--data-root', type=str, default='./data/RegisteredData',
                         help='Root directory with registered data')
     parser.add_argument('--sample', type=str, default='Lumbar_01',
                         help='Sample name to evaluate')

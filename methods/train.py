@@ -21,6 +21,15 @@ from srcnn_model import SRCNN, CombinedLoss
 from unet_model import UNet
 
 
+def infer_paired_sequence(sequence):
+    """Infer the same-FOV paired kernel sequence."""
+    if sequence.endswith("_S"):
+        return sequence[:-2] + "_B"
+    if sequence.endswith("_B"):
+        return sequence[:-2] + "_S"
+    raise ValueError(f"Cannot infer paired sequence from: {sequence}")
+
+
 class LumbarSRDataset(Dataset):
     """Dataset for Lumbar Super-Resolution."""
 
@@ -120,19 +129,23 @@ class LumbarSRDataset(Dataset):
 
 
 class DualChannelDataset(Dataset):
-    """Dataset with dual-channel input (small FOV + large FOV)."""
+    """Dataset with optional dual-kernel input from the same FOV (B + S)."""
 
-    def __init__(self, data_root, samples, patch_size=(256, 256), n_patches_per_volume=10):
-        """Initialize dual-channel dataset.
+    def __init__(self, data_root, samples, sequence, paired_sequence=None, patch_size=(256, 256), n_patches_per_volume=10):
+        """Initialize same-FOV dual-kernel dataset.
 
         Args:
             data_root: Root directory of registered NIfTI data
             samples: List of sample names
+            sequence: Primary sequence (for example, 195X_195Y_1000Z_S)
+            paired_sequence: Paired same-FOV kernel sequence. If None, infer from sequence.
             patch_size: Size of patches (H, W)
             n_patches_per_volume: Number of patches per volume
         """
         self.data_root = Path(data_root)
         self.samples = samples
+        self.sequence = sequence
+        self.paired_sequence = paired_sequence or infer_paired_sequence(sequence)
         self.patch_size = patch_size
         self.n_patches_per_volume = n_patches_per_volume
 
@@ -143,47 +156,42 @@ class DualChannelDataset(Dataset):
             sample_dir = self.data_root / sample
 
             gt_path = sample_dir / f"Lumbar{sample_id}_MicroPCCT_105um.nii.gz"
-            lr_small = sample_dir / f"Lumbar{sample_id}_ClinicalCT_195X_195Y_1000Z_S_registered.nii.gz"
-            lr_large = sample_dir / f"Lumbar{sample_id}_ClinicalCT_586X_586Y_1000Z_S_registered.nii.gz"
+            primary_path = sample_dir / f"Lumbar{sample_id}_ClinicalCT_{self.sequence}_registered.nii.gz"
+            paired_path = sample_dir / f"Lumbar{sample_id}_ClinicalCT_{self.paired_sequence}_registered.nii.gz"
 
-            if gt_path.exists() and lr_small.exists() and lr_large.exists():
-                self.pairs.append((str(lr_small), str(lr_large), str(gt_path)))
+            if gt_path.exists() and primary_path.exists() and paired_path.exists():
+                self.pairs.append((str(primary_path), str(paired_path), str(gt_path)))
 
-        print(f"Found {len(self.pairs)} dual-channel volume pairs")
+        print(f"Found {len(self.pairs)} dual-kernel volume pairs ({self.sequence} + {self.paired_sequence})")
 
     def __len__(self):
         return len(self.pairs) * self.n_patches_per_volume
 
     def __getitem__(self, idx):
-        """Get dual-channel sample."""
+        """Get dual-kernel sample."""
         vol_idx = idx // self.n_patches_per_volume
-        lr_small_path, lr_large_path, gt_path = self.pairs[vol_idx]
+        primary_path, paired_path, gt_path = self.pairs[vol_idx]
 
         # Load volumes
-        lr_small = nib.load(lr_small_path).get_fdata().astype(np.float32)
-        lr_large = nib.load(lr_large_path).get_fdata().astype(np.float32)
+        primary = nib.load(primary_path).get_fdata().astype(np.float32)
+        paired = nib.load(paired_path).get_fdata().astype(np.float32)
         gt = nib.load(gt_path).get_fdata().astype(np.float32)
 
         # Random slice and crop
-        d = np.random.randint(0, lr_small.shape[2])
+        d = np.random.randint(0, primary.shape[2])
         h, w = self.patch_size
 
-        lr_small_slice = lr_small[:, :, d]
-        lr_large_slice = lr_large[:, :, d]
+        primary_slice = primary[:, :, d]
+        paired_slice = paired[:, :, d]
         gt_slice = gt[:, :, d]
 
-        # Resize large FOV to match small FOV
-        from scipy.ndimage import zoom
-        scale_h = h / lr_large_slice.shape[0]
-        scale_w = w / lr_large_slice.shape[1]
-        lr_large_slice = zoom(lr_large_slice, (scale_h, scale_w), order=1)
-
         # Random crop
-        H, W = lr_small_slice.shape
+        H, W = primary_slice.shape
         if H > h and W > w:
             y = np.random.randint(0, H - h)
             x = np.random.randint(0, W - w)
-            lr_small_slice = lr_small_slice[y:y+h, x:x+w]
+            primary_slice = primary_slice[y:y+h, x:x+w]
+            paired_slice = paired_slice[y:y+h, x:x+w]
             gt_slice = gt_slice[y:y+h, x:x+w]
 
         # Normalize
@@ -191,12 +199,12 @@ class DualChannelDataset(Dataset):
             x = np.clip(x, -1024, 3071)
             return (x + 1024) / 4095.0
 
-        lr_small_slice = normalize(lr_small_slice)
-        lr_large_slice = normalize(lr_large_slice)
+        primary_slice = normalize(primary_slice)
+        paired_slice = normalize(paired_slice)
         gt_slice = normalize(gt_slice)
 
         # Stack channels
-        lr_input = np.stack([lr_small_slice, lr_large_slice], axis=0)
+        lr_input = np.stack([primary_slice, paired_slice], axis=0)
         lr_tensor = torch.from_numpy(lr_input).float()
         gt_tensor = torch.from_numpy(gt_slice).unsqueeze(0).float()
 
@@ -251,13 +259,15 @@ def validate(model, dataloader, criterion, device):
 def main():
     parser = argparse.ArgumentParser(description="Train SR model")
     parser.add_argument('--model', type=str, default='srcnn', choices=['srcnn', 'unet'])
-    parser.add_argument('--data-root', type=str, default='/data/LumbarSR/registered_nifti')
+    parser.add_argument('--data-root', type=str, default='./data/RegisteredData')
     parser.add_argument('--output-dir', type=str, default='./checkpoints')
     parser.add_argument('--epochs', type=int, default=100)
     parser.add_argument('--batch-size', type=int, default=8)
     parser.add_argument('--lr', type=float, default=1e-4)
     parser.add_argument('--patch-size', type=int, nargs=2, default=[256, 256])
     parser.add_argument('--n-patches', type=int, default=10)
+    parser.add_argument('--sequence', type=str, default='195X_195Y_1000Z_S')
+    parser.add_argument('--paired-sequence', type=str, default=None)
     parser.add_argument('--dual-channel', action='store_true')
     parser.add_argument('--device', type=str, default='cuda')
     args = parser.parse_args()
@@ -274,6 +284,8 @@ def main():
         dataset = DualChannelDataset(
             data_root=args.data_root,
             samples=train_samples,
+            sequence=args.sequence,
+            paired_sequence=args.paired_sequence,
             patch_size=tuple(args.patch_size),
             n_patches_per_volume=args.n_patches
         )
@@ -282,7 +294,7 @@ def main():
         dataset = LumbarSRDataset(
             data_root=args.data_root,
             samples=train_samples,
-            sequences=["195X_195Y_1000Z_S"],
+            sequences=[args.sequence],
             patch_size=tuple(args.patch_size),
             n_patches_per_volume=args.n_patches
         )

@@ -182,7 +182,7 @@ def main():
     )
     parser.add_argument(
         '--data-root', type=str,
-        default="/data/LumbarSR/registered_nifti",
+        default="./data/RegisteredData",
         help="Root directory of registered NIfTI data"
     )
     parser.add_argument(

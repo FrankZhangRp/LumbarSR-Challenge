@@ -79,7 +79,7 @@ LumbarSR/
 │   │   └── ...
 │   └── Lumbar_30/
 │       └── ...
-├── registered_nifti/            # Processed NIfTI data (ready to use)
+├── RegisteredData/              # Processed NIfTI data (ready to use)
 │   ├── Lumbar_01/
 │   │   ├── Lumbar01_ClinicalCT_195X_195Y_500Z_S_registered.nii.gz
 │   │   ├── Lumbar01_ClinicalCT_195X_195Y_1000Z_S_registered.nii.gz
@@ -90,22 +90,30 @@ LumbarSR/
 │   │   └── ...
 │   └── Lumbar_30/
 │       └── ...
+├── BoneMask/                    # Released binary bone ROI aligned to Micro-PCCT
+│   ├── Lumbar_01/
+│   │   └── Lumbar01_MicroPCCT_105um_BoneMask.nii.gz
+│   ├── Lumbar_02/
+│   │   └── ...
+│   └── Lumbar_30/
+│       └── ...
 └── README.md
 ```
 
 **Key Points:**
 - `original_dicom/`: Contains raw DICOM files for advanced users who want to process from scratch
-- `registered_nifti/`: Pre-processed and registered NIfTI files, ready for training (recommended starting point)
+- `RegisteredData/`: Pre-processed and registered NIfTI files, ready for training (recommended starting point)
+- `BoneMask/`: Binary bone ROI volumes aligned to the released Micro-PCCT images
 - All clinical CT sequences are rigidly registered to the Micro-PCCT space
 - Ground truth files are named `*_MicroPCCT_105um.nii.gz`
+- Bone ROI files are named `*_MicroPCCT_105um_BoneMask.nii.gz`
 
-### Data Split
+### Recommended Split
 
-| Split | Samples | Clinical CT | Micro-PCCT |
-|-------|---------|-------------|------------|
-| Training | 30 | Paired | Paired |
-| Validation Phase 1 | 5 | Paired | Paired |
-| Validation Phase 2 | 5 | Available | Hidden |
+| Usage | Samples |
+|-------|---------|
+| Training / development | `Lumbar_01` to `Lumbar_25` |
+| Reference test set | `Lumbar_26` to `Lumbar_30` |
 
 ### Input Data (Clinical CT)
 
@@ -132,7 +140,7 @@ For each sample, we provide 4 sequences with soft tissue kernel:
 
 ### Image Quality Metrics
 
-The following metrics are computed under **two CT window settings** (Bone, Soft Tissue) in **masked mode** (non-air region only):
+The following metrics are computed under **two CT window settings** (Bone, Soft Tissue) within the released `BoneMask` ROI:
 
 - **PSNR** (Peak Signal-to-Noise Ratio) - measured in dB, higher is better ↑
 - **SSIM** (Structural Similarity Index) - range [0, 1], higher is better ↑
@@ -143,7 +151,7 @@ The following metrics are computed under **two CT window settings** (Bone, Soft 
 LBC is a microstructure-specific metric that measures the local intensity dynamic range within bone regions using a sliding window approach. It quantifies how well the super-resolution result preserves fine bone microstructure details (e.g., trabecular bone boundaries).
 
 **Computation:**
-1. A 16×16 pixel sliding window (stride 8) scans across bone mask regions (HU > -500)
+1. A 16×16 pixel sliding window (stride 8) scans across the released `BoneMask` ROI
 2. Within each window, the percentile dynamic range P95 − P5 is computed
 3. The mean dynamic range across all valid windows gives the LBC value (in HU)
 4. **LBC Ratio** = Pred_LBC / GT_LBC (closer to 1.0 is better)
@@ -201,7 +209,7 @@ The public repository currently contains four main parts:
 | `evaluation/` | Public | Image quality evaluation scripts for PSNR, SSIM, MAE, and LBC |
 | `docs/` | Public | GitHub Pages website, visualizations, and benchmark result pages |
 
-The current release covers the registration baseline, super-resolution baselines, evaluation scripts, and the project website. ESRGAN, SwinIR, the dense close-set registration mask workflow, and the internal `trabecular_analysis` module are being prepared for a later public update.
+The current release covers the registration baseline, super-resolution baselines, evaluation scripts, the released `BoneMask` ROI files, and the project website. ESRGAN and SwinIR result entries are reserved on the benchmark pages and will be filled in a later update.
 
 ## Registration Baseline and Mask Evaluation
 
@@ -209,39 +217,39 @@ The public repository already includes rigid registration code in [`baseline/reg
 
 ### Current Public Evaluation Masks
 
-- Public SR evaluation uses a non-air validity mask defined as `(gt > -1000) | (pred > -1000)`
-- Public `LBC` uses a bone-region mask with threshold `HU > -500`
+- Public SR evaluation uses the released `BoneMask` ROI volume aligned to each Micro-PCCT scan
+- The public `BoneMask` files are provided as binary reference masks in `LumbarSR/BoneMask/`
+- Public `LBC` is also computed inside the same released `BoneMask` ROI
 
 ### Registration Evaluation
 
-We report registration quality within a bone-mask ROI using `Dice`, `HD95`, and `HD`. These metrics are provided as a practical reference for the final registration quality.
+We report registration quality within the released `BoneMask` ROI using `Dice`, `HD95`, and `HD`. These metrics are provided as a practical reference for the final registration quality.
 
 | Method | ROI | Dice ↑ | HD95 ↓ | HD ↓ |
 |--------|-----|--------|--------|------|
-| ANTs rigid baseline | Bone mask ROI | To be added | To be added | To be added |
+| ANTs rigid baseline (`195X_195Y_500Z_B`) | BoneMask ROI | `0.9826 ± 0.0017` | `0.2266 ± 0.0131 mm` | `1.1476 ± 0.5960 mm` |
+| ANTs rigid baseline (`586X_586Y_500Z_B`) | BoneMask ROI | `0.9811 ± 0.0023` | `0.2887 ± 0.0358 mm` | `0.9095 ± 0.2725 mm` |
+| ANTs rigid baseline (overall) | BoneMask ROI | `0.9818 ± 0.0021` | `0.2576 ± 0.0411 mm` | `1.0285 ± 0.4785 mm` |
 
 ### Bone Morphometry
 
-Our internal `trabecular_analysis` workflow computes bone morphometry measurements directly from CT volumes. The public benchmark pages reserve space for the following quantities:
+The public benchmark pages reserve space for the following bone-related measurements:
 
 | Category | Metrics |
 |----------|---------|
 | Core trabecular morphometry | `BV/TV`, `Tb.Th`, `Tb.Sp`, `Tb.N` |
-| Volume statistics | `BV (mm^3)`, `TV (mm^3)` |
-| Topology | `Connected components`, `Euler number`, `Connectivity`, `Conn.D` |
-| Structural complexity | `Fractal dimension`, `Principal-axis anisotropy` |
-| Slice-wise summaries | `2D BV/TV mean`, `2D Tb.Th mean`, `2D Tb.Sp mean`, `2D Tb.N mean` |
+| ROI volume | `TV` derived from the released `BoneMask` |
 
 Reserved result table:
 
-| Method / Data | BV/TV | Tb.Th (mm) | Tb.Sp (mm) | Tb.N (mm^-1) | Conn.D (mm^-3) | Fractal Dim. | Anisotropy |
-|---------------|-------|------------|------------|--------------|----------------|--------------|------------|
-| Micro-PCCT reference | To be added | To be added | To be added | To be added | To be added | To be added | To be added |
-| Registered clinical CT baseline | To be added | To be added | To be added | To be added | To be added | To be added | To be added |
-| SRCNN | To be added | To be added | To be added | To be added | To be added | To be added | To be added |
-| UNet | To be added | To be added | To be added | To be added | To be added | To be added | To be added |
-| ESRGAN | To be added | To be added | To be added | To be added | To be added | To be added | To be added |
-| SwinIR | To be added | To be added | To be added | To be added | To be added | To be added | To be added |
+| Method / Data | BV/TV | Tb.Th (mm) | Tb.Sp (mm) | Tb.N (mm^-1) | TV (mm^3) |
+|---------------|-------|------------|------------|--------------|-----------|
+| Micro-PCCT reference | To be added | To be added | To be added | To be added | To be added |
+| Registered clinical CT baseline | To be added | To be added | To be added | To be added | To be added |
+| SRCNN | To be added | To be added | To be added | To be added | To be added |
+| UNet | To be added | To be added | To be added | To be added | To be added |
+| ESRGAN | To be added | To be added | To be added | To be added | To be added |
+| SwinIR | To be added | To be added | To be added | To be added | To be added |
 
 ## Baseline Methods
 
@@ -255,7 +263,7 @@ Traditional interpolation methods (no training required):
 # Run bicubic interpolation (recommended baseline)
 python methods/interpolation.py \
   --method bicubic \
-  --data-root ./data/registered_nifti \
+  --data-root ./data/RegisteredData \
   --output-root ./results
 ```
 
@@ -269,17 +277,16 @@ Deep learning approach with ~60K parameters:
 # Training
 python methods/train.py \
   --model srcnn \
-  --data-root ./data/registered_nifti \
+  --data-root ./data/RegisteredData \
   --output-dir ./checkpoints \
-  --dual-channel \
   --epochs 100 \
-  --batch-size 4
+  --batch-size 8
 
 # Inference
 python methods/inference.py \
   --model srcnn \
   --checkpoint checkpoints/srcnn_best.pth \
-  --data-root ./data/registered_nifti \
+  --data-root ./data/RegisteredData \
   --output-root ./results
 ```
 
@@ -291,9 +298,8 @@ U-shaped architecture with encoder-decoder and skip connections (~30M parameters
 # Training
 python methods/train.py \
   --model unet \
-  --data-root ./data/registered_nifti \
+  --data-root ./data/RegisteredData \
   --output-dir ./checkpoints \
-  --dual-channel \
   --epochs 100 \
   --batch-size 4
 
@@ -301,7 +307,7 @@ python methods/train.py \
 python methods/inference.py \
   --model unet \
   --checkpoint checkpoints/unet_best.pth \
-  --data-root ./data/registered_nifti \
+  --data-root ./data/RegisteredData \
   --output-root ./results
 ```
 
@@ -317,7 +323,7 @@ python methods/inference.py \
 **Experimental Setup:**
 - **Training Set**: Lumbar_01 to Lumbar_25 (25 samples)
 - **Test Set**: Lumbar_26 to Lumbar_30 (5 samples)
-- **Training**: Deep learning methods trained on 25 samples with dual-channel input
+- **Training**: Deep learning methods trained on 25 samples with single-sequence soft-kernel input by default
 - **Evaluation**: Metrics computed as mean ± standard deviation across test set
 
 #### PSNR Results (dB) ↑
@@ -364,7 +370,7 @@ python methods/inference.py \
 - **SRCNN** achieves the best PSNR across most configurations (8-9% improvement over baseline)
 - **UNet** excels at structural preservation with the highest SSIM scores
 - All interpolation methods (Nearest) perform identically to baseline since input/output dimensions match
-- **Masked evaluation** (focusing on anatomical regions) shows more discriminating metrics than full-image evaluation
+- **BoneMask-ROI evaluation** shows more discriminating metrics than full-image evaluation
 - Deep learning methods show consistent improvements in both Small and Large FOV configurations
 
 For detailed instructions, see [`methods/README.md`](methods/README.md).
@@ -379,9 +385,9 @@ If a single summary number is needed for quick comparison, we use the following 
 
 | Metric Category | Aggregate Score | Direction |
 |-----------------|----------------|-----------|
-| PSNR Score | Mean of 4 PSNR values (2 windows × 2 FOV, masked) | ↑ Higher is better |
-| SSIM Score | Mean of 4 SSIM values (2 windows × 2 FOV, masked) | ↑ Higher is better |
-| MAE Score | Mean of 4 MAE values (2 windows × 2 FOV, masked) | ↓ Lower is better |
+| PSNR Score | Mean of 4 PSNR values (2 windows × 2 FOV, BoneMask ROI) | ↑ Higher is better |
+| SSIM Score | Mean of 4 SSIM values (2 windows × 2 FOV, BoneMask ROI) | ↑ Higher is better |
+| MAE Score | Mean of 4 MAE values (2 windows × 2 FOV, BoneMask ROI) | ↓ Lower is better |
 | LBC Score | Mean LBC Ratio across all input sequences | ↑ Closer to 1.0 is better |
 
 **Reference aggregate = (PSNR_Order + SSIM_Order + MAE_Order + LBC_Order) / 4**

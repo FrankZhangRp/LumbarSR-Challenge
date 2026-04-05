@@ -288,7 +288,7 @@
         <ul>
             <li><strong>Training Set:</strong> Lumbar_01 to Lumbar_25 (25 samples)</li>
             <li><strong>Test Set:</strong> Lumbar_26 to Lumbar_30 (5 samples)</li>
-            <li><strong>Training:</strong> Deep learning methods trained on 25 samples with dual-channel input (small FOV + large FOV)</li>
+            <li><strong>Training:</strong> Deep learning methods trained on 25 samples with single-sequence soft-kernel input by default; optional paired-kernel input uses the B + S pair from the same FOV</li>
             <li><strong>Evaluation:</strong> Metrics computed as mean ± standard deviation across test set</li>
             <li><strong>Baseline:</strong> Registered clinical CT without super-resolution processing</li>
         </ul>
@@ -300,7 +300,7 @@
             <li><strong>SRCNN</strong> achieves the best PSNR with 8-9% improvement over baseline</li>
             <li><strong>UNet</strong> excels at structural preservation with the highest SSIM scores</li>
             <li>Interpolation methods perform identically to baseline (input/output dimensions match after registration)</li>
-            <li><strong>Masked evaluation</strong> shows more discriminating metrics than full-image evaluation</li>
+            <li><strong>BoneMask-ROI evaluation</strong> shows more discriminating metrics than full-image evaluation</li>
             <li>Deep learning methods show consistent improvements in both Small and Large FOV configurations</li>
         </ul>
     </div>
@@ -333,7 +333,7 @@
     <div class="setup-box">
         <h3 style="margin-top: 0;">Registration Evaluation</h3>
         <p>
-            We report registration quality within a bone-mask ROI using <code>Dice</code>, <code>HD95</code>, and <code>HD</code>. These metrics are provided as a practical reference for the final registration quality.
+            We report registration quality within the released <code>BoneMask</code> ROI using <code>Dice</code>, <code>HD95</code>, and <code>HD</code>. These metrics are provided as a practical reference for the final registration quality.
         </p>
         <table class="results-table" style="font-size: 14px;">
             <thead>
@@ -347,11 +347,25 @@
             </thead>
             <tbody>
                 <tr>
-                    <td class="method-name">ANTs rigid baseline</td>
-                    <td>Bone mask ROI</td>
-                    <td>To be added</td>
-                    <td>To be added</td>
-                    <td>To be added</td>
+                    <td class="method-name">ANTs rigid baseline (195X_195Y_500Z_B)</td>
+                    <td>BoneMask ROI</td>
+                    <td>0.9826 ± 0.0017</td>
+                    <td>0.2266 ± 0.0131 mm</td>
+                    <td>1.1476 ± 0.5960 mm</td>
+                </tr>
+                <tr>
+                    <td class="method-name">ANTs rigid baseline (586X_586Y_500Z_B)</td>
+                    <td>BoneMask ROI</td>
+                    <td>0.9811 ± 0.0023</td>
+                    <td>0.2887 ± 0.0358 mm</td>
+                    <td>0.9095 ± 0.2725 mm</td>
+                </tr>
+                <tr>
+                    <td class="method-name">ANTs rigid baseline (overall)</td>
+                    <td>BoneMask ROI</td>
+                    <td>0.9818 ± 0.0021</td>
+                    <td>0.2576 ± 0.0411 mm</td>
+                    <td>1.0285 ± 0.4785 mm</td>
                 </tr>
             </tbody>
         </table>
@@ -360,7 +374,7 @@
     <div class="setup-box">
         <h3 style="margin-top: 0;">Bone Morphometry</h3>
         <p>
-            Our internal <code>trabecular_analysis</code> workflow computes bone-related morphometry parameters from CT volumes. The public benchmark pages reserve space for the following metrics.
+            The public benchmark pages reserve space for the following bone morphometry summaries.
         </p>
         <table class="results-table" style="font-size: 14px;">
             <thead>
@@ -370,40 +384,38 @@
                     <th>Tb.Th (mm)</th>
                     <th>Tb.Sp (mm)</th>
                     <th>Tb.N (mm^-1)</th>
-                    <th>Conn.D (mm^-3)</th>
-                    <th>Fractal Dim.</th>
-                    <th>Anisotropy</th>
+                    <th>TV (mm^3)</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td class="method-name">Micro-PCCT reference</td>
-                    <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
+                    <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
                 </tr>
                 <tr>
                     <td class="method-name">Registered clinical CT baseline</td>
-                    <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
+                    <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
                 </tr>
                 <tr>
                     <td class="method-name">SRCNN</td>
-                    <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
+                    <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
                 </tr>
                 <tr>
                     <td class="method-name">UNet</td>
-                    <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
+                    <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
                 </tr>
                 <tr>
                     <td class="method-name">ESRGAN</td>
-                    <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
+                    <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
                 </tr>
                 <tr>
                     <td class="method-name">SwinIR</td>
-                    <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
+                    <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
                 </tr>
             </tbody>
         </table>
         <p style="margin-top: 12px; margin-bottom: 0;">
-            The reserved trabecular-morphometry outputs cover core measures such as <code>BV/TV</code>, <code>Tb.Th</code>, <code>Tb.Sp</code>, and <code>Tb.N</code>, together with topology-related quantities such as <code>Connectivity</code>, <code>Conn.D</code>, fractal dimension, and anisotropy.
+            The reserved outputs cover <code>BV/TV</code>, <code>Tb.Th</code>, <code>Tb.Sp</code>, <code>Tb.N</code>, and <code>TV</code>, where <code>TV</code> denotes the released BoneMask volume.
         </p>
     </div>
 
@@ -758,17 +770,17 @@
             <tbody>
                 <tr>
                     <td><strong>PSNR Score</strong></td>
-                    <td>Mean of 4 PSNR values (2 windows × 2 FOV, masked)</td>
+                    <td>Mean of 4 PSNR values (2 windows × 2 FOV, BoneMask ROI)</td>
                     <td>↑ Higher is better</td>
                 </tr>
                 <tr>
                     <td><strong>SSIM Score</strong></td>
-                    <td>Mean of 4 SSIM values (2 windows × 2 FOV, masked)</td>
+                    <td>Mean of 4 SSIM values (2 windows × 2 FOV, BoneMask ROI)</td>
                     <td>↑ Higher is better</td>
                 </tr>
                 <tr>
                     <td><strong>MAE Score</strong></td>
-                    <td>Mean of 4 MAE values (2 windows × 2 FOV, masked)</td>
+                    <td>Mean of 4 MAE values (2 windows × 2 FOV, BoneMask ROI)</td>
                     <td>↓ Lower is better</td>
                 </tr>
                 <tr>
@@ -794,7 +806,7 @@
     <p>Below is a worked example showing how this reference aggregation applies to the four baseline methods.</p>
 
     <h3>Step 1: Aggregate Scores</h3>
-    <p>Each metric is averaged across <strong>2 CT windows (Bone, Soft Tissue) × 2 FOV (Small, Large)</strong> in masked mode:</p>
+    <p>Each metric is averaged across <strong>2 CT windows (Bone, Soft Tissue) × 2 FOV (Small, Large)</strong> in BoneMask-ROI mode:</p>
 
     <table class="ranking-table">
         <thead>
