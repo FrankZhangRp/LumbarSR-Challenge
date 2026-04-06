@@ -47,11 +47,11 @@ Reconstruct the corresponding high-resolution Micro-PCCT image (105um isotropic 
 
 ### Download
 
-**[Download Dataset (tar.gz)](https://drive.google.com/file/d/1mPK0_i15XPzp1pyydV2uhsMfBuYGjJGy/view?usp=sharing)**
+**[Download Dataset from Zenodo (tar.gz)](https://doi.org/10.5281/zenodo.19404387)**
 
-[![Zenodo](https://img.shields.io/badge/Zenodo-Uploading-1682D4?logo=zenodo&logoColor=white)](https://zenodo.org/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19404387.svg)](https://doi.org/10.5281/zenodo.19404387)
 
-Zenodo release page placeholder: [https://zenodo.org/](https://zenodo.org/)
+Zenodo DOI: [10.5281/zenodo.19404387](https://doi.org/10.5281/zenodo.19404387)
 
 The dataset is provided as a compressed tar.gz archive. After downloading, extract it using:
 
