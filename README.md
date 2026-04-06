@@ -155,18 +155,6 @@ The following metrics are computed under **two CT window settings** (Bone, Soft 
 - **SSIM** (Structural Similarity Index) - range [0, 1], higher is better ↑
 - **MAE** (Mean Absolute Error) - lower is better ↓
 
-### Local Bone Contrast (LBC)
-
-LBC is a microstructure-specific metric that measures the local intensity dynamic range within bone regions using a sliding window approach. It quantifies how well the super-resolution result preserves fine bone microstructure details (e.g., trabecular bone boundaries).
-
-**Computation:**
-1. A 16×16 pixel sliding window (stride 8) scans across the released `BoneMask` ROI
-2. Within each window, the percentile dynamic range P95 − P5 is computed
-3. The mean dynamic range across all valid windows gives the LBC value (in HU)
-4. **LBC Ratio** = Pred_LBC / GT_LBC (closer to 1.0 is better)
-
-Higher LBC indicates sharper bone-air boundaries and better microstructure visibility. The LBC Ratio measures how much of the ground truth's local contrast is preserved by the super-resolution method.
-
 ### CT Window Settings
 
 All image quality metrics (PSNR, SSIM, MAE) are computed under two CT window settings:
@@ -215,7 +203,7 @@ The public repository currently contains four main parts:
 |-----------|--------|-------------|
 | `baseline/` | Public | Rigid registration baseline based on ANTs, including `register_ants.py` and `batch_register.py` |
 | `methods/` | Public | Interpolation, SRCNN, and UNet baselines with training and inference scripts |
-| `evaluation/` | Public | Image quality evaluation scripts for PSNR, SSIM, MAE, and LBC |
+| `evaluation/` | Public | Image quality evaluation scripts for PSNR, SSIM, and MAE |
 | `docs/` | Public | GitHub Pages website, visualizations, and benchmark result pages |
 
 The current release covers the registration baseline, super-resolution baselines, evaluation scripts, the released `BoneMask` ROI files, and the project website.
@@ -223,10 +211,10 @@ The current release covers the registration baseline, super-resolution baselines
 Current public benchmark status (`2026-04-06`):
 
 - The released benchmark pages already reflect the refreshed `BoneMask`-ROI protocol for the previously released methods: registered clinical CT baseline, interpolation baselines, `SRCNN`, and `UNet`
-- Public `masked` image-quality metrics and public `LBC` are interpreted inside the released sequence-level `BoneMask` ROI
+- Public `masked` image-quality metrics are interpreted inside the released sequence-level `BoneMask` ROI
 - Public bone morphometry summaries currently cover the released subset (`Micro-PCCT`, registered clinical CT baseline, `SRCNN`, `UNet`, `ESRGAN`, `SwinIR`) for both `195X_195Y_1000Z_S` and `586X_586Y_1000Z_S`
-- `ESRGAN` public image-quality metrics, `LBC`, and bone morphometry rows have been filled in on `2026-04-06`
-- `SwinIR` public image-quality metrics, `LBC`, and bone morphometry rows have now been filled in on `2026-04-06`
+- `ESRGAN` public image-quality metrics and bone morphometry rows have been filled in on `2026-04-06`
+- `SwinIR` public image-quality metrics and bone morphometry rows have now been filled in on `2026-04-06`
 
 ## Registration Baseline and Mask Evaluation
 
@@ -236,7 +224,6 @@ The public repository already includes rigid registration code in [`baseline/reg
 
 - Public SR evaluation uses the released sequence-level `BoneMask` ROI aligned to each `RegisteredData` volume
 - The public `BoneMask` files are provided as binary reference masks in `LumbarSR/BoneMask/`
-- Public `LBC` is also computed inside the same released `BoneMask` ROI
 
 ### Registration Evaluation
 
@@ -345,8 +332,8 @@ python methods/inference.py \
 
 | Method | Status | Notes |
 |--------|--------|-------|
-| ESRGAN | Image metrics + LBC + morphometry released | RRDB-based adversarial super-resolution baseline |
-| SwinIR | Image metrics + LBC + morphometry released | Transformer-based super-resolution baseline |
+| ESRGAN | Image metrics + morphometry released | RRDB-based adversarial super-resolution baseline |
+| SwinIR | Image metrics + morphometry released | Transformer-based super-resolution baseline |
 
 ### Baseline Performance
 
@@ -395,48 +382,7 @@ python methods/inference.py \
 | **SwinIR** | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.21±0.01 | 0.28±0.02 | 0.32±0.02 | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.20±0.01 | 0.27±0.01 | 0.31±0.01 |
 | **Nearest** | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.15±0.02 | 0.19±0.03 | 0.21±0.03 | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.14±0.02 | 0.18±0.02 | 0.20±0.02 |
 
-### Additional Deep Baseline Entries
-
-| Method | PSNR | SSIM | MAE |
-|--------|------|------|-----|
-| **ESRGAN** | Added | Added | Added |
-| **SwinIR** | Added | Added | Added |
-
-#### LBC Results
-
-| Method | Small FOV Pred LBC (dB) | Small FOV LBC Ratio | Large FOV Pred LBC (dB) | Large FOV LBC Ratio |
-|--------|--------------------------|---------------------|-------------------------|---------------------|
-| **GT Reference** | 69.13±0.41 | 1.00 | 69.12±0.41 | 1.00 |
-| **ESRGAN** | 65.11±0.65 | 0.63±0.03 | 65.34±0.51 | 0.65±0.03 |
-| **SwinIR** | 52.85±1.12 | 0.15±0.02 | 53.60±1.06 | 0.17±0.02 |
-
-**Key Findings:**
-- **SRCNN** achieves the best PSNR across most configurations (8-9% improvement over baseline)
-- **UNet** excels at structural preservation with the highest SSIM scores
-- All interpolation methods (Nearest) perform identically to baseline since input/output dimensions match
-- **BoneMask-ROI evaluation** shows more discriminating metrics than full-image evaluation
-- Deep learning methods show consistent improvements in both Small and Large FOV configurations
-
 For detailed instructions, see [`methods/README.md`](methods/README.md).
-
-### Reference Aggregate Summary
-
-If a single summary number is needed for quick comparison, we use the following reference aggregation:
-
-1. Compute one aggregate value per metric by averaging across all FOV and window combinations.
-2. Order methods independently for `PSNR`, `SSIM`, `MAE`, and `LBC`.
-3. Average the four per-metric orders to obtain a compact reference summary.
-
-| Metric Category | Aggregate Score | Direction |
-|-----------------|----------------|-----------|
-| PSNR Score | Mean of 4 PSNR values (2 windows × 2 FOV, BoneMask ROI) | ↑ Higher is better |
-| SSIM Score | Mean of 4 SSIM values (2 windows × 2 FOV, BoneMask ROI) | ↑ Higher is better |
-| MAE Score | Mean of 4 MAE values (2 windows × 2 FOV, BoneMask ROI) | ↓ Lower is better |
-| LBC Score | Mean LBC Ratio across all input sequences | ↑ Closer to 1.0 is better |
-
-**Reference aggregate = (PSNR_Order + SSIM_Order + MAE_Order + LBC_Order) / 4**
-
-This summary is provided only as a convenient cross-metric overview. The per-metric results remain the primary basis for reporting and interpretation.
 
 ## Recommended Usage Policy
 

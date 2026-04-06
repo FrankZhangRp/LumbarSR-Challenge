@@ -30,6 +30,15 @@ def infer_paired_sequence(sequence):
     raise ValueError(f"Cannot infer paired sequence from: {sequence}")
 
 
+def build_run_name(model_name, sequence, dual_channel=False, paired_sequence=None):
+    """Build a stable checkpoint stem from the training configuration."""
+    stem = f"{model_name}_{sequence}"
+    if dual_channel:
+        paired = paired_sequence or infer_paired_sequence(sequence)
+        stem += f"__dual_{paired}"
+    return stem
+
+
 class LumbarSRDataset(Dataset):
     """Dataset for Lumbar Super-Resolution."""
 
@@ -269,6 +278,8 @@ def main():
     parser.add_argument('--sequence', type=str, default='195X_195Y_1000Z_S')
     parser.add_argument('--paired-sequence', type=str, default=None)
     parser.add_argument('--dual-channel', action='store_true')
+    parser.add_argument('--num-workers', type=int, default=4)
+    parser.add_argument('--pin-memory', action='store_true')
     parser.add_argument('--device', type=str, default='cuda')
     args = parser.parse_args()
 
@@ -300,7 +311,13 @@ def main():
         )
         in_channels = 1
 
-    dataloader = DataLoader(dataset, batch_size=args.batch_size, shuffle=True, num_workers=4)
+    dataloader = DataLoader(
+        dataset,
+        batch_size=args.batch_size,
+        shuffle=True,
+        num_workers=args.num_workers,
+        pin_memory=args.pin_memory,
+    )
 
     # Model
     if args.model == 'srcnn':
@@ -322,6 +339,16 @@ def main():
     # Training
     os.makedirs(args.output_dir, exist_ok=True)
     best_loss = float('inf')
+    run_name = build_run_name(
+        args.model,
+        args.sequence,
+        dual_channel=args.dual_channel,
+        paired_sequence=args.paired_sequence,
+    )
+    checkpoint_path = os.path.join(args.output_dir, f"{run_name}_best.pth")
+
+    print(f"Run name: {run_name}")
+    print(f"Checkpoint: {checkpoint_path}")
 
     for epoch in range(args.epochs):
         print(f"\nEpoch {epoch+1}/{args.epochs}")
@@ -334,12 +361,19 @@ def main():
         # Save checkpoint
         if train_loss < best_loss:
             best_loss = train_loss
-            checkpoint_path = os.path.join(args.output_dir, f"{args.model}_best.pth")
             torch.save({
                 'epoch': epoch,
                 'model_state_dict': model.state_dict(),
                 'optimizer_state_dict': optimizer.state_dict(),
                 'loss': best_loss,
+                'config': {
+                    'model': args.model,
+                    'sequence': args.sequence,
+                    'dual_channel': bool(args.dual_channel),
+                    'paired_sequence': args.paired_sequence or (infer_paired_sequence(args.sequence) if args.dual_channel else None),
+                    'patch_size': tuple(args.patch_size),
+                    'batch_size': args.batch_size,
+                },
             }, checkpoint_path)
             print(f"Saved best model: {checkpoint_path}")
 

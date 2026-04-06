@@ -55,7 +55,7 @@ data/
 
 ## Methods
 
-Currently released methods:
+Currently released code:
 
 - Interpolation baselines
 - SRCNN
@@ -113,11 +113,11 @@ python methods/train.py \
 # Generate predictions on test set
 python methods/inference.py \
   --model srcnn \
-  --checkpoint checkpoints/srcnn_best.pth \
+  --checkpoint checkpoints/srcnn_195X_195Y_1000Z_S_best.pth \
   --data-root data/RegisteredData \
   --output-root results \
   --sequence 195X_195Y_1000Z_S \
-  --patch-size 256
+  --batch-size 64
 ```
 
 ### 3. UNet
@@ -142,24 +142,23 @@ python methods/train.py \
 # Generate predictions
 python methods/inference.py \
   --model unet \
-  --checkpoint checkpoints/unet_best.pth \
+  --checkpoint checkpoints/unet_195X_195Y_1000Z_S_best.pth \
   --data-root data/RegisteredData \
   --output-root results \
-  --sequence 195X_195Y_1000Z_S
+  --sequence 195X_195Y_1000Z_S \
+  --batch-size 32
 ```
 
-### 4. Additional Baselines
+### 4. Additional Benchmark Entries
 
-The following method entries are reserved in the public benchmark:
+The public benchmark pages now also report the following methods:
 
-| Method | Status | Notes |
-|--------|--------|-------|
-| ESRGAN | Reserved | RRDB-based adversarial baseline |
-| SwinIR | Reserved | Transformer-based super-resolution baseline |
+| Method | Benchmark status | Notes |
+|--------|------------------|-------|
+| ESRGAN | Results released | RRDB-based adversarial baseline |
+| SwinIR | Results released | Transformer-based super-resolution baseline |
 
-Registration baseline code is available separately in [`../baseline/`](../baseline/), while image quality evaluation code is available in [`../evaluation/`](../evaluation/).
-
-The benchmark pages reserve space for bone morphometry summaries including `BV/TV`, `Tb.Th`, `Tb.Sp`, `Tb.N`, and `TV`.
+Registration baseline code is available separately in [`../baseline/`](../baseline/), while public evaluation code is available in [`../evaluation/`](../evaluation/).
 
 ## Model Architecture
 
@@ -185,9 +184,9 @@ The benchmark pages reserve space for bone morphometry summaries including `BV/T
 
 1. **Default input**: Use the soft-kernel sequence of one FOV as the default input
 2. **Optional dual-kernel input**: If two channels are used, they should be the `B + S` pair from the same FOV
-3. **Patch-based training**: Extract random patches (256×256) from slices for memory efficiency
-4. **Data augmentation**: Can add rotation, flipping in `train.py` for better generalization
-5. **Batch size**: Adjust based on GPU memory (UNet requires more memory than SRCNN)
+3. **Patch-based training**: Extract random patches (256×256 by default) from slices for memory efficiency
+4. **Full-slice batched inference**: `methods/inference.py` now loads the model once and runs large 2D slice batches directly
+5. **Canonical outputs**: Predictions are saved under `results/<method>/<sample>/LumbarXX_<sequence>_<method>.nii.gz`
 6. **Learning rate**: Start with 1e-4, reduce on plateau
 
 ## Evaluation
@@ -195,14 +194,16 @@ The benchmark pages reserve space for bone morphometry summaries including `BV/T
 After generating predictions, use the evaluation script:
 
 ```bash
-# Evaluate predictions against ground truth
+# Evaluate predictions against ground truth inside the released BoneMask ROI
 python evaluation/batch_evaluate.py \
   --pred-root results \
   --gt-root data/RegisteredData \
+  --bone-mask-root data/BoneMask \
+  --methods srcnn unet \
   --output-dir outputs/metrics
 ```
 
-Metrics computed:
+Primary metrics computed:
 - **PSNR** (Peak Signal-to-Noise Ratio, dB)
 - **SSIM** (Structural Similarity Index)
 - **MAE** (Mean Absolute Error)
@@ -211,6 +212,7 @@ Metrics are calculated under:
 - Raw HU values
 - Bone window (WC=400, WW=1800)
 - Soft tissue window (WC=40, WW=400)
+- Full image / non-air / BoneMask ROI modes
 
 ## File Structure
 
@@ -240,16 +242,10 @@ methods/
 | UNet | 8.85-9.50 | **0.9489-0.9500** | 0.179-0.214 |
 | SRCNN | **9.26-9.51** | 0.9450-0.9489 | **0.178-0.210** |
 | Nearest Interpolation | 8.85-9.51 | 0.9427-0.9450 | 0.178-0.196 |
-| ESRGAN | To be added | To be added | To be added |
-| SwinIR | To be added | To be added | To be added |
+| ESRGAN | Benchmark page updated | Benchmark page updated | Benchmark page updated |
+| SwinIR | Benchmark page updated | Benchmark page updated | Benchmark page updated |
 
 *Range shows performance across different FOV (Small/Large) and window (Raw/Bone/Soft) configurations in BoneMask-ROI evaluation*
-
-**Key Findings:**
-- **SRCNN** achieves the best PSNR with 8-9% improvement over baseline
-- **UNet** excels at structural preservation with the highest SSIM scores
-- **BoneMask-ROI evaluation** shows more discriminating metrics
-- Deep learning methods show consistent improvements in both Small and Large FOV configurations
 
 For complete results tables with all configurations (FOV × Mode × Window), see the [full results page](../docs/baseline_results.html) or the main [README](../README.md#baseline-performance).
 

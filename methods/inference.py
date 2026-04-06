@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-"""
-Inference script for super-resolution models.
+"""Inference script for public 2D SR baselines.
 
-Supports SRCNN and UNet for generating super-resolved CT images.
+Runs one model load per job and processes the full case as a batch of 2D slices.
 """
 
-import os
 import argparse
 import numpy as np
 import nibabel as nib
@@ -46,13 +44,24 @@ def load_model(checkpoint_path, model_type, device, in_channels=1):
 
     # Load checkpoint
     checkpoint = torch.load(checkpoint_path, map_location=device)
-    model.load_state_dict(checkpoint['model_state_dict'])
+    state_dict = checkpoint
+    if isinstance(checkpoint, dict):
+        state_dict = checkpoint.get('model_state_dict', checkpoint.get('state_dict', checkpoint))
+    if any(key.startswith('module.') for key in state_dict):
+        state_dict = {
+            (key[7:] if key.startswith('module.') else key): value
+            for key, value in state_dict.items()
+        }
+    model.load_state_dict(state_dict)
     model = model.to(device)
     model.eval()
 
     print(f"Loaded model from {checkpoint_path}")
-    print(f"  Epoch: {checkpoint.get('epoch', 'N/A')}")
-    print(f"  Loss: {checkpoint.get('loss', 'N/A'):.4f}")
+    if isinstance(checkpoint, dict):
+        print(f"  Epoch: {checkpoint.get('epoch', 'N/A')}")
+        loss = checkpoint.get('loss')
+        if loss is not None:
+            print(f"  Loss: {loss:.4f}")
 
     return model
 
@@ -68,91 +77,34 @@ def normalize_hu(x):
     return (x + 1024) / 4095.0
 
 
-def inference_volume(model, lr_path, gt_path, device, paired_path=None, patch_size=256, overlap=32):
-    """Run inference on a single volume.
-
-    Args:
-        model: Trained SR model
-        lr_path: Path to primary LR input
-        gt_path: Path to GT (for reference shape)
-        device: torch.device
-        paired_path: Optional path to same-FOV paired kernel input
-        patch_size: Patch size for inference
-        overlap: Overlap between patches
-
-    Returns:
-        Super-resolved volume (numpy array)
-    """
-    # Load volumes
+def inference_volume(model, lr_path, gt_path, device, paired_path=None, batch_size=64):
+    """Run full-slice batched inference on one registered volume."""
     lr = nib.load(lr_path).get_fdata().astype(np.float32)
     paired = nib.load(paired_path).get_fdata().astype(np.float32) if paired_path is not None else None
     gt_nii = nib.load(gt_path)
 
-    # Normalize
     lr = normalize_hu(lr)
     if paired is not None:
         paired = normalize_hu(paired)
         if paired.shape != lr.shape:
             raise ValueError(f"Paired sequence shape mismatch: {paired.shape} vs {lr.shape}")
 
-    # Get dimensions
-    H, W, D = lr.shape
+    channels = [lr] if paired is None else [lr, paired]
+    slices = np.ascontiguousarray(
+        np.stack([np.transpose(volume, (2, 0, 1)) for volume in channels], axis=1).astype(np.float32, copy=False)
+    )
+    d = slices.shape[0]
+    preds = np.zeros((d, slices.shape[2], slices.shape[3]), dtype=np.float32)
 
-    # Initialize output
-    sr_volume = np.zeros_like(lr)
-    count_map = np.zeros_like(lr)
+    with torch.inference_mode():
+        for z_start in tqdm(range(0, d, batch_size), desc="Processing slice batches"):
+            z_end = min(z_start + batch_size, d)
+            batch = torch.from_numpy(slices[z_start:z_end]).float().to(device, non_blocking=True)
+            pred = model(batch).squeeze(1).cpu().numpy().astype(np.float32)
+            preds[z_start:z_end] = pred
 
-    # Process slice by slice
-    with torch.no_grad():
-        for d in tqdm(range(D), desc="Processing slices"):
-            lr_slice = lr[:, :, d]
-            paired_slice = paired[:, :, d] if paired is not None else None
-
-            # Extract patches
-            for y in range(0, H, patch_size - overlap):
-                for x in range(0, W, patch_size - overlap):
-                    # Extract patch
-                    y_end = min(y + patch_size, H)
-                    x_end = min(x + patch_size, W)
-
-                    lr_patch = lr_slice[y:y_end, x:x_end]
-                    paired_patch = paired_slice[y:y_end, x:x_end] if paired_slice is not None else None
-
-                    # Resize to patch_size if needed
-                    if lr_patch.shape[0] < patch_size or lr_patch.shape[1] < patch_size:
-                        pad_h = patch_size - lr_patch.shape[0]
-                        pad_w = patch_size - lr_patch.shape[1]
-                        lr_patch = np.pad(lr_patch, ((0, pad_h), (0, pad_w)), mode='constant')
-                        if paired_patch is not None:
-                            paired_patch = np.pad(paired_patch, ((0, pad_h), (0, pad_w)), mode='constant')
-
-                    if paired_patch is None:
-                        lr_input = lr_patch[np.newaxis, ...]
-                    else:
-                        lr_input = np.stack([lr_patch, paired_patch], axis=0)
-                    lr_tensor = torch.from_numpy(lr_input).unsqueeze(0).float().to(device)
-
-                    # Predict
-                    sr_tensor = model(lr_tensor)
-
-                    # Convert back to numpy
-                    sr_patch = sr_tensor.squeeze().cpu().numpy()
-
-                    # Remove padding if added
-                    if y_end - y < patch_size or x_end - x < patch_size:
-                        sr_patch = sr_patch[:y_end-y, :x_end-x]
-
-                    # Accumulate output
-                    sr_volume[y:y_end, x:x_end, d] += sr_patch
-                    count_map[y:y_end, x:x_end, d] += 1
-
-    # Average overlapping regions
-    sr_volume = sr_volume / (count_map + 1e-8)
-
-    # Denormalize
-    sr_volume = denormalize(sr_volume)
+    sr_volume = denormalize(np.transpose(preds, (1, 2, 0)))
     sr_volume = np.clip(sr_volume, -1024, 32767).astype(np.int16)
-
     return sr_volume, gt_nii.affine
 
 
@@ -165,20 +117,10 @@ def batch_inference(
     sequence,
     dual_channel=False,
     paired_sequence=None,
-    patch_size=256,
-    overlap=32
+    batch_size=64,
+    model_tag=None,
 ):
-    """Run inference on multiple samples.
-
-    Args:
-        model: Trained SR model
-        data_root: Root directory of data
-        output_root: Output directory
-        samples: List of sample names
-        device: torch.device
-        patch_size: Patch size
-        overlap: Overlap between patches
-    """
+    """Run inference on multiple samples."""
     print(f"\n{'#'*60}")
     print(f"# Running Inference on {len(samples)} samples")
     print(f"{'#'*60}\n")
@@ -202,21 +144,21 @@ def batch_inference(
 
         # Run inference
         print(f"\n[{sample}]")
+        resolved_tag = model_tag or model.__class__.__name__.lower()
         sr_volume, sr_affine = inference_volume(
             model,
             str(lr_path),
             str(gt),
             device,
             paired_path=str(paired_path) if paired_path is not None else None,
-            patch_size=patch_size,
-            overlap=overlap,
+            batch_size=batch_size,
         )
 
         # Save result
-        output_dir = Path(output_root) / sample
+        output_dir = Path(output_root) / resolved_tag / sample
         output_dir.mkdir(parents=True, exist_ok=True)
 
-        output_path = output_dir / f"Lumbar{sample_id}_SR_pred.nii.gz"
+        output_path = output_dir / f"Lumbar{sample_id}_{sequence}_{resolved_tag}.nii.gz"
         sr_nii = nib.Nifti1Image(sr_volume, sr_affine)
         nib.save(sr_nii, str(output_path))
 
@@ -238,8 +180,9 @@ def main():
     parser.add_argument('--sequence', type=str, default='195X_195Y_1000Z_S')
     parser.add_argument('--paired-sequence', type=str, default=None)
     parser.add_argument('--dual-channel', action='store_true')
-    parser.add_argument('--patch-size', type=int, default=256)
-    parser.add_argument('--overlap', type=int, default=32)
+    parser.add_argument('--batch-size', type=int, default=64)
+    parser.add_argument('--model-tag', type=str, default=None,
+                        help="Output filename tag; defaults to the model name")
     parser.add_argument('--device', type=str, default='cuda')
     args = parser.parse_args()
 
@@ -268,8 +211,8 @@ def main():
         sequence=args.sequence,
         dual_channel=args.dual_channel,
         paired_sequence=args.paired_sequence,
-        patch_size=args.patch_size,
-        overlap=args.overlap
+        batch_size=args.batch_size,
+        model_tag=args.model_tag or args.model,
     )
 
 
