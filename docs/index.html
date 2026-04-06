@@ -557,7 +557,7 @@ tar -xzf LumbarSR_Dataset.tar.gz
         <tr>
             <td><code>evaluation/</code></td>
             <td>Public</td>
-            <td>Image quality evaluation code for PSNR, SSIM, and MAE</td>
+            <td>Image quality evaluation code for PSNR, SSIM, MAE, and trabecular summary statistics</td>
         </tr>
         <tr>
             <td><code>docs/</code></td>
@@ -698,6 +698,10 @@ tar -xzf LumbarSR_Dataset.tar.gz
     <p>
         The public benchmark pages report a compact set of ROI-based bone morphometry parameters for the currently released subset
         (`Micro-PCCT`, registered clinical CT baseline, `SRCNN`, `UNet`, `ESRGAN`, and `SwinIR`).
+    </p>
+    <p>
+        A paired statistical comparison against <code>Micro-PCCT</code> is also available on the full benchmark page:
+        two-sided exact <code>Wilcoxon signed-rank</code> tests are reported separately for each FOV together with signed mean differences.
     </p>
 
     <table class="data-table">

@@ -203,7 +203,7 @@ The public repository currently contains four main parts:
 |-----------|--------|-------------|
 | `baseline/` | Public | Rigid registration baseline based on ANTs, including `register_ants.py` and `batch_register.py` |
 | `methods/` | Public | Interpolation, SRCNN, and UNet baselines with training and inference scripts |
-| `evaluation/` | Public | Image quality evaluation scripts for PSNR, SSIM, and MAE |
+| `evaluation/` | Public | Image quality evaluation scripts for PSNR, SSIM, MAE, and trabecular summary statistics |
 | `docs/` | Public | GitHub Pages website, visualizations, and benchmark result pages |
 
 The current release covers the registration baseline, super-resolution baselines, evaluation scripts, the released `BoneMask` ROI files, and the project website.
@@ -267,6 +267,71 @@ Current public subset (`586X_586Y_1000Z_S`):
 | SwinIR | `0.0486 ± 0.0144` | `0.4010 ± 0.0203` | `0.9216 ± 0.2053` | `0.1198 ± 0.0305` |
 
 Interpolation baselines are also available in the public evaluation scripts and summary files; `SwinIR` morphometry entries have now been added for the released subset.
+
+### Paired Statistical Comparison vs Micro-PCCT
+
+For the released test subset, we additionally report a paired statistical comparison against the `Micro-PCCT` reference:
+
+- Test: two-sided exact `Wilcoxon signed-rank test`
+- Pairing: same released test case, reported separately for each FOV
+- Sample size: `n = 5` per FOV
+- Note: with `n = 5`, the smallest attainable exact two-sided `p` value is `0.0625`
+
+Signed mean difference, `pred - Micro-PCCT` (`195X_195Y_1000Z_S`):
+
+| Method | ΔBV/TV | ΔTb.Th (mm) | ΔTb.Sp (mm) | ΔTb.N (mm^-1) |
+|---|---:|---:|---:|---:|
+| Registered clinical CT baseline | -0.2125 | +0.3761 | +3.8776 | -0.8398 |
+| Nearest | -0.2125 | +0.3761 | +3.8776 | -0.8398 |
+| Trilinear | -0.2125 | +0.3761 | +3.8776 | -0.8398 |
+| Bicubic | -0.2125 | +0.3761 | +3.8776 | -0.8398 |
+| Lanczos | -0.2125 | +0.3761 | +3.8776 | -0.8398 |
+| SRCNN | -0.1556 | +0.5861 | +0.5512 | -0.7762 |
+| UNet | -0.1217 | +0.1907 | +0.0951 | -0.6357 |
+| ESRGAN | -0.0878 | +0.0167 | +0.0293 | -0.3767 |
+| SwinIR | -0.1793 | +0.4798 | +0.9947 | -0.8059 |
+
+Exact `Wilcoxon` `p` values vs `Micro-PCCT` (`195X_195Y_1000Z_S`):
+
+| Method | BV/TV p | Tb.Th p | Tb.Sp p | Tb.N p |
+|---|---:|---:|---:|---:|
+| Registered clinical CT baseline | 0.0625 | 0.0625 | 0.0625 | 0.0625 |
+| Nearest | 0.0625 | 0.0625 | 0.0625 | 0.0625 |
+| Trilinear | 0.0625 | 0.0625 | 0.0625 | 0.0625 |
+| Bicubic | 0.0625 | 0.0625 | 0.0625 | 0.0625 |
+| Lanczos | 0.0625 | 0.0625 | 0.0625 | 0.0625 |
+| SRCNN | 0.0625 | 0.0625 | 0.0625 | 0.0625 |
+| UNet | 0.0625 | 0.0625 | 0.0625 | 0.0625 |
+| ESRGAN | 0.0625 | 0.0625 | 0.1875 | 0.0625 |
+| SwinIR | 0.0625 | 0.0625 | 0.0625 | 0.0625 |
+
+Signed mean difference, `pred - Micro-PCCT` (`586X_586Y_1000Z_S`):
+
+| Method | ΔBV/TV | ΔTb.Th (mm) | ΔTb.Sp (mm) | ΔTb.N (mm^-1) |
+|---|---:|---:|---:|---:|
+| Registered clinical CT baseline | -0.2167 | +0.2665 | +5.0664 | -0.8493 |
+| Nearest | -0.2167 | +0.2665 | +5.0664 | -0.8493 |
+| Trilinear | -0.2167 | +0.2665 | +5.0664 | -0.8493 |
+| Bicubic | -0.2167 | +0.2665 | +5.0664 | -0.8493 |
+| Lanczos | -0.2167 | +0.2665 | +5.0664 | -0.8493 |
+| SRCNN | -0.0864 | +0.4665 | +0.0593 | -0.6719 |
+| UNet | -0.0920 | +0.2314 | +0.0863 | -0.5960 |
+| ESRGAN | -0.0702 | +0.0156 | +0.0063 | -0.3097 |
+| SwinIR | -0.1722 | +0.1437 | +0.5568 | -0.7410 |
+
+Exact `Wilcoxon` `p` values vs `Micro-PCCT` (`586X_586Y_1000Z_S`):
+
+| Method | BV/TV p | Tb.Th p | Tb.Sp p | Tb.N p |
+|---|---:|---:|---:|---:|
+| Registered clinical CT baseline | 0.0625 | 0.0625 | 0.0625 | 0.0625 |
+| Nearest | 0.0625 | 0.0625 | 0.0625 | 0.0625 |
+| Trilinear | 0.0625 | 0.0625 | 0.0625 | 0.0625 |
+| Bicubic | 0.0625 | 0.0625 | 0.0625 | 0.0625 |
+| Lanczos | 0.0625 | 0.0625 | 0.0625 | 0.0625 |
+| SRCNN | 0.0625 | 0.0625 | 0.1875 | 0.0625 |
+| UNet | 0.0625 | 0.0625 | 0.0625 | 0.0625 |
+| ESRGAN | 0.0625 | 0.0625 | 0.8125 | 0.0625 |
+| SwinIR | 0.0625 | 0.0625 | 0.0625 | 0.0625 |
 
 ## Baseline Methods
 
