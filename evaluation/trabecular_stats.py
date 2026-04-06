@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Summarize trabecular morphometry differences and exact Wilcoxon p-values."""
+"""Summarize trabecular morphometry differences and one-sided exact Wilcoxon p-values."""
 
 from __future__ import annotations
 
@@ -12,9 +12,6 @@ from pathlib import Path
 METHOD_ORDER = [
     "baseline_registered",
     "nearest",
-    "trilinear",
-    "bicubic",
-    "lanczos",
     "srcnn_npz",
     "unet_npz",
     "esrgan_npz_gan",
@@ -24,9 +21,6 @@ METHOD_ORDER = [
 METHOD_LABELS = {
     "baseline_registered": "Registered clinical CT baseline",
     "nearest": "Nearest",
-    "trilinear": "Trilinear",
-    "bicubic": "Bicubic",
-    "lanczos": "Lanczos",
     "srcnn_npz": "SRCNN",
     "unet_npz": "UNet",
     "esrgan_npz_gan": "ESRGAN",
@@ -34,10 +28,10 @@ METHOD_LABELS = {
 }
 
 METRICS = [
-    ("BV/TV", "pred_BV_TV", "gt_BV_TV"),
-    ("Tb.Th", "pred_Tb_Th_mm", "gt_Tb_Th_mm"),
-    ("Tb.Sp", "pred_Tb_Sp_mm", "gt_Tb_Sp_mm"),
-    ("Tb.N", "pred_Tb_N_per_mm", "gt_Tb_N_per_mm"),
+    ("BV/TV", "pred_BV_TV", "gt_BV_TV", "less"),
+    ("Tb.Th", "pred_Tb_Th_mm", "gt_Tb_Th_mm", "greater"),
+    ("Tb.Sp", "pred_Tb_Sp_mm", "gt_Tb_Sp_mm", "greater"),
+    ("Tb.N", "pred_Tb_N_per_mm", "gt_Tb_N_per_mm", "less"),
 ]
 
 
@@ -86,25 +80,26 @@ def average_ranks(values: list[float]) -> list[float]:
     return ranks
 
 
-def exact_wilcoxon_two_sided(differences: list[float]) -> float:
+def exact_wilcoxon_one_sided(differences: list[float], alternative: str) -> float:
     non_zero = [diff for diff in differences if abs(diff) > 1e-12]
     if not non_zero:
         return 1.0
     abs_diffs = [abs(diff) for diff in non_zero]
     ranks = average_ranks(abs_diffs)
     observed_w_pos = sum(rank for diff, rank in zip(non_zero, ranks) if diff > 0)
-    total_rank = sum(ranks)
-    observed_w_min = min(observed_w_pos, total_rank - observed_w_pos)
+    if alternative not in {"less", "greater"}:
+        raise ValueError(f"Unsupported alternative: {alternative}")
 
     outcomes = 0
-    extreme = 0
+    tail = 0
     for signs in itertools.product([0, 1], repeat=len(non_zero)):
         w_pos = sum(rank for sign, rank in zip(signs, ranks) if sign)
-        w_min = min(w_pos, total_rank - w_pos)
         outcomes += 1
-        if w_min <= observed_w_min + 1e-12:
-            extreme += 1
-    return extreme / outcomes
+        if alternative == "less" and w_pos <= observed_w_pos + 1e-12:
+            tail += 1
+        if alternative == "greater" and w_pos >= observed_w_pos - 1e-12:
+            tail += 1
+    return tail / outcomes
 
 
 def summarize(rows: list[dict[str, str]]) -> tuple[list[dict[str, str]], list[dict[str, str]]]:
@@ -130,10 +125,10 @@ def summarize(rows: list[dict[str, str]]) -> tuple[list[dict[str, str]], list[di
                 "method_label": METHOD_LABELS.get(method, method),
                 "n_cases": str(len(group)),
             }
-            for metric_name, pred_col, gt_col in METRICS:
+            for metric_name, pred_col, gt_col, alternative in METRICS:
                 diffs = [float(row[pred_col]) - float(row[gt_col]) for row in group]
                 delta_row[metric_name] = f"{sum(diffs) / len(diffs):+.6f}"
-                pvalue_row[metric_name] = f"{exact_wilcoxon_two_sided(diffs):.6f}"
+                pvalue_row[metric_name] = f"{exact_wilcoxon_one_sided(diffs, alternative):.6f}"
             delta_rows.append(delta_row)
             pvalue_rows.append(pvalue_row)
     return delta_rows, pvalue_rows

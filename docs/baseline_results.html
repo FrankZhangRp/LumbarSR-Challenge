@@ -451,9 +451,10 @@
     <div class="setup-box">
         <h3 style="margin-top: 0;">Paired Statistical Comparison vs Micro-PCCT</h3>
         <p>
-            We additionally compare each released method against the paired <code>Micro-PCCT</code> reference using a two-sided exact
+            We additionally compare each released method against the paired <code>Micro-PCCT</code> reference using a one-sided exact
             <code>Wilcoxon signed-rank</code> test, reported separately for each FOV across the 5 released test cases.
-            With <code>n = 5</code>, the smallest attainable exact two-sided <code>p</code> value is <code>0.0625</code>.
+            With <code>n = 5</code>, the smallest attainable exact one-sided <code>p</code> value is <code>0.03125</code>.
+            Directions: <code>BV/TV</code> and <code>Tb.N</code> test <code>pred &lt; Micro-PCCT</code>; <code>Tb.Th</code> and <code>Tb.Sp</code> test <code>pred &gt; Micro-PCCT</code>.
         </p>
 
         <h4 style="margin-bottom: 8px;">Signed Mean Difference, pred - Micro-PCCT (195X_195Y_1000Z_S)</h4>
@@ -470,9 +471,6 @@
             <tbody>
                 <tr><td class="method-name">Registered clinical CT baseline</td><td>-0.2125</td><td>+0.3761</td><td>+3.8776</td><td>-0.8398</td></tr>
                 <tr><td class="method-name">Nearest</td><td>-0.2125</td><td>+0.3761</td><td>+3.8776</td><td>-0.8398</td></tr>
-                <tr><td class="method-name">Trilinear</td><td>-0.2125</td><td>+0.3761</td><td>+3.8776</td><td>-0.8398</td></tr>
-                <tr><td class="method-name">Bicubic</td><td>-0.2125</td><td>+0.3761</td><td>+3.8776</td><td>-0.8398</td></tr>
-                <tr><td class="method-name">Lanczos</td><td>-0.2125</td><td>+0.3761</td><td>+3.8776</td><td>-0.8398</td></tr>
                 <tr><td class="method-name">SRCNN</td><td>-0.1556</td><td>+0.5861</td><td>+0.5512</td><td>-0.7762</td></tr>
                 <tr><td class="method-name">UNet</td><td>-0.1217</td><td>+0.1907</td><td>+0.0951</td><td>-0.6357</td></tr>
                 <tr><td class="method-name">ESRGAN</td><td>-0.0878</td><td>+0.0167</td><td>+0.0293</td><td>-0.3767</td></tr>
@@ -492,15 +490,12 @@
                 </tr>
             </thead>
             <tbody>
-                <tr><td class="method-name">Registered clinical CT baseline</td><td>0.0625</td><td>0.0625</td><td>0.0625</td><td>0.0625</td></tr>
-                <tr><td class="method-name">Nearest</td><td>0.0625</td><td>0.0625</td><td>0.0625</td><td>0.0625</td></tr>
-                <tr><td class="method-name">Trilinear</td><td>0.0625</td><td>0.0625</td><td>0.0625</td><td>0.0625</td></tr>
-                <tr><td class="method-name">Bicubic</td><td>0.0625</td><td>0.0625</td><td>0.0625</td><td>0.0625</td></tr>
-                <tr><td class="method-name">Lanczos</td><td>0.0625</td><td>0.0625</td><td>0.0625</td><td>0.0625</td></tr>
-                <tr><td class="method-name">SRCNN</td><td>0.0625</td><td>0.0625</td><td>0.0625</td><td>0.0625</td></tr>
-                <tr><td class="method-name">UNet</td><td>0.0625</td><td>0.0625</td><td>0.0625</td><td>0.0625</td></tr>
-                <tr><td class="method-name">ESRGAN</td><td>0.0625</td><td>0.0625</td><td>0.1875</td><td>0.0625</td></tr>
-                <tr><td class="method-name">SwinIR</td><td>0.0625</td><td>0.0625</td><td>0.0625</td><td>0.0625</td></tr>
+                <tr><td class="method-name">Registered clinical CT baseline</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
+                <tr><td class="method-name">Nearest</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
+                <tr><td class="method-name">SRCNN</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
+                <tr><td class="method-name">UNet</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
+                <tr><td class="method-name">ESRGAN</td><td>0.03125</td><td>0.03125</td><td>0.09375</td><td>0.03125</td></tr>
+                <tr><td class="method-name">SwinIR</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
             </tbody>
         </table>
 
@@ -518,9 +513,6 @@
             <tbody>
                 <tr><td class="method-name">Registered clinical CT baseline</td><td>-0.2167</td><td>+0.2665</td><td>+5.0664</td><td>-0.8493</td></tr>
                 <tr><td class="method-name">Nearest</td><td>-0.2167</td><td>+0.2665</td><td>+5.0664</td><td>-0.8493</td></tr>
-                <tr><td class="method-name">Trilinear</td><td>-0.2167</td><td>+0.2665</td><td>+5.0664</td><td>-0.8493</td></tr>
-                <tr><td class="method-name">Bicubic</td><td>-0.2167</td><td>+0.2665</td><td>+5.0664</td><td>-0.8493</td></tr>
-                <tr><td class="method-name">Lanczos</td><td>-0.2167</td><td>+0.2665</td><td>+5.0664</td><td>-0.8493</td></tr>
                 <tr><td class="method-name">SRCNN</td><td>-0.0864</td><td>+0.4665</td><td>+0.0593</td><td>-0.6719</td></tr>
                 <tr><td class="method-name">UNet</td><td>-0.0920</td><td>+0.2314</td><td>+0.0863</td><td>-0.5960</td></tr>
                 <tr><td class="method-name">ESRGAN</td><td>-0.0702</td><td>+0.0156</td><td>+0.0063</td><td>-0.3097</td></tr>
@@ -540,15 +532,12 @@
                 </tr>
             </thead>
             <tbody>
-                <tr><td class="method-name">Registered clinical CT baseline</td><td>0.0625</td><td>0.0625</td><td>0.0625</td><td>0.0625</td></tr>
-                <tr><td class="method-name">Nearest</td><td>0.0625</td><td>0.0625</td><td>0.0625</td><td>0.0625</td></tr>
-                <tr><td class="method-name">Trilinear</td><td>0.0625</td><td>0.0625</td><td>0.0625</td><td>0.0625</td></tr>
-                <tr><td class="method-name">Bicubic</td><td>0.0625</td><td>0.0625</td><td>0.0625</td><td>0.0625</td></tr>
-                <tr><td class="method-name">Lanczos</td><td>0.0625</td><td>0.0625</td><td>0.0625</td><td>0.0625</td></tr>
-                <tr><td class="method-name">SRCNN</td><td>0.0625</td><td>0.0625</td><td>0.1875</td><td>0.0625</td></tr>
-                <tr><td class="method-name">UNet</td><td>0.0625</td><td>0.0625</td><td>0.0625</td><td>0.0625</td></tr>
-                <tr><td class="method-name">ESRGAN</td><td>0.0625</td><td>0.0625</td><td>0.8125</td><td>0.0625</td></tr>
-                <tr><td class="method-name">SwinIR</td><td>0.0625</td><td>0.0625</td><td>0.0625</td><td>0.0625</td></tr>
+                <tr><td class="method-name">Registered clinical CT baseline</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
+                <tr><td class="method-name">Nearest</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
+                <tr><td class="method-name">SRCNN</td><td>0.03125</td><td>0.03125</td><td>0.09375</td><td>0.03125</td></tr>
+                <tr><td class="method-name">UNet</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
+                <tr><td class="method-name">ESRGAN</td><td>0.03125</td><td>0.03125</td><td>0.40625</td><td>0.03125</td></tr>
+                <tr><td class="method-name">SwinIR</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
             </tbody>
         </table>
     </div>
