@@ -47,7 +47,9 @@ data/
 │   └── ...
 └── BoneMask/
     ├── Lumbar_01/
-    │   └── Lumbar01_MicroPCCT_105um_BoneMask.nii.gz
+    │   ├── Lumbar01_MicroPCCT_105um_BoneMask.nii.gz
+    │   ├── Lumbar01_ClinicalCT_195X_195Y_1000Z_S_registered_BoneMask.nii.gz
+    │   └── Lumbar01_ClinicalCT_586X_586Y_1000Z_S_registered_BoneMask.nii.gz
     └── ...
 ```
 

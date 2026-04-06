@@ -374,8 +374,10 @@
     <div class="setup-box">
         <h3 style="margin-top: 0;">Bone Morphometry</h3>
         <p>
-            The public benchmark pages reserve space for the following bone morphometry summaries.
+            The public benchmark pages now report the currently released subset (`Micro-PCCT`, registered clinical CT baseline,
+            `SRCNN`, and `UNet`) for ROI-based bone morphometry. `ESRGAN` and `SwinIR` remain pending.
         </p>
+        <h4 style="margin-bottom: 8px;">195X_195Y_1000Z_S</h4>
         <table class="results-table" style="font-size: 14px;">
             <thead>
                 <tr>
@@ -390,27 +392,51 @@
             <tbody>
                 <tr>
                     <td class="method-name">Micro-PCCT reference</td>
-                    <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
+                    <td>0.2186 ± 0.0156</td><td>0.2581 ± 0.0125</td><td>0.4084 ± 0.0183</td><td>0.8499 ± 0.0789</td><td>50264.79 ± 10277.34</td>
                 </tr>
                 <tr>
                     <td class="method-name">Registered clinical CT baseline</td>
-                    <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
+                    <td>0.0061 ± 0.0026</td><td>0.6342 ± 0.1127</td><td>4.2860 ± 1.0339</td><td>0.0100 ± 0.0052</td><td>50264.79 ± 10277.34</td>
                 </tr>
                 <tr>
                     <td class="method-name">SRCNN</td>
-                    <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
+                    <td>0.0630 ± 0.0186</td><td>0.8442 ± 0.0558</td><td>0.9596 ± 0.1985</td><td>0.0736 ± 0.0179</td><td>50264.79 ± 10277.34</td>
                 </tr>
                 <tr>
                     <td class="method-name">UNet</td>
-                    <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
+                    <td>0.0969 ± 0.0205</td><td>0.4487 ± 0.0562</td><td>0.5035 ± 0.0616</td><td>0.2141 ± 0.0267</td><td>50264.79 ± 10277.34</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4 style="margin-top: 18px; margin-bottom: 8px;">586X_586Y_1000Z_S</h4>
+        <table class="results-table" style="font-size: 14px;">
+            <thead>
+                <tr>
+                    <th>Method / Data</th>
+                    <th>BV/TV</th>
+                    <th>Tb.Th (mm)</th>
+                    <th>Tb.Sp (mm)</th>
+                    <th>Tb.N (mm^-1)</th>
+                    <th>TV (mm^3)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="method-name">Micro-PCCT reference</td>
+                    <td>0.2201 ± 0.0153</td><td>0.2578 ± 0.0121</td><td>0.4176 ± 0.0164</td><td>0.8559 ± 0.0742</td><td>50418.54 ± 10331.35</td>
                 </tr>
                 <tr>
-                    <td class="method-name">ESRGAN</td>
-                    <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
+                    <td class="method-name">Registered clinical CT baseline</td>
+                    <td>0.0034 ± 0.0020</td><td>0.5243 ± 0.0959</td><td>5.4840 ± 1.1410</td><td>0.0065 ± 0.0042</td><td>50418.54 ± 10331.35</td>
                 </tr>
                 <tr>
-                    <td class="method-name">SwinIR</td>
-                    <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
+                    <td class="method-name">SRCNN</td>
+                    <td>0.1336 ± 0.0183</td><td>0.7243 ± 0.0774</td><td>0.4770 ± 0.0466</td><td>0.1839 ± 0.0066</td><td>50418.54 ± 10331.35</td>
+                </tr>
+                <tr>
+                    <td class="method-name">UNet</td>
+                    <td>0.1281 ± 0.0232</td><td>0.4892 ± 0.0447</td><td>0.5039 ± 0.0591</td><td>0.2598 ± 0.0250</td><td>50418.54 ± 10331.35</td>
                 </tr>
             </tbody>
         </table>

@@ -90,9 +90,17 @@ LumbarSR/
 │   │   └── ...
 │   └── Lumbar_30/
 │       └── ...
-├── BoneMask/                    # Released binary bone ROI aligned to Micro-PCCT
+├── BoneMask/                    # Released binary bone ROI aligned to RegisteredData
 │   ├── Lumbar_01/
-│   │   └── Lumbar01_MicroPCCT_105um_BoneMask.nii.gz
+│   │   ├── Lumbar01_MicroPCCT_105um_BoneMask.nii.gz
+│   │   ├── Lumbar01_ClinicalCT_195X_195Y_500Z_B_registered_BoneMask.nii.gz
+│   │   ├── Lumbar01_ClinicalCT_195X_195Y_500Z_S_registered_BoneMask.nii.gz
+│   │   ├── Lumbar01_ClinicalCT_195X_195Y_1000Z_B_registered_BoneMask.nii.gz
+│   │   ├── Lumbar01_ClinicalCT_195X_195Y_1000Z_S_registered_BoneMask.nii.gz
+│   │   ├── Lumbar01_ClinicalCT_586X_586Y_500Z_B_registered_BoneMask.nii.gz
+│   │   ├── Lumbar01_ClinicalCT_586X_586Y_500Z_S_registered_BoneMask.nii.gz
+│   │   ├── Lumbar01_ClinicalCT_586X_586Y_1000Z_B_registered_BoneMask.nii.gz
+│   │   └── Lumbar01_ClinicalCT_586X_586Y_1000Z_S_registered_BoneMask.nii.gz
 │   ├── Lumbar_02/
 │   │   └── ...
 │   └── Lumbar_30/
@@ -103,10 +111,11 @@ LumbarSR/
 **Key Points:**
 - `original_dicom/`: Contains raw DICOM files for advanced users who want to process from scratch
 - `RegisteredData/`: Pre-processed and registered NIfTI files, ready for training (recommended starting point)
-- `BoneMask/`: Binary bone ROI volumes aligned to the released Micro-PCCT images
+- `BoneMask/`: Binary bone ROI volumes aligned to the released `RegisteredData` files
 - All clinical CT sequences are rigidly registered to the Micro-PCCT space
 - Ground truth files are named `*_MicroPCCT_105um.nii.gz`
-- Bone ROI files are named `*_MicroPCCT_105um_BoneMask.nii.gz`
+- Each sample contains 9 BoneMask files: 1 `MicroPCCT` mask and 8 registered clinical-sequence masks
+- Within one FOV, the same released mask is reused across `B/S` kernels and `500/1000` slice-thickness reconstructions
 
 ### Recommended Split
 
@@ -209,7 +218,14 @@ The public repository currently contains four main parts:
 | `evaluation/` | Public | Image quality evaluation scripts for PSNR, SSIM, MAE, and LBC |
 | `docs/` | Public | GitHub Pages website, visualizations, and benchmark result pages |
 
-The current release covers the registration baseline, super-resolution baselines, evaluation scripts, the released `BoneMask` ROI files, and the project website. ESRGAN and SwinIR result entries are reserved on the benchmark pages and will be filled in a later update.
+The current release covers the registration baseline, super-resolution baselines, evaluation scripts, the released `BoneMask` ROI files, and the project website.
+
+Current public benchmark status (`2026-04-06`):
+
+- The released benchmark pages already reflect the refreshed `BoneMask`-ROI protocol for the previously released methods: registered clinical CT baseline, interpolation baselines, `SRCNN`, and `UNet`
+- Public `masked` image-quality metrics and public `LBC` are interpreted inside the released sequence-level `BoneMask` ROI
+- Public bone morphometry summaries currently cover the released subset (`Micro-PCCT`, registered clinical CT baseline, `SRCNN`, `UNet`) for both `195X_195Y_1000Z_S` and `586X_586Y_1000Z_S`
+- `ESRGAN` and `SwinIR` entries remain reserved on the benchmark pages and will be filled in after the corresponding test-set evaluations finish
 
 ## Registration Baseline and Mask Evaluation
 
@@ -217,7 +233,7 @@ The public repository already includes rigid registration code in [`baseline/reg
 
 ### Current Public Evaluation Masks
 
-- Public SR evaluation uses the released `BoneMask` ROI volume aligned to each Micro-PCCT scan
+- Public SR evaluation uses the released sequence-level `BoneMask` ROI aligned to each `RegisteredData` volume
 - The public `BoneMask` files are provided as binary reference masks in `LumbarSR/BoneMask/`
 - Public `LBC` is also computed inside the same released `BoneMask` ROI
 
@@ -233,23 +249,32 @@ We report registration quality within the released `BoneMask` ROI using `Dice`, 
 
 ### Bone Morphometry
 
-The public benchmark pages reserve space for the following bone-related measurements:
+The public benchmark pages report the following ROI-based bone morphometry measurements:
 
 | Category | Metrics |
 |----------|---------|
 | Core trabecular morphometry | `BV/TV`, `Tb.Th`, `Tb.Sp`, `Tb.N` |
 | ROI volume | `TV` derived from the released `BoneMask` |
 
-Reserved result table:
+Current public subset (`195X_195Y_1000Z_S`):
 
 | Method / Data | BV/TV | Tb.Th (mm) | Tb.Sp (mm) | Tb.N (mm^-1) | TV (mm^3) |
 |---------------|-------|------------|------------|--------------|-----------|
-| Micro-PCCT reference | To be added | To be added | To be added | To be added | To be added |
-| Registered clinical CT baseline | To be added | To be added | To be added | To be added | To be added |
-| SRCNN | To be added | To be added | To be added | To be added | To be added |
-| UNet | To be added | To be added | To be added | To be added | To be added |
-| ESRGAN | To be added | To be added | To be added | To be added | To be added |
-| SwinIR | To be added | To be added | To be added | To be added | To be added |
+| Micro-PCCT reference | `0.2186 ± 0.0156` | `0.2581 ± 0.0125` | `0.4084 ± 0.0183` | `0.8499 ± 0.0789` | `50264.79 ± 10277.34` |
+| Registered clinical CT baseline | `0.0061 ± 0.0026` | `0.6342 ± 0.1127` | `4.2860 ± 1.0339` | `0.0100 ± 0.0052` | `50264.79 ± 10277.34` |
+| SRCNN | `0.0630 ± 0.0186` | `0.8442 ± 0.0558` | `0.9596 ± 0.1985` | `0.0736 ± 0.0179` | `50264.79 ± 10277.34` |
+| UNet | `0.0969 ± 0.0205` | `0.4487 ± 0.0562` | `0.5035 ± 0.0616` | `0.2141 ± 0.0267` | `50264.79 ± 10277.34` |
+
+Current public subset (`586X_586Y_1000Z_S`):
+
+| Method / Data | BV/TV | Tb.Th (mm) | Tb.Sp (mm) | Tb.N (mm^-1) | TV (mm^3) |
+|---------------|-------|------------|------------|--------------|-----------|
+| Micro-PCCT reference | `0.2201 ± 0.0153` | `0.2578 ± 0.0121` | `0.4176 ± 0.0164` | `0.8559 ± 0.0742` | `50418.54 ± 10331.35` |
+| Registered clinical CT baseline | `0.0034 ± 0.0020` | `0.5243 ± 0.0959` | `5.4840 ± 1.1410` | `0.0065 ± 0.0042` | `50418.54 ± 10331.35` |
+| SRCNN | `0.1336 ± 0.0183` | `0.7243 ± 0.0774` | `0.4770 ± 0.0466` | `0.1839 ± 0.0066` | `50418.54 ± 10331.35` |
+| UNet | `0.1281 ± 0.0232` | `0.4892 ± 0.0447` | `0.5039 ± 0.0591` | `0.2598 ± 0.0250` | `50418.54 ± 10331.35` |
+
+Interpolation baselines are also available in the public evaluation scripts and summary files; `ESRGAN` and `SwinIR` morphometry entries remain reserved until their test-set outputs are finalized.
 
 ## Baseline Methods
 

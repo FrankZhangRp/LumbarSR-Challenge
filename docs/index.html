@@ -436,9 +436,17 @@ tar -xzf LumbarSR_Dataset.tar.gz
 │   │   └── ...
 │   └── Lumbar_30/
 │       └── ...
-├── BoneMask/                    # Released binary bone ROI aligned to Micro-PCCT
+├── BoneMask/                    # Released binary bone ROI aligned to RegisteredData
 │   ├── Lumbar_01/
-│   │   └── Lumbar01_MicroPCCT_105um_BoneMask.nii.gz
+│   │   ├── Lumbar01_MicroPCCT_105um_BoneMask.nii.gz
+│   │   ├── Lumbar01_ClinicalCT_195X_195Y_500Z_B_registered_BoneMask.nii.gz
+│   │   ├── Lumbar01_ClinicalCT_195X_195Y_500Z_S_registered_BoneMask.nii.gz
+│   │   ├── Lumbar01_ClinicalCT_195X_195Y_1000Z_B_registered_BoneMask.nii.gz
+│   │   ├── Lumbar01_ClinicalCT_195X_195Y_1000Z_S_registered_BoneMask.nii.gz
+│   │   ├── Lumbar01_ClinicalCT_586X_586Y_500Z_B_registered_BoneMask.nii.gz
+│   │   ├── Lumbar01_ClinicalCT_586X_586Y_500Z_S_registered_BoneMask.nii.gz
+│   │   ├── Lumbar01_ClinicalCT_586X_586Y_1000Z_B_registered_BoneMask.nii.gz
+│   │   └── Lumbar01_ClinicalCT_586X_586Y_1000Z_S_registered_BoneMask.nii.gz
 │   └── ...
 └── README.md</code></pre>
 
@@ -447,10 +455,11 @@ tar -xzf LumbarSR_Dataset.tar.gz
         <ul style="margin: 10px 0;">
             <li><code>original_dicom/</code>: Contains raw DICOM files for advanced users who want to process from scratch</li>
             <li><code>RegisteredData/</code>: Pre-processed and registered NIfTI files, ready for training (recommended starting point)</li>
-            <li><code>BoneMask/</code>: Binary bone ROI volumes aligned to the released Micro-PCCT images</li>
+            <li><code>BoneMask/</code>: Binary bone ROI volumes aligned to the released <code>RegisteredData</code> files</li>
             <li>All clinical CT sequences are rigidly registered to the Micro-PCCT space</li>
             <li>Ground truth files are named <code>*_MicroPCCT_105um.nii.gz</code></li>
-            <li>Bone ROI files are named <code>*_MicroPCCT_105um_BoneMask.nii.gz</code></li>
+            <li>Each sample contains 9 BoneMask files: 1 <code>MicroPCCT</code> mask and 8 registered clinical-sequence masks</li>
+            <li>Within one FOV, the same released mask is reused across <code>B/S</code> kernels and <code>500/1000</code> reconstructions</li>
         </ul>
     </div>
 
@@ -558,7 +567,10 @@ tar -xzf LumbarSR_Dataset.tar.gz
     </table>
 
     <p class="note">
-        The current release covers the registration baseline, super-resolution baselines, evaluation scripts, the released BoneMask ROI files, and the website. ESRGAN and SwinIR result entries are reserved on the benchmark pages and will be filled in a later update.
+        The current release covers the registration baseline, super-resolution baselines, evaluation scripts, the released BoneMask ROI files, and the website.
+        As of 2026-04-06, the public benchmark pages already reflect the refreshed BoneMask-ROI protocol for the previously released methods
+        (registered clinical CT baseline, interpolation baselines, SRCNN, and UNet). ESRGAN and SwinIR result entries remain reserved until the
+        corresponding test-set evaluations finish.
     </p>
 
     <hr>
@@ -667,13 +679,13 @@ tar -xzf LumbarSR_Dataset.tar.gz
         </tr>
         <tr>
             <td><strong>ESRGAN</strong></td>
-            <td>Reserved</td>
-            <td>To be added</td>
+            <td>Evaluation running</td>
+            <td>Pending public update</td>
         </tr>
         <tr>
             <td><strong>SwinIR</strong></td>
-            <td>Reserved</td>
-            <td>To be added</td>
+            <td>Inference / evaluation running</td>
+            <td>Pending public update</td>
         </tr>
     </table>
 
@@ -715,7 +727,8 @@ tar -xzf LumbarSR_Dataset.tar.gz
 
     <h3>Bone Morphometry</h3>
     <p>
-        The public benchmark pages reserve space for a compact set of bone-related morphometry parameters.
+        The public benchmark pages report a compact set of ROI-based bone morphometry parameters for the currently released subset
+        (`Micro-PCCT`, registered clinical CT baseline, `SRCNN`, and `UNet`). `ESRGAN` and `SwinIR` remain pending.
     </p>
 
     <table class="data-table">
@@ -731,12 +744,9 @@ tar -xzf LumbarSR_Dataset.tar.gz
             <td>ROI volume</td>
             <td><code>TV</code> derived from the released <code>BoneMask</code></td>
         </tr>
-        <tr>
-            <td>Slice-wise summaries</td>
-            <td><code>2D BV/TV mean</code>, <code>2D Tb.Th mean</code>, <code>2D Tb.Sp mean</code>, <code>2D Tb.N mean</code></td>
-        </tr>
     </table>
 
+    <h4>Current Public Subset: 195X_195Y_1000Z_S</h4>
     <table class="data-table">
         <tr>
             <th>Method / Data</th>
@@ -748,27 +758,47 @@ tar -xzf LumbarSR_Dataset.tar.gz
         </tr>
         <tr>
             <td>Micro-PCCT reference</td>
-            <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
+            <td>0.2186 ± 0.0156</td><td>0.2581 ± 0.0125</td><td>0.4084 ± 0.0183</td><td>0.8499 ± 0.0789</td><td>50264.79 ± 10277.34</td>
         </tr>
         <tr>
             <td>Registered clinical CT baseline</td>
-            <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
+            <td>0.0061 ± 0.0026</td><td>0.6342 ± 0.1127</td><td>4.2860 ± 1.0339</td><td>0.0100 ± 0.0052</td><td>50264.79 ± 10277.34</td>
         </tr>
         <tr>
             <td>SRCNN</td>
-            <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
+            <td>0.0630 ± 0.0186</td><td>0.8442 ± 0.0558</td><td>0.9596 ± 0.1985</td><td>0.0736 ± 0.0179</td><td>50264.79 ± 10277.34</td>
         </tr>
         <tr>
             <td>UNet</td>
-            <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
+            <td>0.0969 ± 0.0205</td><td>0.4487 ± 0.0562</td><td>0.5035 ± 0.0616</td><td>0.2141 ± 0.0267</td><td>50264.79 ± 10277.34</td>
+        </tr>
+    </table>
+
+    <h4>Current Public Subset: 586X_586Y_1000Z_S</h4>
+    <table class="data-table">
+        <tr>
+            <th>Method / Data</th>
+            <th>BV/TV</th>
+            <th>Tb.Th (mm)</th>
+            <th>Tb.Sp (mm)</th>
+            <th>Tb.N (mm^-1)</th>
+            <th>TV (mm^3)</th>
         </tr>
         <tr>
-            <td>ESRGAN</td>
-            <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
+            <td>Micro-PCCT reference</td>
+            <td>0.2201 ± 0.0153</td><td>0.2578 ± 0.0121</td><td>0.4176 ± 0.0164</td><td>0.8559 ± 0.0742</td><td>50418.54 ± 10331.35</td>
         </tr>
         <tr>
-            <td>SwinIR</td>
-            <td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td><td>To be added</td>
+            <td>Registered clinical CT baseline</td>
+            <td>0.0034 ± 0.0020</td><td>0.5243 ± 0.0959</td><td>5.4840 ± 1.1410</td><td>0.0065 ± 0.0042</td><td>50418.54 ± 10331.35</td>
+        </tr>
+        <tr>
+            <td>SRCNN</td>
+            <td>0.1336 ± 0.0183</td><td>0.7243 ± 0.0774</td><td>0.4770 ± 0.0466</td><td>0.1839 ± 0.0066</td><td>50418.54 ± 10331.35</td>
+        </tr>
+        <tr>
+            <td>UNet</td>
+            <td>0.1281 ± 0.0232</td><td>0.4892 ± 0.0447</td><td>0.5039 ± 0.0591</td><td>0.2598 ± 0.0250</td><td>50418.54 ± 10331.35</td>
         </tr>
     </table>
 
