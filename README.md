@@ -149,7 +149,7 @@ For each sample, we provide 4 sequences with soft tissue kernel:
 
 ### Image Quality Metrics
 
-The following metrics are computed under **two CT window settings** (Bone, Soft Tissue) within the released `BoneMask` ROI:
+The following image-quality metrics are reported within the released `BoneMask` ROI:
 
 - **PSNR** (Peak Signal-to-Noise Ratio) - measured in dB, higher is better ↑
 - **SSIM** (Structural Similarity Index) - range [0, 1], higher is better ↑
@@ -157,10 +157,11 @@ The following metrics are computed under **two CT window settings** (Bone, Soft 
 
 ### CT Window Settings
 
-All image quality metrics (PSNR, SSIM, MAE) are computed under two CT window settings:
+Public image-quality evaluation reports three CT window settings:
 
 | Window | Window Center (WC) | Window Width (WW) | Description |
 |--------|-------------------|-------------------|-------------|
+| Raw | - | - | Original HU values (-1024 ~ 3071) |
 | Bone | 400 | 1800 | Bone structure visualization |
 | Soft Tissue | 40 | 400 | Soft tissue visualization |
 
@@ -210,6 +211,7 @@ The current release covers the registration baseline, super-resolution baselines
 
 Current public benchmark status (`2026-04-06`):
 
+- Public method code currently covers interpolation, `SRCNN`, and `UNet`; `ESRGAN` and `SwinIR` are benchmark-page result entries in this release
 - The released benchmark pages already reflect the refreshed `BoneMask`-ROI protocol for the previously released methods: registered clinical CT baseline, interpolation baselines, `SRCNN`, and `UNet`
 - Public `masked` image-quality metrics are interpreted inside the released sequence-level `BoneMask` ROI
 - Public bone morphometry summaries currently cover the released subset (`Micro-PCCT`, registered clinical CT baseline, `SRCNN`, `UNet`, `ESRGAN`, `SwinIR`) for both `195X_195Y_1000Z_S` and `586X_586Y_1000Z_S`

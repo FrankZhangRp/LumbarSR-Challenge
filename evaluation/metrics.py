@@ -35,8 +35,8 @@ WINDOWS = {
     'soft_tissue': {'center': 40, 'width': 400}, # Soft tissue window
 }
 
-# Windows to evaluate (bone and soft tissue only)
-EVAL_WINDOWS = ['bone', 'soft_tissue']
+# Windows to evaluate
+EVAL_WINDOWS = ['raw', 'bone', 'soft_tissue']
 
 DEFAULT_BONE_MASK_ROOT = Path("./data/BoneMask")
 MICROCT_BONE_MASK_FILENAME_TEMPLATE = "Lumbar{sample_id}_MicroPCCT_105um_BoneMask.nii.gz"
@@ -220,8 +220,35 @@ def _compute_ssim_slice(args: Tuple[np.ndarray, np.ndarray, int]) -> float:
     return ssim_func(gt_slice, pred_slice, data_range=1.0, win_size=win_size)
 
 
+def _apply_mask_for_ssim(
+    gt: np.ndarray,
+    pred: np.ndarray,
+    mask: Optional[np.ndarray],
+) -> tuple[np.ndarray, np.ndarray]:
+    """Crop to the mask bounding box and zero voxels outside the ROI."""
+    if mask is None:
+        return gt, pred
+    if not np.any(mask):
+        empty = gt[:1, :1, :1].copy()
+        empty.fill(0.0)
+        return empty, empty.copy()
+
+    coords = np.argwhere(mask)
+    mins = coords.min(axis=0)
+    maxs = coords.max(axis=0) + 1
+    slices = tuple(slice(int(lo), int(hi)) for lo, hi in zip(mins, maxs))
+
+    gt_crop = gt[slices].copy()
+    pred_crop = pred[slices].copy()
+    mask_crop = mask[slices]
+    gt_crop[~mask_crop] = 0.0
+    pred_crop[~mask_crop] = 0.0
+    return gt_crop, pred_crop
+
+
 def compute_ssim_3d(gt: np.ndarray, pred: np.ndarray,
                     mask: Optional[np.ndarray] = None) -> float:
+    gt, pred = _apply_mask_for_ssim(gt, pred, mask)
     win_size = min(7, min(gt.shape) // 2 * 2 - 1)
     if win_size < 3:
         win_size = 3
@@ -233,8 +260,10 @@ def compute_ssim(gt: np.ndarray, pred: np.ndarray,
                  n_workers: int = None,
                  sample_slices: int = None,
                  use_3d: bool = False) -> float:
+    gt, pred = _apply_mask_for_ssim(gt, pred, mask)
+
     if use_3d:
-        return compute_ssim_3d(gt, pred, mask)
+        return compute_ssim_3d(gt, pred, None)
 
     if n_workers is None:
         n_workers = min(mp.cpu_count(), 64)
@@ -502,24 +531,33 @@ def compute_lbc_comparison(
 class MetricsCalculator:
     """Calculator for super-resolution evaluation metrics."""
 
-    def __init__(self, use_mask: bool = True, mask_threshold: float = -1000):
+    def __init__(
+        self,
+        use_mask: bool = True,
+        mask_threshold: float = -1000,
+        bone_mask_root: str | Path = DEFAULT_BONE_MASK_ROOT,
+    ):
         """Initialize calculator.
 
         Args:
             use_mask: Whether to use valid region mask
             mask_threshold: HU threshold for valid region
+            bone_mask_root: Root directory of released BoneMask files
         """
         self.use_mask = use_mask
         self.mask_threshold = mask_threshold
+        self.bone_mask_root = Path(bone_mask_root)
 
     def compute_all_metrics(self, gt: np.ndarray, pred: np.ndarray,
-                            window_name: str = 'raw') -> Dict[str, float]:
+                            window_name: str = 'raw',
+                            mask: Optional[np.ndarray] = None) -> Dict[str, float]:
         """Compute all metrics for a single window.
 
         Args:
             gt: Ground truth in HU
             pred: Prediction in HU
             window_name: Name of CT window to apply
+            mask: Optional precomputed ROI mask
 
         Returns:
             Dict of metric_name -> value
@@ -528,8 +566,7 @@ class MetricsCalculator:
         gt_w = apply_window(gt, window)
         pred_w = apply_window(pred, window)
 
-        mask = None
-        if self.use_mask:
+        if mask is None and self.use_mask:
             mask = get_valid_mask(gt, pred, self.mask_threshold)
 
         return {
@@ -543,22 +580,34 @@ class MetricsCalculator:
 
     def evaluate_case(self, gt: np.ndarray, pred: np.ndarray,
                       case_id: str,
-                      compute_lbc_flag: bool = True) -> CaseMetrics:
-        """Evaluate a single case across bone and soft tissue windows.
+                      compute_lbc_flag: bool = True,
+                      sequence_name: Optional[str] = None) -> CaseMetrics:
+        """Evaluate a single case across the public CT windows.
 
         Args:
             gt: Ground truth in HU
             pred: Prediction in HU
             case_id: Case identifier
             compute_lbc_flag: Whether to compute LBC metrics
+            sequence_name: Optional clinical CT sequence for BoneMask lookup
 
         Returns:
             CaseMetrics with all metrics
         """
         result = CaseMetrics(case_id=case_id)
+        bone_mask = None
+        if self.use_mask:
+            bone_mask = get_evaluation_mask(
+                case_id,
+                gt,
+                pred,
+                sequence_name=sequence_name,
+                bone_mask_root=self.bone_mask_root,
+                fallback_threshold=self.mask_threshold,
+            )
 
         for window_name in EVAL_WINDOWS:
-            metrics = self.compute_all_metrics(gt, pred, window_name)
+            metrics = self.compute_all_metrics(gt, pred, window_name, mask=bone_mask)
             result.psnr[window_name] = metrics['psnr']
             result.ssim[window_name] = metrics['ssim']
             result.mae[window_name] = metrics['mae']
@@ -567,8 +616,8 @@ class MetricsCalculator:
             result.nrmse[window_name] = metrics['nrmse']
 
         if compute_lbc_flag:
-            bone_mask = get_valid_mask(gt, pred, threshold=-500)
-            result.lbc = compute_lbc_comparison(gt, pred, bone_mask)
+            lbc_mask = bone_mask if bone_mask is not None else get_valid_mask(gt, pred, threshold=-500)
+            result.lbc = compute_lbc_comparison(gt, pred, lbc_mask)
 
         return result
 
@@ -622,7 +671,11 @@ def format_case_report(case: CaseMetrics) -> str:
     lines = [f"\n{'='*60}", f"Case: {case.case_id}", '='*60]
 
     for window in EVAL_WINDOWS:
-        window_label = "BONE" if window == "bone" else "SOFT TISSUE"
+        window_label = {
+            "raw": "RAW",
+            "bone": "BONE",
+            "soft_tissue": "SOFT TISSUE",
+        }[window]
         lines.append(f"\n[{window_label}]")
         lines.append(f"  PSNR:  {case.psnr[window]:.2f} dB")
         lines.append(f"  SSIM:  {case.ssim[window]:.4f}")
@@ -656,7 +709,11 @@ def format_dataset_report(dataset: DatasetMetrics) -> str:
     units = {'psnr': 'dB', 'ssim': '', 'mae': '', 'rmse': '', 'ncc': '', 'nrmse': ''}
 
     for window in EVAL_WINDOWS:
-        window_label = "BONE" if window == "bone" else "SOFT TISSUE"
+        window_label = {
+            "raw": "RAW",
+            "bone": "BONE",
+            "soft_tissue": "SOFT TISSUE",
+        }[window]
         lines.append(f"\n[{window_label}]")
         for metric in metric_names:
             stats = dataset.metrics[metric][window]
@@ -735,5 +792,6 @@ if __name__ == "__main__":
     pred = nib.load(pred_path).get_fdata()
 
     print("Computing metrics...")
-    case_metrics = calculator.evaluate_case(gt, pred, sample)
+    sequence_name = args.pred_seq.replace('_registered', '')
+    case_metrics = calculator.evaluate_case(gt, pred, sample, sequence_name=sequence_name)
     print(format_case_report(case_metrics))
