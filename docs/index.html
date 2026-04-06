@@ -569,8 +569,8 @@ tar -xzf LumbarSR_Dataset.tar.gz
     <p class="note">
         The current release covers the registration baseline, super-resolution baselines, evaluation scripts, the released BoneMask ROI files, and the website.
         As of 2026-04-06, the public benchmark pages already reflect the refreshed BoneMask-ROI protocol for the previously released methods
-        (registered clinical CT baseline, interpolation baselines, SRCNN, and UNet). ESRGAN and SwinIR result entries remain reserved until the
-        corresponding test-set evaluations finish.
+        (registered clinical CT baseline, interpolation baselines, SRCNN, and UNet). ESRGAN and SwinIR image-quality metrics,
+        LBC, and bone morphometry have now been added.
     </p>
 
     <hr>
@@ -627,6 +627,58 @@ tar -xzf LumbarSR_Dataset.tar.gz
         local bone contrast is preserved by the super-resolution method.
     </p>
 
+    <table class="data-table">
+        <tr>
+            <th>Method</th>
+            <th>Small FOV Pred LBC (dB)</th>
+            <th>Small FOV LBC Ratio</th>
+            <th>Large FOV Pred LBC (dB)</th>
+            <th>Large FOV LBC Ratio</th>
+        </tr>
+        <tr>
+            <td><strong>GT Reference</strong></td>
+            <td>69.13±0.41</td>
+            <td>1.00</td>
+            <td>69.12±0.41</td>
+            <td>1.00</td>
+        </tr>
+        <tr>
+            <td><strong>Baseline</strong></td>
+            <td>49.44±0.51</td>
+            <td>0.10±0.01</td>
+            <td>49.44±0.51</td>
+            <td>0.10±0.01</td>
+        </tr>
+        <tr>
+            <td><strong>SRCNN</strong></td>
+            <td>61.28±0.75</td>
+            <td>0.40±0.03</td>
+            <td>61.27±0.75</td>
+            <td>0.40±0.03</td>
+        </tr>
+        <tr>
+            <td><strong>UNet</strong></td>
+            <td>62.57±0.79</td>
+            <td>0.47±0.04</td>
+            <td>62.58±0.79</td>
+            <td>0.47±0.04</td>
+        </tr>
+        <tr>
+            <td><strong>ESRGAN</strong></td>
+            <td>65.11±0.65</td>
+            <td>0.63±0.03</td>
+            <td>65.34±0.51</td>
+            <td>0.65±0.03</td>
+        </tr>
+        <tr>
+            <td><strong>SwinIR</strong></td>
+            <td>52.85±1.12</td>
+            <td>0.15±0.02</td>
+            <td>53.60±1.06</td>
+            <td>0.17±0.02</td>
+        </tr>
+    </table>
+
     <h3>Baseline Performance</h3>
     <p>
         We provide baseline results using standard methods:
@@ -679,13 +731,13 @@ tar -xzf LumbarSR_Dataset.tar.gz
         </tr>
         <tr>
             <td><strong>ESRGAN</strong></td>
-            <td>Evaluation running</td>
-            <td>Pending public update</td>
+            <td>Image metrics + LBC + morphometry completed</td>
+            <td>Public tables updated</td>
         </tr>
         <tr>
             <td><strong>SwinIR</strong></td>
-            <td>Inference / evaluation running</td>
-            <td>Pending public update</td>
+            <td>Image metrics + LBC + morphometry completed</td>
+            <td>Public tables updated</td>
         </tr>
     </table>
 
@@ -728,7 +780,7 @@ tar -xzf LumbarSR_Dataset.tar.gz
     <h3>Bone Morphometry</h3>
     <p>
         The public benchmark pages report a compact set of ROI-based bone morphometry parameters for the currently released subset
-        (`Micro-PCCT`, registered clinical CT baseline, `SRCNN`, and `UNet`). `ESRGAN` and `SwinIR` remain pending.
+        (`Micro-PCCT`, registered clinical CT baseline, `SRCNN`, `UNet`, `ESRGAN`, and `SwinIR`).
     </p>
 
     <table class="data-table">
@@ -771,6 +823,10 @@ tar -xzf LumbarSR_Dataset.tar.gz
             <td>UNet</td>
             <td>0.0931 ± 0.0235</td><td>0.4324 ± 0.0550</td><td>0.4565 ± 0.0574</td><td>0.2133 ± 0.0346</td>
         </tr>
+        <tr>
+            <td>ESRGAN</td>
+            <td>0.1330 ± 0.0239</td><td>0.2740 ± 0.0112</td><td>0.3941 ± 0.0249</td><td>0.4841 ± 0.0773</td>
+        </tr>
     </table>
 
     <h4>Current Public Subset: 586X_586Y_1000Z_S</h4>
@@ -797,6 +853,10 @@ tar -xzf LumbarSR_Dataset.tar.gz
         <tr>
             <td>UNet</td>
             <td>0.1227 ± 0.0254</td><td>0.4639 ± 0.0467</td><td>0.4421 ± 0.0459</td><td>0.2624 ± 0.0300</td>
+        </tr>
+        <tr>
+            <td>ESRGAN</td>
+            <td>0.1506 ± 0.0209</td><td>0.2730 ± 0.0089</td><td>0.3710 ± 0.0160</td><td>0.5511 ± 0.0702</td>
         </tr>
     </table>
 

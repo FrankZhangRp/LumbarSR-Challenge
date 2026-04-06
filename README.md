@@ -224,8 +224,9 @@ Current public benchmark status (`2026-04-06`):
 
 - The released benchmark pages already reflect the refreshed `BoneMask`-ROI protocol for the previously released methods: registered clinical CT baseline, interpolation baselines, `SRCNN`, and `UNet`
 - Public `masked` image-quality metrics and public `LBC` are interpreted inside the released sequence-level `BoneMask` ROI
-- Public bone morphometry summaries currently cover the released subset (`Micro-PCCT`, registered clinical CT baseline, `SRCNN`, `UNet`) for both `195X_195Y_1000Z_S` and `586X_586Y_1000Z_S`
-- `ESRGAN` and `SwinIR` entries remain reserved on the benchmark pages and will be filled in after the corresponding test-set evaluations finish
+- Public bone morphometry summaries currently cover the released subset (`Micro-PCCT`, registered clinical CT baseline, `SRCNN`, `UNet`, `ESRGAN`, `SwinIR`) for both `195X_195Y_1000Z_S` and `586X_586Y_1000Z_S`
+- `ESRGAN` public image-quality metrics, `LBC`, and bone morphometry rows have been filled in on `2026-04-06`
+- `SwinIR` public image-quality metrics, `LBC`, and bone morphometry rows have now been filled in on `2026-04-06`
 
 ## Registration Baseline and Mask Evaluation
 
@@ -264,6 +265,8 @@ Current public subset (`195X_195Y_1000Z_S`):
 | Registered clinical CT baseline | `0.0055 ± 0.0029` | `0.5837 ± 0.1179` | `4.1319 ± 1.1314` | `0.0097 ± 0.0056` |
 | SRCNN | `0.0605 ± 0.0212` | `0.7673 ± 0.0865` | `0.9809 ± 0.2448` | `0.0773 ± 0.0202` |
 | UNet | `0.0931 ± 0.0235` | `0.4324 ± 0.0550` | `0.4565 ± 0.0574` | `0.2133 ± 0.0346` |
+| ESRGAN | `0.1330 ± 0.0239` | `0.2740 ± 0.0112` | `0.3941 ± 0.0249` | `0.4841 ± 0.0773` |
+| SwinIR | `0.0415 ± 0.0140` | `0.7371 ± 0.0845` | `1.3594 ± 0.3529` | `0.0549 ± 0.0127` |
 
 Current public subset (`586X_586Y_1000Z_S`):
 
@@ -273,8 +276,10 @@ Current public subset (`586X_586Y_1000Z_S`):
 | Registered clinical CT baseline | `0.0026 ± 0.0018` | `0.5338 ± 0.1322` | `5.0502 ± 1.8719` | `0.0053 ± 0.0044` |
 | SRCNN | `0.1271 ± 0.0204` | `0.6565 ± 0.0739` | `0.4540 ± 0.0425` | `0.1928 ± 0.0104` |
 | UNet | `0.1227 ± 0.0254` | `0.4639 ± 0.0467` | `0.4421 ± 0.0459` | `0.2624 ± 0.0300` |
+| ESRGAN | `0.1506 ± 0.0209` | `0.2730 ± 0.0089` | `0.3710 ± 0.0160` | `0.5511 ± 0.0702` |
+| SwinIR | `0.0486 ± 0.0144` | `0.4010 ± 0.0203` | `0.9216 ± 0.2053` | `0.1198 ± 0.0305` |
 
-Interpolation baselines are also available in the public evaluation scripts and summary files; `ESRGAN` and `SwinIR` morphometry entries remain reserved until their test-set outputs are finalized.
+Interpolation baselines are also available in the public evaluation scripts and summary files; `SwinIR` morphometry entries have now been added for the released subset.
 
 ## Baseline Methods
 
@@ -340,8 +345,8 @@ python methods/inference.py \
 
 | Method | Status | Notes |
 |--------|--------|-------|
-| ESRGAN | Reserved | RRDB-based adversarial super-resolution baseline |
-| SwinIR | Reserved | Transformer-based super-resolution baseline |
+| ESRGAN | Image metrics + LBC + morphometry released | RRDB-based adversarial super-resolution baseline |
+| SwinIR | Image metrics + LBC + morphometry released | Transformer-based super-resolution baseline |
 
 ### Baseline Performance
 
@@ -360,6 +365,8 @@ python methods/inference.py \
 | **Baseline** | 21.94±0.67 | 18.94±0.45 | 17.20±0.38 | 11.86±0.77 | 8.85±0.61 | 7.12±0.61 | 22.01±0.66 | 18.98±0.41 | 17.30±0.34 | 12.04±0.67 | 9.01±0.50 | 7.33±0.51 |
 | **UNet** | 21.94±0.67 | 18.94±0.45 | 17.20±0.38 | 11.86±0.77 | 8.85±0.61 | 7.12±0.61 | 22.01±0.66 | 18.98±0.41 | 17.30±0.34 | 12.04±0.67 | 9.01±0.50 | 7.33±0.51 |
 | **SRCNN** | **23.64±0.50** | **20.04±0.39** | **18.00±0.35** | **12.87±0.35** | **9.26±0.32** | 7.22±0.30 | **23.99±0.58** | **20.31±0.42** | **18.07±0.37** | **13.18±0.38** | **9.50±0.27** | 7.25±0.21 |
+| **ESRGAN** | 21.87±0.63 | 18.78±0.50 | 17.08±0.40 | 9.73±0.45 | 6.60±0.37 | 4.90±0.34 | 22.64±0.48 | 19.22±0.39 | 17.44±0.33 | 10.49±0.29 | 7.04±0.28 | 5.26±0.29 |
+| **SwinIR** | 22.82±0.59 | 19.72±0.42 | 17.55±0.34 | 10.75±0.37 | 7.62±0.35 | 5.51±0.28 | 23.31±0.53 | 20.22±0.35 | 17.88±0.32 | 11.21±0.29 | 8.05±0.27 | 5.76±0.22 |
 | **Nearest** | 23.74±0.54 | 20.11±0.42 | 18.00±0.36 | 13.04±0.35 | 9.40±0.30 | 7.29±0.26 | 23.71±0.54 | 20.19±0.41 | 18.00±0.36 | 13.03±0.34 | 9.51±0.26 | 7.31±0.23 |
 
 #### SSIM Results ↑
@@ -371,6 +378,8 @@ python methods/inference.py \
 | **Baseline** | 0.92±0.00 | 0.94±0.00 | 0.95±0.00 | 0.92±0.00 | 0.94±0.00 | 0.95±0.00 | 0.92±0.00 | 0.94±0.00 | 0.95±0.00 | 0.92±0.00 | 0.94±0.00 | 0.95±0.00 |
 | **UNet** | 0.93±0.01 | 0.95±0.00 | 0.95±0.00 | 0.93±0.01 | 0.95±0.00 | **0.95±0.00** | **0.94±0.00** | **0.95±0.00** | **0.95±0.00** | **0.94±0.00** | **0.95±0.00** | **0.95±0.00** |
 | **SRCNN** | 0.93±0.00 | 0.95±0.00 | 0.95±0.00 | 0.93±0.00 | 0.95±0.00 | 0.95±0.00 | 0.93±0.00 | 0.95±0.00 | 0.95±0.00 | 0.93±0.00 | 0.95±0.00 | 0.95±0.00 |
+| **ESRGAN** | 0.93±0.00 | 0.94±0.00 | 0.94±0.00 | 0.82±0.04 | 0.82±0.04 | 0.82±0.04 | 0.93±0.00 | 0.95±0.00 | 0.95±0.00 | 0.82±0.03 | 0.82±0.04 | 0.82±0.03 |
+| **SwinIR** | 0.92±0.00 | 0.94±0.00 | 0.95±0.00 | 0.92±0.00 | 0.94±0.00 | 0.95±0.00 | 0.92±0.00 | 0.94±0.00 | 0.95±0.00 | 0.92±0.00 | 0.94±0.00 | 0.95±0.00 |
 | **Nearest** | 0.92±0.00 | 0.94±0.00 | 0.95±0.00 | 0.92±0.00 | 0.94±0.00 | 0.95±0.00 | 0.92±0.00 | 0.94±0.00 | 0.95±0.00 | 0.92±0.00 | 0.94±0.00 | 0.95±0.00 |
 
 #### MAE Results ↓
@@ -382,14 +391,24 @@ python methods/inference.py \
 | **Baseline** | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.15±0.02 | 0.19±0.03 | 0.21±0.03 | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.14±0.02 | 0.18±0.02 | 0.20±0.02 |
 | **UNet** | **0.01±0.00** | 0.01±0.00 | 0.02±0.00 | 0.14±0.01 | 0.18±0.01 | 0.21±0.01 | **0.01±0.00** | **0.02±0.00** | **0.02±0.00** | **0.14±0.01** | 0.18±0.01 | 0.21±0.01 |
 | **SRCNN** | **0.01±0.00** | **0.02±0.00** | **0.02±0.00** | **0.14±0.01** | **0.18±0.01** | **0.21±0.01** | **0.01±0.00** | **0.02±0.00** | **0.02±0.00** | **0.14±0.01** | **0.18±0.01** | **0.21±0.01** |
+| **ESRGAN** | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.22±0.01 | 0.31±0.02 | 0.35±0.03 | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.21±0.01 | 0.28±0.02 | 0.32±0.02 |
+| **SwinIR** | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.21±0.01 | 0.28±0.02 | 0.32±0.02 | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.20±0.01 | 0.27±0.01 | 0.31±0.01 |
 | **Nearest** | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.15±0.02 | 0.19±0.03 | 0.21±0.03 | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.14±0.02 | 0.18±0.02 | 0.20±0.02 |
 
-### Reserved Result Entries
+### Additional Deep Baseline Entries
 
 | Method | PSNR | SSIM | MAE |
 |--------|------|------|-----|
-| **ESRGAN** | To be added | To be added | To be added |
-| **SwinIR** | To be added | To be added | To be added |
+| **ESRGAN** | Added | Added | Added |
+| **SwinIR** | Added | Added | Added |
+
+#### LBC Results
+
+| Method | Small FOV Pred LBC (dB) | Small FOV LBC Ratio | Large FOV Pred LBC (dB) | Large FOV LBC Ratio |
+|--------|--------------------------|---------------------|-------------------------|---------------------|
+| **GT Reference** | 69.13±0.41 | 1.00 | 69.12±0.41 | 1.00 |
+| **ESRGAN** | 65.11±0.65 | 0.63±0.03 | 65.34±0.51 | 0.65±0.03 |
+| **SwinIR** | 52.85±1.12 | 0.15±0.02 | 53.60±1.06 | 0.17±0.02 |
 
 **Key Findings:**
 - **SRCNN** achieves the best PSNR across most configurations (8-9% improvement over baseline)

@@ -318,13 +318,13 @@
             <tbody>
                 <tr>
                     <td class="method-name">ESRGAN</td>
-                    <td>Reserved</td>
-                    <td>To be added</td>
+                    <td>Image metrics + LBC + morphometry released</td>
+                    <td>Filled on 2026-04-06</td>
                 </tr>
                 <tr>
                     <td class="method-name">SwinIR</td>
-                    <td>Reserved</td>
-                    <td>To be added</td>
+                    <td>Image metrics + LBC + morphometry released</td>
+                    <td>Filled on 2026-04-06</td>
                 </tr>
             </tbody>
         </table>
@@ -375,7 +375,7 @@
         <h3 style="margin-top: 0;">Bone Morphometry</h3>
         <p>
             The public benchmark pages now report the currently released subset (`Micro-PCCT`, registered clinical CT baseline,
-            `SRCNN`, and `UNet`) for ROI-based bone morphometry. `ESRGAN` and `SwinIR` remain pending.
+            `SRCNN`, `UNet`, `ESRGAN`, and `SwinIR`) for ROI-based bone morphometry.
         </p>
         <h4 style="margin-bottom: 8px;">195X_195Y_1000Z_S</h4>
         <table class="results-table" style="font-size: 14px;">
@@ -404,6 +404,14 @@
                 <tr>
                     <td class="method-name">UNet</td>
                     <td>0.0931 ± 0.0235</td><td>0.4324 ± 0.0550</td><td>0.4565 ± 0.0574</td><td>0.2133 ± 0.0346</td>
+                </tr>
+                <tr>
+                    <td class="method-name">ESRGAN</td>
+                    <td>0.1330 ± 0.0239</td><td>0.2740 ± 0.0112</td><td>0.3941 ± 0.0249</td><td>0.4841 ± 0.0773</td>
+                </tr>
+                <tr>
+                    <td class="method-name">SwinIR</td>
+                    <td>0.0415 ± 0.0140</td><td>0.7371 ± 0.0845</td><td>1.3594 ± 0.3529</td><td>0.0549 ± 0.0127</td>
                 </tr>
             </tbody>
         </table>
@@ -435,6 +443,14 @@
                 <tr>
                     <td class="method-name">UNet</td>
                     <td>0.1227 ± 0.0254</td><td>0.4639 ± 0.0467</td><td>0.4421 ± 0.0459</td><td>0.2624 ± 0.0300</td>
+                </tr>
+                <tr>
+                    <td class="method-name">ESRGAN</td>
+                    <td>0.1506 ± 0.0209</td><td>0.2730 ± 0.0089</td><td>0.3710 ± 0.0160</td><td>0.5511 ± 0.0702</td>
+                </tr>
+                <tr>
+                    <td class="method-name">SwinIR</td>
+                    <td>0.0486 ± 0.0144</td><td>0.4010 ± 0.0203</td><td>0.9216 ± 0.2053</td><td>0.1198 ± 0.0305</td>
                 </tr>
             </tbody>
         </table>
@@ -519,6 +535,36 @@
                 <td>13.18±0.38</td>
                 <td>9.50±0.27</td>
                 <td>7.25±0.21</td>
+            </tr>
+            <tr>
+                <td class="method-name">ESRGAN</td>
+                <td>21.87±0.63</td>
+                <td>18.78±0.50</td>
+                <td>17.08±0.40</td>
+                <td>9.73±0.45</td>
+                <td>6.60±0.37</td>
+                <td>4.90±0.34</td>
+                <td>22.64±0.48</td>
+                <td>19.22±0.39</td>
+                <td>17.44±0.33</td>
+                <td>10.49±0.29</td>
+                <td>7.04±0.28</td>
+                <td>5.26±0.29</td>
+            </tr>
+            <tr>
+                <td class="method-name">SwinIR</td>
+                <td>22.82±0.59</td>
+                <td>19.72±0.42</td>
+                <td>17.55±0.34</td>
+                <td>10.75±0.37</td>
+                <td>7.62±0.35</td>
+                <td>5.51±0.28</td>
+                <td>23.31±0.53</td>
+                <td>20.22±0.35</td>
+                <td>17.88±0.32</td>
+                <td>11.21±0.29</td>
+                <td>8.05±0.27</td>
+                <td>5.76±0.22</td>
             </tr>
             <tr>
                 <td class="method-name">Nearest</td>
@@ -613,6 +659,36 @@
                 <td>0.95±0.00</td>
                 <td>0.93±0.00</td>
                 <td>0.95±0.00</td>
+                <td>0.95±0.00</td>
+            </tr>
+            <tr>
+                <td class="method-name">ESRGAN</td>
+                <td>0.93±0.00</td>
+                <td>0.94±0.00</td>
+                <td>0.94±0.00</td>
+                <td>0.82±0.04</td>
+                <td>0.82±0.04</td>
+                <td>0.82±0.04</td>
+                <td>0.93±0.00</td>
+                <td>0.95±0.00</td>
+                <td>0.95±0.00</td>
+                <td>0.82±0.03</td>
+                <td>0.82±0.04</td>
+                <td>0.82±0.03</td>
+            </tr>
+            <tr>
+                <td class="method-name">SwinIR</td>
+                <td>0.92±0.00</td>
+                <td>0.94±0.00</td>
+                <td>0.95±0.00</td>
+                <td>0.92±0.00</td>
+                <td>0.94±0.00</td>
+                <td>0.95±0.00</td>
+                <td>0.92±0.00</td>
+                <td>0.94±0.00</td>
+                <td>0.95±0.00</td>
+                <td>0.92±0.00</td>
+                <td>0.94±0.00</td>
                 <td>0.95±0.00</td>
             </tr>
             <tr>
@@ -711,6 +787,36 @@
                 <td>0.21±0.01</td>
             </tr>
             <tr>
+                <td class="method-name">ESRGAN</td>
+                <td>0.01±0.00</td>
+                <td>0.02±0.00</td>
+                <td>0.02±0.00</td>
+                <td>0.22±0.01</td>
+                <td>0.31±0.02</td>
+                <td>0.35±0.03</td>
+                <td>0.01±0.00</td>
+                <td>0.02±0.00</td>
+                <td>0.02±0.00</td>
+                <td>0.21±0.01</td>
+                <td>0.28±0.02</td>
+                <td>0.32±0.02</td>
+            </tr>
+            <tr>
+                <td class="method-name">SwinIR</td>
+                <td>0.01±0.00</td>
+                <td>0.02±0.00</td>
+                <td>0.02±0.00</td>
+                <td>0.21±0.01</td>
+                <td>0.28±0.02</td>
+                <td>0.32±0.02</td>
+                <td>0.01±0.00</td>
+                <td>0.02±0.00</td>
+                <td>0.02±0.00</td>
+                <td>0.20±0.01</td>
+                <td>0.27±0.01</td>
+                <td>0.31±0.01</td>
+            </tr>
+            <tr>
                 <td class="method-name">Nearest</td>
                 <td>0.01±0.00</td>
                 <td>0.02±0.00</td>
@@ -768,6 +874,16 @@
                 <td class="method-name">SRCNN</td>
                 <td>61.3±0.7</td><td>0.40±0.03</td>
                 <td>61.3±0.7</td><td>0.40±0.03</td>
+            </tr>
+            <tr>
+                <td class="method-name">ESRGAN</td>
+                <td>65.1±0.6</td><td>0.63±0.03</td>
+                <td>65.3±0.5</td><td>0.65±0.03</td>
+            </tr>
+            <tr>
+                <td class="method-name">SwinIR</td>
+                <td>52.9±1.1</td><td>0.15±0.02</td>
+                <td>53.6±1.1</td><td>0.17±0.02</td>
             </tr>
             <tr>
                 <td class="method-name">Nearest</td>
@@ -851,25 +967,39 @@
                 <td>0.10</td>
             </tr>
             <tr>
-                <td class="method-name">UNet</td>
+                <td class="method-name">Nearest</td>
                 <td>8.08</td>
-                <td>0.9500</td>
-                <td>0.1950</td>
+                <td>0.9455</td>
+                <td>0.1946</td>
+                <td>0.10</td>
+            </tr>
+            <tr>
+                <td class="method-name">UNet</td>
+                <td>8.31</td>
+                <td>0.9494</td>
+                <td>0.1955</td>
                 <td>0.47</td>
             </tr>
             <tr>
                 <td class="method-name">SRCNN</td>
-                <td>8.31</td>
-                <td>0.9500</td>
-                <td>0.1950</td>
+                <td>8.38</td>
+                <td>0.9484</td>
+                <td>0.1930</td>
                 <td>0.40</td>
             </tr>
             <tr>
-                <td class="method-name">Nearest</td>
-                <td>8.38</td>
-                <td>0.9450</td>
-                <td>0.1950</td>
-                <td>0.10</td>
+                <td class="method-name">ESRGAN</td>
+                <td>5.95</td>
+                <td>0.8209</td>
+                <td>0.3160</td>
+                <td>0.64</td>
+            </tr>
+            <tr>
+                <td class="method-name">SwinIR</td>
+                <td>6.74</td>
+                <td>0.9443</td>
+                <td>0.2946</td>
+                <td>0.16</td>
             </tr>
         </tbody>
     </table>
@@ -891,35 +1021,51 @@
         <tbody>
             <tr class="rank-1">
                 <td class="method-name">SRCNN</td>
+                <td>1</td>
                 <td>2</td>
-                <td>1.5</td>
-                <td>2.5</td>
-                <td>2</td>
-                <td><strong>2.00</strong></td>
+                <td>1</td>
+                <td>3</td>
+                <td><strong>1.75</strong></td>
             </tr>
             <tr class="rank-2">
                 <td class="method-name">UNet</td>
-                <td>3.5</td>
-                <td>1.5</td>
-                <td>2.5</td>
+                <td>2</td>
                 <td>1</td>
-                <td><strong>2.13</strong></td>
+                <td>4</td>
+                <td>2</td>
+                <td><strong>2.25</strong></td>
             </tr>
             <tr class="rank-3">
                 <td class="method-name">Nearest</td>
-                <td>1</td>
                 <td>3.5</td>
-                <td>2.5</td>
-                <td>3.5</td>
-                <td><strong>2.63</strong></td>
+                <td>3</td>
+                <td>2</td>
+                <td>5.5</td>
+                <td><strong>3.50</strong></td>
             </tr>
             <tr>
                 <td class="method-name">Baseline</td>
                 <td>3.5</td>
-                <td>3.5</td>
-                <td>2.5</td>
-                <td>3.5</td>
-                <td><strong>3.25</strong></td>
+                <td>4</td>
+                <td>3</td>
+                <td>5.5</td>
+                <td><strong>4.00</strong></td>
+            </tr>
+            <tr>
+                <td class="method-name">ESRGAN</td>
+                <td>6</td>
+                <td>6</td>
+                <td>6</td>
+                <td>1</td>
+                <td><strong>4.75</strong></td>
+            </tr>
+            <tr>
+                <td class="method-name">SwinIR</td>
+                <td>5</td>
+                <td>5</td>
+                <td>5</td>
+                <td>4</td>
+                <td><strong>4.75</strong></td>
             </tr>
         </tbody>
     </table>
@@ -930,6 +1076,8 @@
             <li><strong>Baseline:</strong> Registered clinical CT without any super-resolution processing</li>
             <li><strong>UNet:</strong> U-shaped encoder-decoder architecture with skip connections (~30M parameters)</li>
             <li><strong>SRCNN:</strong> Super-Resolution Convolutional Neural Network (~60K parameters)</li>
+            <li><strong>ESRGAN:</strong> RRDB-based adversarial super-resolution baseline</li>
+            <li><strong>SwinIR:</strong> Transformer-based super-resolution baseline</li>
             <li><strong>Nearest:</strong> Nearest neighbor interpolation (represents all interpolation methods)</li>
         </ul>
     </div>
@@ -937,7 +1085,7 @@
     <hr style="margin-top: 40px;">
 
     <p style="font-size: 14px; color: #666; text-align: center;">
-        Results updated: January 2026 | For questions, contact <a href="mailto:zhangrp@sjtu.edu.cn">zhangrp@sjtu.edu.cn</a>
+        Results updated: April 2026 | For questions, contact <a href="mailto:zhangrp@sjtu.edu.cn">zhangrp@sjtu.edu.cn</a>
     </p>
 
 </body>
