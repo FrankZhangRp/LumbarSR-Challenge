@@ -93,11 +93,11 @@ def evaluate_sample(
 
     gt_nii = nib.load(gt_path)
     gt_data = gt_nii.get_fdata().astype(np.float32)
-    bone_mask = get_evaluation_mask(sample_name, gt_data)
 
     results = {}
 
     for seq in sequences:
+        bone_mask = get_evaluation_mask(sample_name, gt_data, sequence_name=seq)
         pred_path = os.path.join(
             sample_dir,
             f"Lumbar{sample_id}_ClinicalCT_{seq}_registered.nii.gz"

@@ -254,25 +254,25 @@ The public benchmark pages report the following ROI-based bone morphometry measu
 | Category | Metrics |
 |----------|---------|
 | Core trabecular morphometry | `BV/TV`, `Tb.Th`, `Tb.Sp`, `Tb.N` |
-| ROI volume | `TV` derived from the released `BoneMask` |
+| Released VOI definition | derived from the released `BoneMask` and used consistently for all public morphometry statistics |
 
 Current public subset (`195X_195Y_1000Z_S`):
 
-| Method / Data | BV/TV | Tb.Th (mm) | Tb.Sp (mm) | Tb.N (mm^-1) | TV (mm^3) |
-|---------------|-------|------------|------------|--------------|-----------|
-| Micro-PCCT reference | `0.2186 ± 0.0156` | `0.2581 ± 0.0125` | `0.4084 ± 0.0183` | `0.8499 ± 0.0789` | `50264.79 ± 10277.34` |
-| Registered clinical CT baseline | `0.0061 ± 0.0026` | `0.6342 ± 0.1127` | `4.2860 ± 1.0339` | `0.0100 ± 0.0052` | `50264.79 ± 10277.34` |
-| SRCNN | `0.0630 ± 0.0186` | `0.8442 ± 0.0558` | `0.9596 ± 0.1985` | `0.0736 ± 0.0179` | `50264.79 ± 10277.34` |
-| UNet | `0.0969 ± 0.0205` | `0.4487 ± 0.0562` | `0.5035 ± 0.0616` | `0.2141 ± 0.0267` | `50264.79 ± 10277.34` |
+| Method / Data | BV/TV | Tb.Th (mm) | Tb.Sp (mm) | Tb.N (mm^-1) |
+|---------------|-------|------------|------------|--------------|
+| Micro-PCCT reference | `0.2208 ± 0.0174` | `0.2573 ± 0.0141` | `0.3647 ± 0.0192` | `0.8608 ± 0.0881` |
+| Registered clinical CT baseline | `0.0055 ± 0.0029` | `0.5837 ± 0.1179` | `4.1319 ± 1.1314` | `0.0097 ± 0.0056` |
+| SRCNN | `0.0605 ± 0.0212` | `0.7673 ± 0.0865` | `0.9809 ± 0.2448` | `0.0773 ± 0.0202` |
+| UNet | `0.0931 ± 0.0235` | `0.4324 ± 0.0550` | `0.4565 ± 0.0574` | `0.2133 ± 0.0346` |
 
 Current public subset (`586X_586Y_1000Z_S`):
 
-| Method / Data | BV/TV | Tb.Th (mm) | Tb.Sp (mm) | Tb.N (mm^-1) | TV (mm^3) |
-|---------------|-------|------------|------------|--------------|-----------|
-| Micro-PCCT reference | `0.2201 ± 0.0153` | `0.2578 ± 0.0121` | `0.4176 ± 0.0164` | `0.8559 ± 0.0742` | `50418.54 ± 10331.35` |
-| Registered clinical CT baseline | `0.0034 ± 0.0020` | `0.5243 ± 0.0959` | `5.4840 ± 1.1410` | `0.0065 ± 0.0042` | `50418.54 ± 10331.35` |
-| SRCNN | `0.1336 ± 0.0183` | `0.7243 ± 0.0774` | `0.4770 ± 0.0466` | `0.1839 ± 0.0066` | `50418.54 ± 10331.35` |
-| UNet | `0.1281 ± 0.0232` | `0.4892 ± 0.0447` | `0.5039 ± 0.0591` | `0.2598 ± 0.0250` | `50418.54 ± 10331.35` |
+| Method / Data | BV/TV | Tb.Th (mm) | Tb.Sp (mm) | Tb.N (mm^-1) |
+|---------------|-------|------------|------------|--------------|
+| Micro-PCCT reference | `0.2208 ± 0.0174` | `0.2573 ± 0.0141` | `0.3647 ± 0.0192` | `0.8608 ± 0.0881` |
+| Registered clinical CT baseline | `0.0026 ± 0.0018` | `0.5338 ± 0.1322` | `5.0502 ± 1.8719` | `0.0053 ± 0.0044` |
+| SRCNN | `0.1271 ± 0.0204` | `0.6565 ± 0.0739` | `0.4540 ± 0.0425` | `0.1928 ± 0.0104` |
+| UNet | `0.1227 ± 0.0254` | `0.4639 ± 0.0467` | `0.4421 ± 0.0459` | `0.2624 ± 0.0300` |
 
 Interpolation baselines are also available in the public evaluation scripts and summary files; `ESRGAN` and `SwinIR` morphometry entries remain reserved until their test-set outputs are finalized.
 

@@ -39,7 +39,8 @@ WINDOWS = {
 EVAL_WINDOWS = ['bone', 'soft_tissue']
 
 DEFAULT_BONE_MASK_ROOT = Path("./data/BoneMask")
-BONE_MASK_FILENAME_TEMPLATE = "Lumbar{sample_id}_MicroPCCT_105um_BoneMask.nii.gz"
+MICROCT_BONE_MASK_FILENAME_TEMPLATE = "Lumbar{sample_id}_MicroPCCT_105um_BoneMask.nii.gz"
+CLINICAL_BONE_MASK_FILENAME_TEMPLATE = "Lumbar{sample_id}_ClinicalCT_{sequence}_registered_BoneMask.nii.gz"
 
 
 @dataclass
@@ -132,37 +133,59 @@ def _normalize_sample_name(sample_or_case_id: str) -> tuple[str, str]:
 
 def get_bone_mask_path(
     sample_or_case_id: str,
+    sequence_name: Optional[str] = None,
     bone_mask_root: str | Path = DEFAULT_BONE_MASK_ROOT,
 ) -> Path:
     sample, sample_id = _normalize_sample_name(sample_or_case_id)
-    return Path(bone_mask_root) / sample / BONE_MASK_FILENAME_TEMPLATE.format(sample_id=sample_id)
+    if sequence_name:
+        filename = CLINICAL_BONE_MASK_FILENAME_TEMPLATE.format(
+            sample_id=sample_id,
+            sequence=sequence_name,
+        )
+    else:
+        filename = MICROCT_BONE_MASK_FILENAME_TEMPLATE.format(sample_id=sample_id)
+    return Path(bone_mask_root) / sample / filename
 
 
 def load_bone_mask(
     sample_or_case_id: str,
+    sequence_name: Optional[str] = None,
     bone_mask_root: str | Path = DEFAULT_BONE_MASK_ROOT,
     reference_shape: Optional[tuple[int, ...]] = None,
 ) -> Optional[np.ndarray]:
-    mask_path = get_bone_mask_path(sample_or_case_id, bone_mask_root)
-    if not mask_path.exists():
-        return None
-    mask = nib.load(str(mask_path)).get_fdata() > 0
-    if reference_shape is not None and tuple(mask.shape) != tuple(reference_shape):
-        raise ValueError(
-            f"BoneMask shape mismatch for {sample_or_case_id}: "
-            f"{tuple(mask.shape)} vs {tuple(reference_shape)}"
-        )
-    return mask
+    candidate_paths = []
+    if sequence_name is not None:
+        candidate_paths.append(get_bone_mask_path(sample_or_case_id, sequence_name, bone_mask_root))
+    candidate_paths.append(get_bone_mask_path(sample_or_case_id, None, bone_mask_root))
+
+    for mask_path in candidate_paths:
+        if not mask_path.exists():
+            continue
+        mask = nib.load(str(mask_path)).get_fdata() > 0
+        if reference_shape is not None and tuple(mask.shape) != tuple(reference_shape):
+            raise ValueError(
+                f"BoneMask shape mismatch for {sample_or_case_id}"
+                + (f"/{sequence_name}" if sequence_name else "")
+                + f": {tuple(mask.shape)} vs {tuple(reference_shape)} ({mask_path})"
+            )
+        return mask
+    return None
 
 
 def get_evaluation_mask(
     sample_or_case_id: str,
     gt: np.ndarray,
     pred: Optional[np.ndarray] = None,
+    sequence_name: Optional[str] = None,
     bone_mask_root: str | Path = DEFAULT_BONE_MASK_ROOT,
     fallback_threshold: float = -1000,
 ) -> np.ndarray:
-    mask = load_bone_mask(sample_or_case_id, bone_mask_root, reference_shape=gt.shape)
+    mask = load_bone_mask(
+        sample_or_case_id,
+        sequence_name=sequence_name,
+        bone_mask_root=bone_mask_root,
+        reference_shape=gt.shape,
+    )
     if mask is not None:
         return mask
     if pred is None:
