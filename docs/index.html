@@ -99,6 +99,12 @@
             border-bottom: 1px solid #eee;
         }
 
+        table.compact-table th,
+        table.compact-table td {
+            padding: 8px 10px;
+            font-size: 15px;
+        }
+
         table.data-table tr:hover {
             background-color: #fafafa;
         }
@@ -383,6 +389,19 @@
             <img src="images/flowchart_preview.png" alt="Pipeline Flowchart" class="rounded" style="max-width: 100%; margin: 20px 0;">
         </a>
         <p class="note">Pipeline overview (<a href="images/flowchart.png" target="_blank">Full resolution</a>)</p>
+    </center>
+
+    <h2>Super-Resolution Visualization</h2>
+    <p>
+        The following figure shows a representative tri-planar comparison for <code>Lumbar_26</code> using
+        <code>586X_586Y_1000Z_S</code> as input. Columns from left to right are Clinical CT, Nearest, SwinIR, SRCNN, UNet, ESRGAN,
+        and the Micro-PCCT target.
+    </p>
+    <center>
+        <a href="images/sr_visualization_lumbar26_586um.pdf" target="_blank">
+            <img src="images/sr_visualization_lumbar26_586um.jpg" alt="Representative super-resolution comparison on Lumbar_26 at 586um FOV" class="rounded" style="max-width: 100%; margin: 20px 0;">
+        </a>
+        <p class="note">Open the <a href="images/sr_visualization_lumbar26_586um.pdf" target="_blank">PDF version</a> for the full-resolution figure.</p>
     </center>
 
     <hr>
@@ -748,6 +767,10 @@ tar -xzf LumbarSR_Dataset.tar.gz
             <td>ESRGAN</td>
             <td>0.1330 ± 0.0239</td><td>0.2740 ± 0.0112</td><td>0.3941 ± 0.0249</td><td>0.4841 ± 0.0773</td>
         </tr>
+        <tr>
+            <td>SwinIR</td>
+            <td>0.0415 ± 0.0140</td><td>0.7371 ± 0.0845</td><td>1.3594 ± 0.3529</td><td>0.0549 ± 0.0127</td>
+        </tr>
     </table>
 
     <h4>Current Public Subset: 586X_586Y_1000Z_S</h4>
@@ -778,6 +801,92 @@ tar -xzf LumbarSR_Dataset.tar.gz
         <tr>
             <td>ESRGAN</td>
             <td>0.1506 ± 0.0209</td><td>0.2730 ± 0.0089</td><td>0.3710 ± 0.0160</td><td>0.5511 ± 0.0702</td>
+        </tr>
+        <tr>
+            <td>SwinIR</td>
+            <td>0.0486 ± 0.0144</td><td>0.4010 ± 0.0203</td><td>0.9216 ± 0.2053</td><td>0.1198 ± 0.0305</td>
+        </tr>
+    </table>
+
+    <h4>Paired Statistical Comparison vs Micro-PCCT</h4>
+    <p>
+        For the released test subset, we additionally report a paired comparison against <code>Micro-PCCT</code> using a one-sided exact
+        <code>Wilcoxon signed-rank</code> test. Pairing is performed within the same released test case and reported separately for each FOV.
+        With <code>n = 5</code> per FOV, the smallest attainable exact one-sided <code>p</code> value is <code>0.03125</code>.
+    </p>
+    <p class="note">
+        Cell format: signed mean delta (<code>pred - Micro-PCCT</code>) / exact one-sided <code>p</code> value.
+        Directions: <code>BV/TV</code> and <code>Tb.N</code> test <code>pred &lt; Micro-PCCT</code>;
+        <code>Tb.Th</code> and <code>Tb.Sp</code> test <code>pred &gt; Micro-PCCT</code>.
+    </p>
+
+    <h4>Compact Paired Comparison: 195X_195Y_1000Z_S</h4>
+    <table class="data-table compact-table">
+        <tr>
+            <th>Method</th>
+            <th>BV/TV (Δ / p)</th>
+            <th>Tb.Th (Δ / p)</th>
+            <th>Tb.Sp (Δ / p)</th>
+            <th>Tb.N (Δ / p)</th>
+        </tr>
+        <tr>
+            <td>Registered clinical CT baseline</td>
+            <td>-0.2125 / 0.03125</td><td>+0.3761 / 0.03125</td><td>+3.8776 / 0.03125</td><td>-0.8398 / 0.03125</td>
+        </tr>
+        <tr>
+            <td>Nearest</td>
+            <td>-0.2125 / 0.03125</td><td>+0.3761 / 0.03125</td><td>+3.8776 / 0.03125</td><td>-0.8398 / 0.03125</td>
+        </tr>
+        <tr>
+            <td>SRCNN</td>
+            <td>-0.1556 / 0.03125</td><td>+0.5861 / 0.03125</td><td>+0.5512 / 0.03125</td><td>-0.7762 / 0.03125</td>
+        </tr>
+        <tr>
+            <td>UNet</td>
+            <td>-0.1217 / 0.03125</td><td>+0.1907 / 0.03125</td><td>+0.0951 / 0.03125</td><td>-0.6357 / 0.03125</td>
+        </tr>
+        <tr>
+            <td>ESRGAN</td>
+            <td>-0.0878 / 0.03125</td><td>+0.0167 / 0.03125</td><td>+0.0293 / 0.09375</td><td>-0.3767 / 0.03125</td>
+        </tr>
+        <tr>
+            <td>SwinIR</td>
+            <td>-0.1793 / 0.03125</td><td>+0.4798 / 0.03125</td><td>+0.9947 / 0.03125</td><td>-0.8059 / 0.03125</td>
+        </tr>
+    </table>
+
+    <h4>Compact Paired Comparison: 586X_586Y_1000Z_S</h4>
+    <table class="data-table compact-table">
+        <tr>
+            <th>Method</th>
+            <th>BV/TV (Δ / p)</th>
+            <th>Tb.Th (Δ / p)</th>
+            <th>Tb.Sp (Δ / p)</th>
+            <th>Tb.N (Δ / p)</th>
+        </tr>
+        <tr>
+            <td>Registered clinical CT baseline</td>
+            <td>-0.2167 / 0.03125</td><td>+0.2665 / 0.03125</td><td>+5.0664 / 0.03125</td><td>-0.8493 / 0.03125</td>
+        </tr>
+        <tr>
+            <td>Nearest</td>
+            <td>-0.2167 / 0.03125</td><td>+0.2665 / 0.03125</td><td>+5.0664 / 0.03125</td><td>-0.8493 / 0.03125</td>
+        </tr>
+        <tr>
+            <td>SRCNN</td>
+            <td>-0.0864 / 0.03125</td><td>+0.4665 / 0.03125</td><td>+0.0593 / 0.09375</td><td>-0.6719 / 0.03125</td>
+        </tr>
+        <tr>
+            <td>UNet</td>
+            <td>-0.0920 / 0.03125</td><td>+0.2314 / 0.03125</td><td>+0.0863 / 0.03125</td><td>-0.5960 / 0.03125</td>
+        </tr>
+        <tr>
+            <td>ESRGAN</td>
+            <td>-0.0702 / 0.03125</td><td>+0.0156 / 0.03125</td><td>+0.0063 / 0.40625</td><td>-0.3097 / 0.03125</td>
+        </tr>
+        <tr>
+            <td>SwinIR</td>
+            <td>-0.1722 / 0.03125</td><td>+0.1437 / 0.03125</td><td>+0.5568 / 0.03125</td><td>-0.7410 / 0.03125</td>
         </tr>
     </table>
 

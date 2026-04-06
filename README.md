@@ -43,6 +43,16 @@ Reconstruct the corresponding high-resolution Micro-PCCT image (105um isotropic 
   <em>Pipeline overview (<a href="docs/images/flowchart.png">Full resolution</a>)</em>
 </p>
 
+## Super-Resolution Visualization
+
+<p align="center">
+  <a href="docs/images/sr_visualization_lumbar26_586um.pdf">
+    <img src="docs/images/sr_visualization_lumbar26_586um.jpg" alt="Representative super-resolution comparison on Lumbar_26 at 586um FOV" width="100%">
+  </a>
+  <br>
+  <em>Representative tri-planar super-resolution comparison on <code>Lumbar_26</code> with <code>586X_586Y_1000Z_S</code> input. Columns from left to right: Clinical CT, Nearest, SwinIR, SRCNN, UNet, ESRGAN, and Micro-PCCT target (<a href="docs/images/sr_visualization_lumbar26_586um.pdf">PDF</a>).</em>
+</p>
+
 ## Dataset
 
 ### Download
@@ -279,50 +289,29 @@ For the released test subset, we additionally report a paired statistical compar
 - Sample size: `n = 5` per FOV
 - Note: with `n = 5`, the smallest attainable exact one-sided `p` value is `0.03125`
 - Direction: `BV/TV` and `Tb.N` test `pred < Micro-PCCT`; `Tb.Th` and `Tb.Sp` test `pred > Micro-PCCT`
+- Table notation below: each cell is reported as `signed mean delta / exact one-sided p value`
 
-Signed mean difference, `pred - Micro-PCCT` (`195X_195Y_1000Z_S`):
+Compact paired comparison vs `Micro-PCCT` (`195X_195Y_1000Z_S`):
 
-| Method | ΔBV/TV | ΔTb.Th (mm) | ΔTb.Sp (mm) | ΔTb.N (mm^-1) |
+| Method | BV/TV (Δ / p) | Tb.Th (Δ / p) | Tb.Sp (Δ / p) | Tb.N (Δ / p) |
 |---|---:|---:|---:|---:|
-| Registered clinical CT baseline | -0.2125 | +0.3761 | +3.8776 | -0.8398 |
-| Nearest | -0.2125 | +0.3761 | +3.8776 | -0.8398 |
-| SRCNN | -0.1556 | +0.5861 | +0.5512 | -0.7762 |
-| UNet | -0.1217 | +0.1907 | +0.0951 | -0.6357 |
-| ESRGAN | -0.0878 | +0.0167 | +0.0293 | -0.3767 |
-| SwinIR | -0.1793 | +0.4798 | +0.9947 | -0.8059 |
+| Registered clinical CT baseline | `-0.2125 / 0.03125` | `+0.3761 / 0.03125` | `+3.8776 / 0.03125` | `-0.8398 / 0.03125` |
+| Nearest | `-0.2125 / 0.03125` | `+0.3761 / 0.03125` | `+3.8776 / 0.03125` | `-0.8398 / 0.03125` |
+| SRCNN | `-0.1556 / 0.03125` | `+0.5861 / 0.03125` | `+0.5512 / 0.03125` | `-0.7762 / 0.03125` |
+| UNet | `-0.1217 / 0.03125` | `+0.1907 / 0.03125` | `+0.0951 / 0.03125` | `-0.6357 / 0.03125` |
+| ESRGAN | `-0.0878 / 0.03125` | `+0.0167 / 0.03125` | `+0.0293 / 0.09375` | `-0.3767 / 0.03125` |
+| SwinIR | `-0.1793 / 0.03125` | `+0.4798 / 0.03125` | `+0.9947 / 0.03125` | `-0.8059 / 0.03125` |
 
-One-sided exact `Wilcoxon` `p` values vs `Micro-PCCT` (`195X_195Y_1000Z_S`):
+Compact paired comparison vs `Micro-PCCT` (`586X_586Y_1000Z_S`):
 
-| Method | BV/TV p | Tb.Th p | Tb.Sp p | Tb.N p |
+| Method | BV/TV (Δ / p) | Tb.Th (Δ / p) | Tb.Sp (Δ / p) | Tb.N (Δ / p) |
 |---|---:|---:|---:|---:|
-| Registered clinical CT baseline | 0.03125 | 0.03125 | 0.03125 | 0.03125 |
-| Nearest | 0.03125 | 0.03125 | 0.03125 | 0.03125 |
-| SRCNN | 0.03125 | 0.03125 | 0.03125 | 0.03125 |
-| UNet | 0.03125 | 0.03125 | 0.03125 | 0.03125 |
-| ESRGAN | 0.03125 | 0.03125 | 0.09375 | 0.03125 |
-| SwinIR | 0.03125 | 0.03125 | 0.03125 | 0.03125 |
-
-Signed mean difference, `pred - Micro-PCCT` (`586X_586Y_1000Z_S`):
-
-| Method | ΔBV/TV | ΔTb.Th (mm) | ΔTb.Sp (mm) | ΔTb.N (mm^-1) |
-|---|---:|---:|---:|---:|
-| Registered clinical CT baseline | -0.2167 | +0.2665 | +5.0664 | -0.8493 |
-| Nearest | -0.2167 | +0.2665 | +5.0664 | -0.8493 |
-| SRCNN | -0.0864 | +0.4665 | +0.0593 | -0.6719 |
-| UNet | -0.0920 | +0.2314 | +0.0863 | -0.5960 |
-| ESRGAN | -0.0702 | +0.0156 | +0.0063 | -0.3097 |
-| SwinIR | -0.1722 | +0.1437 | +0.5568 | -0.7410 |
-
-One-sided exact `Wilcoxon` `p` values vs `Micro-PCCT` (`586X_586Y_1000Z_S`):
-
-| Method | BV/TV p | Tb.Th p | Tb.Sp p | Tb.N p |
-|---|---:|---:|---:|---:|
-| Registered clinical CT baseline | 0.03125 | 0.03125 | 0.03125 | 0.03125 |
-| Nearest | 0.03125 | 0.03125 | 0.03125 | 0.03125 |
-| SRCNN | 0.03125 | 0.03125 | 0.09375 | 0.03125 |
-| UNet | 0.03125 | 0.03125 | 0.03125 | 0.03125 |
-| ESRGAN | 0.03125 | 0.03125 | 0.40625 | 0.03125 |
-| SwinIR | 0.03125 | 0.03125 | 0.03125 | 0.03125 |
+| Registered clinical CT baseline | `-0.2167 / 0.03125` | `+0.2665 / 0.03125` | `+5.0664 / 0.03125` | `-0.8493 / 0.03125` |
+| Nearest | `-0.2167 / 0.03125` | `+0.2665 / 0.03125` | `+5.0664 / 0.03125` | `-0.8493 / 0.03125` |
+| SRCNN | `-0.0864 / 0.03125` | `+0.4665 / 0.03125` | `+0.0593 / 0.09375` | `-0.6719 / 0.03125` |
+| UNet | `-0.0920 / 0.03125` | `+0.2314 / 0.03125` | `+0.0863 / 0.03125` | `-0.5960 / 0.03125` |
+| ESRGAN | `-0.0702 / 0.03125` | `+0.0156 / 0.03125` | `+0.0063 / 0.40625` | `-0.3097 / 0.03125` |
+| SwinIR | `-0.1722 / 0.03125` | `+0.1437 / 0.03125` | `+0.5568 / 0.03125` | `-0.7410 / 0.03125` |
 
 ## Baseline Methods
 
