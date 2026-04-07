@@ -457,87 +457,59 @@
             Directions: <code>BV/TV</code> and <code>Tb.N</code> test <code>pred &lt; Micro-PCCT</code>; <code>Tb.Th</code> and <code>Tb.Sp</code> test <code>pred &gt; Micro-PCCT</code>.
         </p>
 
-        <h4 style="margin-bottom: 8px;">Signed Mean Difference, pred - Micro-PCCT (195X_195Y_1000Z_S)</h4>
+        <h4 style="margin-bottom: 8px;">Compact Paired Comparison vs Micro-PCCT (195X_195Y_1000Z_S)</h4>
         <table class="results-table" style="font-size: 14px;">
             <thead>
                 <tr>
                     <th>Method</th>
-                    <th>ΔBV/TV</th>
-                    <th>ΔTb.Th (mm)</th>
-                    <th>ΔTb.Sp (mm)</th>
-                    <th>ΔTb.N (mm^-1)</th>
+                    <th>Type</th>
+                    <th>BV/TV</th>
+                    <th>Tb.Th (mm)</th>
+                    <th>Tb.Sp (mm)</th>
+                    <th>Tb.N (mm^-1)</th>
                 </tr>
             </thead>
             <tbody>
-                <tr><td class="method-name">Registered clinical CT baseline</td><td>-0.2125</td><td>+0.3761</td><td>+3.8776</td><td>-0.8398</td></tr>
-                <tr><td class="method-name">Nearest</td><td>-0.2125</td><td>+0.3761</td><td>+3.8776</td><td>-0.8398</td></tr>
-                <tr><td class="method-name">SRCNN</td><td>-0.1556</td><td>+0.5861</td><td>+0.5512</td><td>-0.7762</td></tr>
-                <tr><td class="method-name">UNet</td><td>-0.1217</td><td>+0.1907</td><td>+0.0951</td><td>-0.6357</td></tr>
-                <tr><td class="method-name">ESRGAN</td><td>-0.0878</td><td>+0.0167</td><td>+0.0293</td><td>-0.3767</td></tr>
-                <tr><td class="method-name">SwinIR</td><td>-0.1793</td><td>+0.4798</td><td>+0.9947</td><td>-0.8059</td></tr>
+                <tr><td class="method-name">Registered clinical CT baseline</td><td>Δ</td><td>-0.2125</td><td>+0.3761</td><td>+3.8776</td><td>-0.8398</td></tr>
+                <tr><td></td><td>p-value</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
+                <tr><td class="method-name">Nearest</td><td>Δ</td><td>-0.2125</td><td>+0.3761</td><td>+3.8776</td><td>-0.8398</td></tr>
+                <tr><td></td><td>p-value</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
+                <tr><td class="method-name">SRCNN</td><td>Δ</td><td>-0.1556</td><td>+0.5861</td><td>+0.5512</td><td>-0.7762</td></tr>
+                <tr><td></td><td>p-value</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
+                <tr><td class="method-name">UNet</td><td>Δ</td><td>-0.1217</td><td>+0.1907</td><td>+0.0951</td><td>-0.6357</td></tr>
+                <tr><td></td><td>p-value</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
+                <tr><td class="method-name">ESRGAN</td><td>Δ</td><td>-0.0878</td><td>+0.0167</td><td>+0.0293</td><td>-0.3767</td></tr>
+                <tr><td></td><td>p-value</td><td>0.03125</td><td>0.03125</td><td>0.09375</td><td>0.03125</td></tr>
+                <tr><td class="method-name">SwinIR</td><td>Δ</td><td>-0.1793</td><td>+0.4798</td><td>+0.9947</td><td>-0.8059</td></tr>
+                <tr><td></td><td>p-value</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
             </tbody>
         </table>
 
-        <h4 style="margin-top: 18px; margin-bottom: 8px;">Exact Wilcoxon p Values vs Micro-PCCT (195X_195Y_1000Z_S)</h4>
+        <h4 style="margin-top: 18px; margin-bottom: 8px;">Compact Paired Comparison vs Micro-PCCT (586X_586Y_1000Z_S)</h4>
         <table class="results-table" style="font-size: 14px;">
             <thead>
                 <tr>
                     <th>Method</th>
-                    <th>BV/TV p</th>
-                    <th>Tb.Th p</th>
-                    <th>Tb.Sp p</th>
-                    <th>Tb.N p</th>
+                    <th>Type</th>
+                    <th>BV/TV</th>
+                    <th>Tb.Th (mm)</th>
+                    <th>Tb.Sp (mm)</th>
+                    <th>Tb.N (mm^-1)</th>
                 </tr>
             </thead>
             <tbody>
-                <tr><td class="method-name">Registered clinical CT baseline</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
-                <tr><td class="method-name">Nearest</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
-                <tr><td class="method-name">SRCNN</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
-                <tr><td class="method-name">UNet</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
-                <tr><td class="method-name">ESRGAN</td><td>0.03125</td><td>0.03125</td><td>0.09375</td><td>0.03125</td></tr>
-                <tr><td class="method-name">SwinIR</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
-            </tbody>
-        </table>
-
-        <h4 style="margin-top: 18px; margin-bottom: 8px;">Signed Mean Difference, pred - Micro-PCCT (586X_586Y_1000Z_S)</h4>
-        <table class="results-table" style="font-size: 14px;">
-            <thead>
-                <tr>
-                    <th>Method</th>
-                    <th>ΔBV/TV</th>
-                    <th>ΔTb.Th (mm)</th>
-                    <th>ΔTb.Sp (mm)</th>
-                    <th>ΔTb.N (mm^-1)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td class="method-name">Registered clinical CT baseline</td><td>-0.2167</td><td>+0.2665</td><td>+5.0664</td><td>-0.8493</td></tr>
-                <tr><td class="method-name">Nearest</td><td>-0.2167</td><td>+0.2665</td><td>+5.0664</td><td>-0.8493</td></tr>
-                <tr><td class="method-name">SRCNN</td><td>-0.0864</td><td>+0.4665</td><td>+0.0593</td><td>-0.6719</td></tr>
-                <tr><td class="method-name">UNet</td><td>-0.0920</td><td>+0.2314</td><td>+0.0863</td><td>-0.5960</td></tr>
-                <tr><td class="method-name">ESRGAN</td><td>-0.0702</td><td>+0.0156</td><td>+0.0063</td><td>-0.3097</td></tr>
-                <tr><td class="method-name">SwinIR</td><td>-0.1722</td><td>+0.1437</td><td>+0.5568</td><td>-0.7410</td></tr>
-            </tbody>
-        </table>
-
-        <h4 style="margin-top: 18px; margin-bottom: 8px;">Exact Wilcoxon p Values vs Micro-PCCT (586X_586Y_1000Z_S)</h4>
-        <table class="results-table" style="font-size: 14px;">
-            <thead>
-                <tr>
-                    <th>Method</th>
-                    <th>BV/TV p</th>
-                    <th>Tb.Th p</th>
-                    <th>Tb.Sp p</th>
-                    <th>Tb.N p</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td class="method-name">Registered clinical CT baseline</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
-                <tr><td class="method-name">Nearest</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
-                <tr><td class="method-name">SRCNN</td><td>0.03125</td><td>0.03125</td><td>0.09375</td><td>0.03125</td></tr>
-                <tr><td class="method-name">UNet</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
-                <tr><td class="method-name">ESRGAN</td><td>0.03125</td><td>0.03125</td><td>0.40625</td><td>0.03125</td></tr>
-                <tr><td class="method-name">SwinIR</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
+                <tr><td class="method-name">Registered clinical CT baseline</td><td>Δ</td><td>-0.2167</td><td>+0.2665</td><td>+5.0664</td><td>-0.8493</td></tr>
+                <tr><td></td><td>p-value</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
+                <tr><td class="method-name">Nearest</td><td>Δ</td><td>-0.2167</td><td>+0.2665</td><td>+5.0664</td><td>-0.8493</td></tr>
+                <tr><td></td><td>p-value</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
+                <tr><td class="method-name">SRCNN</td><td>Δ</td><td>-0.0864</td><td>+0.4665</td><td>+0.0593</td><td>-0.6719</td></tr>
+                <tr><td></td><td>p-value</td><td>0.03125</td><td>0.03125</td><td>0.09375</td><td>0.03125</td></tr>
+                <tr><td class="method-name">UNet</td><td>Δ</td><td>-0.0920</td><td>+0.2314</td><td>+0.0863</td><td>-0.5960</td></tr>
+                <tr><td></td><td>p-value</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
+                <tr><td class="method-name">ESRGAN</td><td>Δ</td><td>-0.0702</td><td>+0.0156</td><td>+0.0063</td><td>-0.3097</td></tr>
+                <tr><td></td><td>p-value</td><td>0.03125</td><td>0.03125</td><td>0.40625</td><td>0.03125</td></tr>
+                <tr><td class="method-name">SwinIR</td><td>Δ</td><td>-0.1722</td><td>+0.1437</td><td>+0.5568</td><td>-0.7410</td></tr>
+                <tr><td></td><td>p-value</td><td>0.03125</td><td>0.03125</td><td>0.03125</td><td>0.03125</td></tr>
             </tbody>
         </table>
     </div>
@@ -545,26 +517,15 @@
     <!-- PSNR Results -->
     <h2>PSNR Results <span class="metric-badge metric-psnr">dB ↑</span></h2>
 
+    <h3>Small FOV (195μm × 195μm)</h3>
     <table class="results-table">
         <thead>
             <tr>
-                <th rowspan="3" style="min-width: 80px;">Method</th>
-                <th colspan="6">Small FOV (195μm × 195μm)</th>
-                <th colspan="6">Large FOV (586μm × 586μm)</th>
-            </tr>
-            <tr>
-                <th colspan="3">Full</th>
-                <th colspan="3">Masked</th>
+                <th rowspan="2" style="min-width: 80px;">Method</th>
                 <th colspan="3">Full</th>
                 <th colspan="3">Masked</th>
             </tr>
             <tr>
-                <th>Raw</th>
-                <th>Bone</th>
-                <th>Soft</th>
-                <th>Raw</th>
-                <th>Bone</th>
-                <th>Soft</th>
                 <th>Raw</th>
                 <th>Bone</th>
                 <th>Soft</th>
@@ -582,12 +543,6 @@
                 <td>11.86±0.77</td>
                 <td>8.85±0.61</td>
                 <td>7.12±0.61</td>
-                <td>22.01±0.66</td>
-                <td>18.98±0.41</td>
-                <td>17.30±0.34</td>
-                <td>12.04±0.67</td>
-                <td>9.01±0.50</td>
-                <td>7.33±0.51</td>
             </tr>
             <tr>
                 <td class="method-name">UNet</td>
@@ -597,12 +552,6 @@
                 <td>11.86±0.77</td>
                 <td>8.85±0.61</td>
                 <td>7.12±0.61</td>
-                <td>22.01±0.66</td>
-                <td>18.98±0.41</td>
-                <td>17.30±0.34</td>
-                <td>12.04±0.67</td>
-                <td>9.01±0.50</td>
-                <td>7.33±0.51</td>
             </tr>
             <tr>
                 <td class="method-name">SRCNN</td>
@@ -612,12 +561,6 @@
                 <td>12.87±0.35</td>
                 <td>9.26±0.32</td>
                 <td>7.22±0.30</td>
-                <td>23.99±0.58</td>
-                <td>20.31±0.42</td>
-                <td>18.07±0.37</td>
-                <td>13.18±0.38</td>
-                <td>9.50±0.27</td>
-                <td>7.25±0.21</td>
             </tr>
             <tr>
                 <td class="method-name">ESRGAN</td>
@@ -627,12 +570,6 @@
                 <td>9.73±0.45</td>
                 <td>6.60±0.37</td>
                 <td>4.90±0.34</td>
-                <td>22.64±0.48</td>
-                <td>19.22±0.39</td>
-                <td>17.44±0.33</td>
-                <td>10.49±0.29</td>
-                <td>7.04±0.28</td>
-                <td>5.26±0.29</td>
             </tr>
             <tr>
                 <td class="method-name">SwinIR</td>
@@ -642,12 +579,6 @@
                 <td>10.75±0.37</td>
                 <td>7.62±0.35</td>
                 <td>5.51±0.28</td>
-                <td>23.31±0.53</td>
-                <td>20.22±0.35</td>
-                <td>17.88±0.32</td>
-                <td>11.21±0.29</td>
-                <td>8.05±0.27</td>
-                <td>5.76±0.22</td>
             </tr>
             <tr>
                 <td class="method-name">Nearest</td>
@@ -657,39 +588,49 @@
                 <td>13.04±0.35</td>
                 <td>9.40±0.30</td>
                 <td>7.29±0.26</td>
-                <td>23.71±0.54</td>
-                <td>20.19±0.41</td>
-                <td>18.00±0.36</td>
-                <td>13.03±0.34</td>
-                <td>9.51±0.26</td>
-                <td>7.31±0.23</td>
             </tr>
+        </tbody>
+    </table>
+
+    <h3>Large FOV (586μm × 586μm)</h3>
+    <table class="results-table">
+        <thead>
+            <tr>
+                <th rowspan="2" style="min-width: 80px;">Method</th>
+                <th colspan="3">Full</th>
+                <th colspan="3">Masked</th>
+            </tr>
+            <tr>
+                <th>Raw</th>
+                <th>Bone</th>
+                <th>Soft</th>
+                <th>Raw</th>
+                <th>Bone</th>
+                <th>Soft</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td class="method-name">Baseline</td><td>22.01±0.66</td><td>18.98±0.41</td><td>17.30±0.34</td><td>12.04±0.67</td><td>9.01±0.50</td><td>7.33±0.51</td></tr>
+            <tr><td class="method-name">UNet</td><td>22.01±0.66</td><td>18.98±0.41</td><td>17.30±0.34</td><td>12.04±0.67</td><td>9.01±0.50</td><td>7.33±0.51</td></tr>
+            <tr><td class="method-name">SRCNN</td><td>23.99±0.58</td><td>20.31±0.42</td><td>18.07±0.37</td><td>13.18±0.38</td><td>9.50±0.27</td><td>7.25±0.21</td></tr>
+            <tr><td class="method-name">ESRGAN</td><td>22.64±0.48</td><td>19.22±0.39</td><td>17.44±0.33</td><td>10.49±0.29</td><td>7.04±0.28</td><td>5.26±0.29</td></tr>
+            <tr><td class="method-name">SwinIR</td><td>23.31±0.53</td><td>20.22±0.35</td><td>17.88±0.32</td><td>11.21±0.29</td><td>8.05±0.27</td><td>5.76±0.22</td></tr>
+            <tr><td class="method-name">Nearest</td><td>23.71±0.54</td><td>20.19±0.41</td><td>18.00±0.36</td><td>13.03±0.34</td><td>9.51±0.26</td><td>7.31±0.23</td></tr>
         </tbody>
     </table>
 
     <!-- SSIM Results -->
     <h2>SSIM Results <span class="metric-badge metric-ssim">↑</span></h2>
 
+    <h3>Small FOV (195μm × 195μm)</h3>
     <table class="results-table">
         <thead>
             <tr>
-                <th rowspan="3" style="min-width: 80px;">Method</th>
-                <th colspan="6">Small FOV (195μm × 195μm)</th>
-                <th colspan="6">Large FOV (586μm × 586μm)</th>
-            </tr>
-            <tr>
-                <th colspan="3">Full</th>
-                <th colspan="3">Masked</th>
+                <th rowspan="2" style="min-width: 80px;">Method</th>
                 <th colspan="3">Full</th>
                 <th colspan="3">Masked</th>
             </tr>
             <tr>
-                <th>Raw</th>
-                <th>Bone</th>
-                <th>Soft</th>
-                <th>Raw</th>
-                <th>Bone</th>
-                <th>Soft</th>
                 <th>Raw</th>
                 <th>Bone</th>
                 <th>Soft</th>
@@ -707,12 +648,6 @@
                 <td>0.92±0.00</td>
                 <td>0.94±0.00</td>
                 <td>0.95±0.00</td>
-                <td>0.92±0.00</td>
-                <td>0.94±0.00</td>
-                <td>0.95±0.00</td>
-                <td>0.92±0.00</td>
-                <td>0.94±0.00</td>
-                <td>0.95±0.00</td>
             </tr>
             <tr>
                 <td class="method-name">UNet</td>
@@ -722,21 +657,9 @@
                 <td>0.93±0.01</td>
                 <td>0.95±0.00</td>
                 <td>0.95±0.00</td>
-                <td>0.94±0.00</td>
-                <td>0.95±0.00</td>
-                <td>0.95±0.00</td>
-                <td>0.94±0.00</td>
-                <td>0.95±0.00</td>
-                <td>0.95±0.00</td>
             </tr>
             <tr>
                 <td class="method-name">SRCNN</td>
-                <td>0.93±0.00</td>
-                <td>0.95±0.00</td>
-                <td>0.95±0.00</td>
-                <td>0.93±0.00</td>
-                <td>0.95±0.00</td>
-                <td>0.95±0.00</td>
                 <td>0.93±0.00</td>
                 <td>0.95±0.00</td>
                 <td>0.95±0.00</td>
@@ -752,21 +675,9 @@
                 <td>0.82±0.04</td>
                 <td>0.82±0.04</td>
                 <td>0.82±0.04</td>
-                <td>0.93±0.00</td>
-                <td>0.95±0.00</td>
-                <td>0.95±0.00</td>
-                <td>0.82±0.03</td>
-                <td>0.82±0.04</td>
-                <td>0.82±0.03</td>
             </tr>
             <tr>
                 <td class="method-name">SwinIR</td>
-                <td>0.92±0.00</td>
-                <td>0.94±0.00</td>
-                <td>0.95±0.00</td>
-                <td>0.92±0.00</td>
-                <td>0.94±0.00</td>
-                <td>0.95±0.00</td>
                 <td>0.92±0.00</td>
                 <td>0.94±0.00</td>
                 <td>0.95±0.00</td>
@@ -782,39 +693,49 @@
                 <td>0.92±0.00</td>
                 <td>0.94±0.00</td>
                 <td>0.95±0.00</td>
-                <td>0.92±0.00</td>
-                <td>0.94±0.00</td>
-                <td>0.95±0.00</td>
-                <td>0.92±0.00</td>
-                <td>0.94±0.00</td>
-                <td>0.95±0.00</td>
             </tr>
+        </tbody>
+    </table>
+
+    <h3>Large FOV (586μm × 586μm)</h3>
+    <table class="results-table">
+        <thead>
+            <tr>
+                <th rowspan="2" style="min-width: 80px;">Method</th>
+                <th colspan="3">Full</th>
+                <th colspan="3">Masked</th>
+            </tr>
+            <tr>
+                <th>Raw</th>
+                <th>Bone</th>
+                <th>Soft</th>
+                <th>Raw</th>
+                <th>Bone</th>
+                <th>Soft</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td class="method-name">Baseline</td><td>0.92±0.00</td><td>0.94±0.00</td><td>0.95±0.00</td><td>0.92±0.00</td><td>0.94±0.00</td><td>0.95±0.00</td></tr>
+            <tr><td class="method-name">UNet</td><td>0.94±0.00</td><td>0.95±0.00</td><td>0.95±0.00</td><td>0.94±0.00</td><td>0.95±0.00</td><td>0.95±0.00</td></tr>
+            <tr><td class="method-name">SRCNN</td><td>0.93±0.00</td><td>0.95±0.00</td><td>0.95±0.00</td><td>0.93±0.00</td><td>0.95±0.00</td><td>0.95±0.00</td></tr>
+            <tr><td class="method-name">ESRGAN</td><td>0.93±0.00</td><td>0.95±0.00</td><td>0.95±0.00</td><td>0.82±0.03</td><td>0.82±0.04</td><td>0.82±0.03</td></tr>
+            <tr><td class="method-name">SwinIR</td><td>0.92±0.00</td><td>0.94±0.00</td><td>0.95±0.00</td><td>0.92±0.00</td><td>0.94±0.00</td><td>0.95±0.00</td></tr>
+            <tr><td class="method-name">Nearest</td><td>0.92±0.00</td><td>0.94±0.00</td><td>0.95±0.00</td><td>0.92±0.00</td><td>0.94±0.00</td><td>0.95±0.00</td></tr>
         </tbody>
     </table>
 
     <!-- MAE Results -->
     <h2>MAE Results <span class="metric-badge metric-mae">↓</span></h2>
 
+    <h3>Small FOV (195μm × 195μm)</h3>
     <table class="results-table">
         <thead>
             <tr>
-                <th rowspan="3" style="min-width: 80px;">Method</th>
-                <th colspan="6">Small FOV (195μm × 195μm)</th>
-                <th colspan="6">Large FOV (586μm × 586μm)</th>
-            </tr>
-            <tr>
-                <th colspan="3">Full</th>
-                <th colspan="3">Masked</th>
+                <th rowspan="2" style="min-width: 80px;">Method</th>
                 <th colspan="3">Full</th>
                 <th colspan="3">Masked</th>
             </tr>
             <tr>
-                <th>Raw</th>
-                <th>Bone</th>
-                <th>Soft</th>
-                <th>Raw</th>
-                <th>Bone</th>
-                <th>Soft</th>
                 <th>Raw</th>
                 <th>Bone</th>
                 <th>Soft</th>
@@ -832,12 +753,6 @@
                 <td>0.15±0.02</td>
                 <td>0.19±0.03</td>
                 <td>0.21±0.03</td>
-                <td>0.01±0.00</td>
-                <td>0.02±0.00</td>
-                <td>0.02±0.00</td>
-                <td>0.14±0.02</td>
-                <td>0.18±0.02</td>
-                <td>0.20±0.02</td>
             </tr>
             <tr>
                 <td class="method-name">UNet</td>
@@ -847,21 +762,9 @@
                 <td>0.14±0.01</td>
                 <td>0.18±0.01</td>
                 <td>0.21±0.01</td>
-                <td>0.01±0.00</td>
-                <td>0.02±0.00</td>
-                <td>0.02±0.00</td>
-                <td>0.14±0.01</td>
-                <td>0.18±0.01</td>
-                <td>0.21±0.01</td>
             </tr>
             <tr>
                 <td class="method-name">SRCNN</td>
-                <td>0.01±0.00</td>
-                <td>0.02±0.00</td>
-                <td>0.02±0.00</td>
-                <td>0.14±0.01</td>
-                <td>0.18±0.01</td>
-                <td>0.21±0.01</td>
                 <td>0.01±0.00</td>
                 <td>0.02±0.00</td>
                 <td>0.02±0.00</td>
@@ -877,12 +780,6 @@
                 <td>0.22±0.01</td>
                 <td>0.31±0.02</td>
                 <td>0.35±0.03</td>
-                <td>0.01±0.00</td>
-                <td>0.02±0.00</td>
-                <td>0.02±0.00</td>
-                <td>0.21±0.01</td>
-                <td>0.28±0.02</td>
-                <td>0.32±0.02</td>
             </tr>
             <tr>
                 <td class="method-name">SwinIR</td>
@@ -892,12 +789,6 @@
                 <td>0.21±0.01</td>
                 <td>0.28±0.02</td>
                 <td>0.32±0.02</td>
-                <td>0.01±0.00</td>
-                <td>0.02±0.00</td>
-                <td>0.02±0.00</td>
-                <td>0.20±0.01</td>
-                <td>0.27±0.01</td>
-                <td>0.31±0.01</td>
             </tr>
             <tr>
                 <td class="method-name">Nearest</td>
@@ -907,13 +798,34 @@
                 <td>0.15±0.02</td>
                 <td>0.19±0.03</td>
                 <td>0.21±0.03</td>
-                <td>0.01±0.00</td>
-                <td>0.02±0.00</td>
-                <td>0.02±0.00</td>
-                <td>0.14±0.02</td>
-                <td>0.18±0.02</td>
-                <td>0.20±0.02</td>
             </tr>
+        </tbody>
+    </table>
+
+    <h3>Large FOV (586μm × 586μm)</h3>
+    <table class="results-table">
+        <thead>
+            <tr>
+                <th rowspan="2" style="min-width: 80px;">Method</th>
+                <th colspan="3">Full</th>
+                <th colspan="3">Masked</th>
+            </tr>
+            <tr>
+                <th>Raw</th>
+                <th>Bone</th>
+                <th>Soft</th>
+                <th>Raw</th>
+                <th>Bone</th>
+                <th>Soft</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td class="method-name">Baseline</td><td>0.01±0.00</td><td>0.02±0.00</td><td>0.02±0.00</td><td>0.14±0.02</td><td>0.18±0.02</td><td>0.20±0.02</td></tr>
+            <tr><td class="method-name">UNet</td><td>0.01±0.00</td><td>0.02±0.00</td><td>0.02±0.00</td><td>0.14±0.01</td><td>0.18±0.01</td><td>0.21±0.01</td></tr>
+            <tr><td class="method-name">SRCNN</td><td>0.01±0.00</td><td>0.02±0.00</td><td>0.02±0.00</td><td>0.14±0.01</td><td>0.18±0.01</td><td>0.21±0.01</td></tr>
+            <tr><td class="method-name">ESRGAN</td><td>0.01±0.00</td><td>0.02±0.00</td><td>0.02±0.00</td><td>0.21±0.01</td><td>0.28±0.02</td><td>0.32±0.02</td></tr>
+            <tr><td class="method-name">SwinIR</td><td>0.01±0.00</td><td>0.02±0.00</td><td>0.02±0.00</td><td>0.20±0.01</td><td>0.27±0.01</td><td>0.31±0.01</td></tr>
+            <tr><td class="method-name">Nearest</td><td>0.01±0.00</td><td>0.02±0.00</td><td>0.02±0.00</td><td>0.14±0.02</td><td>0.18±0.02</td><td>0.20±0.02</td></tr>
         </tbody>
     </table>
 
