@@ -626,21 +626,11 @@ tar -xzf LumbarSR_Dataset.tar.gz
     </table>
 
     <h3>Metrics</h3>
-
-    <h4>Image Quality Metrics</h4>
-    <p>Computed within the released BoneMask ROI and reported under Raw, Bone, and Soft Tissue CT windows:</p>
-    <ul>
-        <li><strong>PSNR</strong> - Peak Signal-to-Noise Ratio (dB) ↑</li>
-        <li><strong>SSIM</strong> - Structural Similarity Index ↑</li>
-        <li><strong>MAE</strong> - Mean Absolute Error ↓</li>
-    </ul>
+    <p>Image-quality evaluation reports <strong>PSNR</strong>, <strong>SSIM</strong>, and <strong>MAE</strong> within the released BoneMask ROI.</p>
 
     <h3>Baseline Performance</h3>
     <p>Public benchmark tables cover registered clinical CT, Nearest, SRCNN, UNet, ESRGAN, and SwinIR.</p>
-
-    <div class="info-box">
-        <strong>Experimental Setup:</strong> Training on Lumbar_01 to Lumbar_25 (25 samples), evaluation on Lumbar_26 to Lumbar_30 (5 samples).
-    </div>
+    <p class="note">Training uses Lumbar_01 to Lumbar_25; evaluation reports mean ± standard deviation on Lumbar_26 to Lumbar_30.</p>
 
     <center>
         <a href="baseline_results.html" class="btn btn-primary">View Full Baseline Results →</a>
@@ -649,9 +639,7 @@ tar -xzf LumbarSR_Dataset.tar.gz
     <br>
 
     <h3>Registration Evaluation</h3>
-    <p>
-        We report registration quality within the released <code>BoneMask</code> ROI using <code>Dice</code>, <code>HD95</code>, and <code>HD</code>. These metrics are provided as a practical reference for the final registration quality.
-    </p>
+    <p>Registration quality is reported within the released <code>BoneMask</code> ROI using <code>Dice</code>, <code>HD95</code>, and <code>HD</code>.</p>
 
     <table class="data-table">
         <tr>
@@ -685,7 +673,7 @@ tar -xzf LumbarSR_Dataset.tar.gz
     </table>
 
     <h3>Bone Morphometry</h3>
-    <p>The public benchmark reports ROI-based bone morphometry for the released subset and paired comparison against <code>Micro-PCCT</code>.</p>
+    <p>The public benchmark reports ROI-based bone morphometry in the released BoneMask-defined VOI, together with paired comparison against <code>Micro-PCCT</code>.</p>
 
     <table class="data-table">
         <tr>
@@ -773,11 +761,7 @@ tar -xzf LumbarSR_Dataset.tar.gz
     </table>
 
     <h4>Paired Statistical Comparison vs Micro-PCCT</h4>
-    <p>
-        For the released test subset, we additionally report a paired comparison against <code>Micro-PCCT</code> using a one-sided exact
-        <code>Wilcoxon signed-rank</code> test. Pairing is performed within the same released test case and reported separately for each FOV.
-        With <code>n = 5</code> per FOV, the smallest attainable exact one-sided <code>p</code> value is <code>0.03125</code>.
-    </p>
+    <p>One-sided exact <code>Wilcoxon signed-rank</code> tests are reported against <code>Micro-PCCT</code>, paired by case and shown separately for each FOV (<code>n = 5</code>; smallest attainable exact one-sided <code>p = 0.03125</code>).</p>
     <p class="note">
         Cell format: signed mean delta (<code>pred - Micro-PCCT</code>) / exact one-sided <code>p</code> value.
         Directions: <code>BV/TV</code> and <code>Tb.N</code> test <code>pred &lt; Micro-PCCT</code>;

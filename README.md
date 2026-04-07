@@ -157,17 +157,9 @@ For each sample, we provide 4 sequences with soft tissue kernel:
 
 ## Evaluation Metrics
 
-### Image Quality Metrics
-
-The following image-quality metrics are reported within the released `BoneMask` ROI:
-
-- **PSNR** (Peak Signal-to-Noise Ratio) - measured in dB, higher is better ↑
-- **SSIM** (Structural Similarity Index) - range [0, 1], higher is better ↑
-- **MAE** (Mean Absolute Error) - lower is better ↓
-
 ### CT Window Settings
 
-Public image-quality evaluation reports three CT window settings:
+Image-quality metrics are reported within the released `BoneMask` ROI under three CT windows:
 
 | Window | Window Center (WC) | Window Width (WW) | Description |
 |--------|-------------------|-------------------|-------------|
@@ -225,7 +217,7 @@ The public repository includes rigid registration code in [`baseline/register_an
 
 ### Registration Evaluation
 
-We report registration quality within the released `BoneMask` ROI using `Dice`, `HD95`, and `HD`. These metrics are provided as a practical reference for the final registration quality.
+Registration quality is reported within the released `BoneMask` ROI using `Dice`, `HD95`, and `HD`.
 
 | Method | ROI | Dice ↑ | HD95 ↓ | HD ↓ |
 |--------|-----|--------|--------|------|
@@ -235,7 +227,7 @@ We report registration quality within the released `BoneMask` ROI using `Dice`, 
 
 ### Bone Morphometry
 
-The public benchmark reports the following ROI-based bone morphometry measurements:
+The public benchmark reports ROI-based bone morphometry in the released `BoneMask`-defined VOI:
 
 | Category | Metrics |
 |----------|---------|
@@ -266,14 +258,7 @@ Current public subset (`586X_586Y_1000Z_S`):
 
 ### Paired Statistical Comparison vs Micro-PCCT
 
-For the released test subset, we additionally report a paired statistical comparison against the `Micro-PCCT` reference:
-
-- Test: one-sided exact `Wilcoxon signed-rank test`
-- Pairing: same released test case, reported separately for each FOV
-- Sample size: `n = 5` per FOV
-- Note: with `n = 5`, the smallest attainable exact one-sided `p` value is `0.03125`
-- Direction: `BV/TV` and `Tb.N` test `pred < Micro-PCCT`; `Tb.Th` and `Tb.Sp` test `pred > Micro-PCCT`
-- Table notation below: each cell is reported as `signed mean delta / exact one-sided p value`
+For the released test subset, we report one-sided exact `Wilcoxon signed-rank` tests against `Micro-PCCT`, paired by case and reported separately for each FOV (`n = 5`; smallest attainable exact one-sided `p = 0.03125`). `BV/TV` and `Tb.N` test `pred < Micro-PCCT`; `Tb.Th` and `Tb.Sp` test `pred > Micro-PCCT`. Each cell below is `signed mean delta / exact one-sided p value`.
 
 Compact paired comparison vs `Micro-PCCT` (`195X_195Y_1000Z_S`):
 
@@ -303,11 +288,7 @@ Public benchmark tables currently cover registered clinical CT, `Nearest`, `SRCN
 
 ### Baseline Performance
 
-**Experimental Setup:**
-- **Training Set**: Lumbar_01 to Lumbar_25 (25 samples)
-- **Test Set**: Lumbar_26 to Lumbar_30 (5 samples)
-- **Training**: Deep learning methods trained on 25 samples with single-sequence soft-kernel input by default
-- **Evaluation**: Metrics computed as mean ± standard deviation across test set
+Training uses `Lumbar_01` to `Lumbar_25`; evaluation reports mean ± standard deviation on `Lumbar_26` to `Lumbar_30`.
 
 #### PSNR Results (dB) ↑
 
@@ -348,7 +329,7 @@ Public benchmark tables currently cover registered clinical CT, `Nearest`, `SRCN
 | **SwinIR** | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.21±0.01 | 0.28±0.02 | 0.32±0.02 | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.20±0.01 | 0.27±0.01 | 0.31±0.01 |
 | **Nearest** | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.15±0.02 | 0.19±0.03 | 0.21±0.03 | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.14±0.02 | 0.18±0.02 | 0.20±0.02 |
 
-For detailed instructions, see [`methods/README.md`](methods/README.md).
+Detailed commands are provided in [`methods/README.md`](methods/README.md).
 
 ## Recommended Usage Policy
 
