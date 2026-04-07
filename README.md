@@ -190,16 +190,25 @@ The public benchmark reports ROI-based bone morphometry in the released `BoneMas
 | Core trabecular morphometry | `BV/TV`, `Tb.Th`, `Tb.Sp`, `Tb.N` |
 | Released VOI definition | derived from the released `BoneMask` and used consistently for all public morphometry statistics |
 
+For the released test subset, we report one-sided exact `Wilcoxon signed-rank` tests against `Micro-PCCT`, paired by case and reported separately for each FOV (`n = 5`; smallest attainable exact one-sided `p = 0.03125`). `BV/TV` and `Tb.N` test `pred < Micro-PCCT`; `Tb.Th` and `Tb.Sp` test `pred > Micro-PCCT`. Delta rows below are reported as `signed mean delta / exact one-sided p value`.
+
 Current public subset (`195X_195Y_1000Z_S`):
 
 | Method / Data | BV/TV | Tb.Th (mm) | Tb.Sp (mm) | Tb.N (mm^-1) |
 |---------------|-------|------------|------------|--------------|
 | Micro-PCCT reference | `0.2208 ± 0.0174` | `0.2573 ± 0.0141` | `0.3647 ± 0.0192` | `0.8608 ± 0.0881` |
 | Registered clinical CT baseline | `0.0055 ± 0.0029` | `0.5837 ± 0.1179` | `4.1319 ± 1.1314` | `0.0097 ± 0.0056` |
+| Δ / p-value vs Micro-PCCT | `-0.2125 / 0.03125` | `+0.3761 / 0.03125` | `+3.8776 / 0.03125` | `-0.8398 / 0.03125` |
+| Nearest | `0.0055 ± 0.0029` | `0.5837 ± 0.1179` | `4.1319 ± 1.1314` | `0.0097 ± 0.0056` |
+| Δ / p-value vs Micro-PCCT | `-0.2125 / 0.03125` | `+0.3761 / 0.03125` | `+3.8776 / 0.03125` | `-0.8398 / 0.03125` |
 | SRCNN | `0.0605 ± 0.0212` | `0.7673 ± 0.0865` | `0.9809 ± 0.2448` | `0.0773 ± 0.0202` |
+| Δ / p-value vs Micro-PCCT | `-0.1556 / 0.03125` | `+0.5861 / 0.03125` | `+0.5512 / 0.03125` | `-0.7762 / 0.03125` |
 | UNet | `0.0931 ± 0.0235` | `0.4324 ± 0.0550` | `0.4565 ± 0.0574` | `0.2133 ± 0.0346` |
+| Δ / p-value vs Micro-PCCT | `-0.1217 / 0.03125` | `+0.1907 / 0.03125` | `+0.0951 / 0.03125` | `-0.6357 / 0.03125` |
 | ESRGAN | `0.1330 ± 0.0239` | `0.2740 ± 0.0112` | `0.3941 ± 0.0249` | `0.4841 ± 0.0773` |
+| Δ / p-value vs Micro-PCCT | `-0.0878 / 0.03125` | `+0.0167 / 0.03125` | `+0.0293 / 0.09375` | `-0.3767 / 0.03125` |
 | SwinIR | `0.0415 ± 0.0140` | `0.7371 ± 0.0845` | `1.3594 ± 0.3529` | `0.0549 ± 0.0127` |
+| Δ / p-value vs Micro-PCCT | `-0.1793 / 0.03125` | `+0.4798 / 0.03125` | `+0.9947 / 0.03125` | `-0.8059 / 0.03125` |
 
 Current public subset (`586X_586Y_1000Z_S`):
 
@@ -207,48 +216,17 @@ Current public subset (`586X_586Y_1000Z_S`):
 |---------------|-------|------------|------------|--------------|
 | Micro-PCCT reference | `0.2208 ± 0.0174` | `0.2573 ± 0.0141` | `0.3647 ± 0.0192` | `0.8608 ± 0.0881` |
 | Registered clinical CT baseline | `0.0026 ± 0.0018` | `0.5338 ± 0.1322` | `5.0502 ± 1.8719` | `0.0053 ± 0.0044` |
+| Δ / p-value vs Micro-PCCT | `-0.2167 / 0.03125` | `+0.2665 / 0.03125` | `+5.0664 / 0.03125` | `-0.8493 / 0.03125` |
+| Nearest | `0.0026 ± 0.0018` | `0.5338 ± 0.1322` | `5.0502 ± 1.8719` | `0.0053 ± 0.0044` |
+| Δ / p-value vs Micro-PCCT | `-0.2167 / 0.03125` | `+0.2665 / 0.03125` | `+5.0664 / 0.03125` | `-0.8493 / 0.03125` |
 | SRCNN | `0.1271 ± 0.0204` | `0.6565 ± 0.0739` | `0.4540 ± 0.0425` | `0.1928 ± 0.0104` |
+| Δ / p-value vs Micro-PCCT | `-0.0864 / 0.03125` | `+0.4665 / 0.03125` | `+0.0593 / 0.09375` | `-0.6719 / 0.03125` |
 | UNet | `0.1227 ± 0.0254` | `0.4639 ± 0.0467` | `0.4421 ± 0.0459` | `0.2624 ± 0.0300` |
+| Δ / p-value vs Micro-PCCT | `-0.0920 / 0.03125` | `+0.2314 / 0.03125` | `+0.0863 / 0.03125` | `-0.5960 / 0.03125` |
 | ESRGAN | `0.1506 ± 0.0209` | `0.2730 ± 0.0089` | `0.3710 ± 0.0160` | `0.5511 ± 0.0702` |
+| Δ / p-value vs Micro-PCCT | `-0.0702 / 0.03125` | `+0.0156 / 0.03125` | `+0.0063 / 0.40625` | `-0.3097 / 0.03125` |
 | SwinIR | `0.0486 ± 0.0144` | `0.4010 ± 0.0203` | `0.9216 ± 0.2053` | `0.1198 ± 0.0305` |
-
-#### Paired Statistical Comparison vs Micro-PCCT
-
-For the released test subset, we report one-sided exact `Wilcoxon signed-rank` tests against `Micro-PCCT`, paired by case and reported separately for each FOV (`n = 5`; smallest attainable exact one-sided `p = 0.03125`). `BV/TV` and `Tb.N` test `pred < Micro-PCCT`; `Tb.Th` and `Tb.Sp` test `pred > Micro-PCCT`. Each cell below is `signed mean delta / exact one-sided p value`.
-
-Compact paired comparison vs `Micro-PCCT` (`195X_195Y_1000Z_S`):
-
-| Method | Type | BV/TV | Tb.Th (mm) | Tb.Sp (mm) | Tb.N (mm^-1) |
-|---|---|---:|---:|---:|---:|
-| Registered clinical CT baseline | Δ | `-0.2125` | `+0.3761` | `+3.8776` | `-0.8398` |
-|  | p-value | `0.03125` | `0.03125` | `0.03125` | `0.03125` |
-| Nearest | Δ | `-0.2125` | `+0.3761` | `+3.8776` | `-0.8398` |
-|  | p-value | `0.03125` | `0.03125` | `0.03125` | `0.03125` |
-| SRCNN | Δ | `-0.1556` | `+0.5861` | `+0.5512` | `-0.7762` |
-|  | p-value | `0.03125` | `0.03125` | `0.03125` | `0.03125` |
-| UNet | Δ | `-0.1217` | `+0.1907` | `+0.0951` | `-0.6357` |
-|  | p-value | `0.03125` | `0.03125` | `0.03125` | `0.03125` |
-| ESRGAN | Δ | `-0.0878` | `+0.0167` | `+0.0293` | `-0.3767` |
-|  | p-value | `0.03125` | `0.03125` | `0.09375` | `0.03125` |
-| SwinIR | Δ | `-0.1793` | `+0.4798` | `+0.9947` | `-0.8059` |
-|  | p-value | `0.03125` | `0.03125` | `0.03125` | `0.03125` |
-
-Compact paired comparison vs `Micro-PCCT` (`586X_586Y_1000Z_S`):
-
-| Method | Type | BV/TV | Tb.Th (mm) | Tb.Sp (mm) | Tb.N (mm^-1) |
-|---|---|---:|---:|---:|---:|
-| Registered clinical CT baseline | Δ | `-0.2167` | `+0.2665` | `+5.0664` | `-0.8493` |
-|  | p-value | `0.03125` | `0.03125` | `0.03125` | `0.03125` |
-| Nearest | Δ | `-0.2167` | `+0.2665` | `+5.0664` | `-0.8493` |
-|  | p-value | `0.03125` | `0.03125` | `0.03125` | `0.03125` |
-| SRCNN | Δ | `-0.0864` | `+0.4665` | `+0.0593` | `-0.6719` |
-|  | p-value | `0.03125` | `0.03125` | `0.09375` | `0.03125` |
-| UNet | Δ | `-0.0920` | `+0.2314` | `+0.0863` | `-0.5960` |
-|  | p-value | `0.03125` | `0.03125` | `0.03125` | `0.03125` |
-| ESRGAN | Δ | `-0.0702` | `+0.0156` | `+0.0063` | `-0.3097` |
-|  | p-value | `0.03125` | `0.03125` | `0.40625` | `0.03125` |
-| SwinIR | Δ | `-0.1722` | `+0.1437` | `+0.5568` | `-0.7410` |
-|  | p-value | `0.03125` | `0.03125` | `0.03125` | `0.03125` |
+| Δ / p-value vs Micro-PCCT | `-0.1722 / 0.03125` | `+0.1437 / 0.03125` | `+0.5568 / 0.03125` | `-0.7410 / 0.03125` |
 
 ## Methods and Reproduction
 
