@@ -55,11 +55,13 @@ data/
 
 ## Methods
 
-Currently released code:
+Runnable implementations in this directory:
 
 - Interpolation baselines
 - SRCNN
 - UNet
+
+Public benchmark result tables in the main repository additionally report registered clinical CT, `Nearest`, `ESRGAN`, and `SwinIR` under the same released evaluation protocol.
 
 ### 1. Interpolation Baselines
 
@@ -149,15 +151,6 @@ python methods/inference.py \
   --batch-size 32
 ```
 
-### 4. Additional Benchmark Entries
-
-The public benchmark pages now also report the following methods:
-
-| Method | Benchmark status | Notes |
-|--------|------------------|-------|
-| ESRGAN | Results released | RRDB-based adversarial baseline |
-| SwinIR | Results released | Transformer-based super-resolution baseline |
-
 Registration baseline code is available separately in [`../baseline/`](../baseline/), while public evaluation code is available in [`../evaluation/`](../evaluation/).
 
 ## Model Architecture
@@ -242,12 +235,10 @@ methods/
 | UNet | 8.85-9.50 | **0.9489-0.9500** | 0.179-0.214 |
 | SRCNN | **9.26-9.51** | 0.9450-0.9489 | **0.178-0.210** |
 | Nearest Interpolation | 8.85-9.51 | 0.9427-0.9450 | 0.178-0.196 |
-| ESRGAN | Benchmark page updated | Benchmark page updated | Benchmark page updated |
-| SwinIR | Benchmark page updated | Benchmark page updated | Benchmark page updated |
 
 *Range shows performance across different FOV (Small/Large) and window (Raw/Bone/Soft) configurations in BoneMask-ROI evaluation*
 
-For complete results tables with all configurations (FOV × Mode × Window), see the [full results page](../docs/baseline_results.html) or the main [README](../README.md#baseline-performance).
+For complete public benchmark tables, see the [full results page](../docs/baseline_results.html) or the main [README](../README.md#baseline-performance).
 
 ## Troubleshooting
 

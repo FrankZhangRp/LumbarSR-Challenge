@@ -213,29 +213,15 @@ The public repository currently contains four main parts:
 | Directory | Status | Description |
 |-----------|--------|-------------|
 | `baseline/` | Public | Rigid registration baseline based on ANTs, including `register_ants.py` and `batch_register.py` |
-| `methods/` | Public | Interpolation, SRCNN, and UNet baselines with training and inference scripts |
-| `evaluation/` | Public | Image quality evaluation scripts for PSNR, SSIM, MAE, and trabecular summary statistics |
+| `methods/` | Public | Super-resolution method scripts and usage notes |
+| `evaluation/` | Public | Image quality evaluation and trabecular summary scripts |
 | `docs/` | Public | GitHub Pages website, visualizations, and benchmark result pages |
 
-The current release covers the registration baseline, super-resolution baselines, evaluation scripts, the released `BoneMask` ROI files, and the project website.
-
-Current public benchmark status (`2026-04-06`):
-
-- Public method code currently covers interpolation, `SRCNN`, and `UNet`; `ESRGAN` and `SwinIR` are benchmark-page result entries in this release
-- The released benchmark pages already reflect the refreshed `BoneMask`-ROI protocol for the previously released methods: registered clinical CT baseline, interpolation baselines, `SRCNN`, and `UNet`
-- Public `masked` image-quality metrics are interpreted inside the released sequence-level `BoneMask` ROI
-- Public bone morphometry summaries currently cover the released subset (`Micro-PCCT`, registered clinical CT baseline, `SRCNN`, `UNet`, `ESRGAN`, `SwinIR`) for both `195X_195Y_1000Z_S` and `586X_586Y_1000Z_S`
-- `ESRGAN` public image-quality metrics and bone morphometry rows have been filled in on `2026-04-06`
-- `SwinIR` public image-quality metrics and bone morphometry rows have now been filled in on `2026-04-06`
+The public benchmark reports results for registered clinical CT, nearest interpolation, `SRCNN`, `UNet`, `ESRGAN`, and `SwinIR` under the released `BoneMask`-ROI protocol. Reproducible usage commands are documented in [`methods/README.md`](methods/README.md) and the scripts under [`evaluation/`](evaluation/).
 
 ## Registration Baseline and Mask Evaluation
 
-The public repository already includes rigid registration code in [`baseline/register_ants.py`](baseline/register_ants.py) and [`baseline/batch_register.py`](baseline/batch_register.py).
-
-### Current Public Evaluation Masks
-
-- Public SR evaluation uses the released sequence-level `BoneMask` ROI aligned to each `RegisteredData` volume
-- The public `BoneMask` files are provided as binary reference masks in `LumbarSR/BoneMask/`
+The public repository includes rigid registration code in [`baseline/register_ants.py`](baseline/register_ants.py) and [`baseline/batch_register.py`](baseline/batch_register.py). Public SR evaluation uses the released sequence-level `BoneMask` ROI aligned to each `RegisteredData` volume.
 
 ### Registration Evaluation
 
@@ -249,7 +235,7 @@ We report registration quality within the released `BoneMask` ROI using `Dice`, 
 
 ### Bone Morphometry
 
-The public benchmark pages report the following ROI-based bone morphometry measurements:
+The public benchmark reports the following ROI-based bone morphometry measurements:
 
 | Category | Metrics |
 |----------|---------|
@@ -277,8 +263,6 @@ Current public subset (`586X_586Y_1000Z_S`):
 | UNet | `0.1227 ± 0.0254` | `0.4639 ± 0.0467` | `0.4421 ± 0.0459` | `0.2624 ± 0.0300` |
 | ESRGAN | `0.1506 ± 0.0209` | `0.2730 ± 0.0089` | `0.3710 ± 0.0160` | `0.5511 ± 0.0702` |
 | SwinIR | `0.0486 ± 0.0144` | `0.4010 ± 0.0203` | `0.9216 ± 0.2053` | `0.1198 ± 0.0305` |
-
-Among interpolation baselines, only `Nearest` is retained in the public morphometry comparison tables; `SwinIR` morphometry entries have now been added for the released subset.
 
 ### Paired Statistical Comparison vs Micro-PCCT
 
@@ -313,72 +297,9 @@ Compact paired comparison vs `Micro-PCCT` (`586X_586Y_1000Z_S`):
 | ESRGAN | `-0.0702 / 0.03125` | `+0.0156 / 0.03125` | `+0.0063 / 0.40625` | `-0.3097 / 0.03125` |
 | SwinIR | `-0.1722 / 0.03125` | `+0.1437 / 0.03125` | `+0.5568 / 0.03125` | `-0.7410 / 0.03125` |
 
-## Baseline Methods
+## Methods and Reproduction
 
-We currently provide three released baseline implementations in the [`methods/`](methods/) directory:
-
-### 1. Interpolation Baselines
-
-Traditional interpolation methods (no training required):
-
-```bash
-# Run bicubic interpolation (recommended baseline)
-python methods/interpolation.py \
-  --method bicubic \
-  --data-root ./data/RegisteredData \
-  --output-root ./results
-```
-
-Available methods: `nearest`, `trilinear`, `bicubic`, `lanczos`
-
-### 2. SRCNN (Super-Resolution CNN)
-
-Deep learning approach with ~60K parameters:
-
-```bash
-# Training
-python methods/train.py \
-  --model srcnn \
-  --data-root ./data/RegisteredData \
-  --output-dir ./checkpoints \
-  --epochs 100 \
-  --batch-size 8
-
-# Inference
-python methods/inference.py \
-  --model srcnn \
-  --checkpoint checkpoints/srcnn_best.pth \
-  --data-root ./data/RegisteredData \
-  --output-root ./results
-```
-
-### 3. UNet
-
-U-shaped architecture with encoder-decoder and skip connections (~30M parameters):
-
-```bash
-# Training
-python methods/train.py \
-  --model unet \
-  --data-root ./data/RegisteredData \
-  --output-dir ./checkpoints \
-  --epochs 100 \
-  --batch-size 4
-
-# Inference
-python methods/inference.py \
-  --model unet \
-  --checkpoint checkpoints/unet_best.pth \
-  --data-root ./data/RegisteredData \
-  --output-root ./results
-```
-
-### Additional Baselines
-
-| Method | Status | Notes |
-|--------|--------|-------|
-| ESRGAN | Image metrics + morphometry released | RRDB-based adversarial super-resolution baseline |
-| SwinIR | Image metrics + morphometry released | Transformer-based super-resolution baseline |
+Public benchmark tables currently cover registered clinical CT, `Nearest`, `SRCNN`, `UNet`, `ESRGAN`, and `SwinIR`. Model usage notes are kept in [`methods/README.md`](methods/README.md), and evaluation scripts are provided in [`evaluation/`](evaluation/).
 
 ### Baseline Performance
 

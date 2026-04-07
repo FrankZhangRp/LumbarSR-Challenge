@@ -571,12 +571,12 @@ tar -xzf LumbarSR_Dataset.tar.gz
         <tr>
             <td><code>methods/</code></td>
             <td>Public</td>
-            <td>Interpolation, SRCNN, and UNet baselines with training and inference scripts</td>
+            <td>Super-resolution method scripts and usage notes</td>
         </tr>
         <tr>
             <td><code>evaluation/</code></td>
             <td>Public</td>
-            <td>Image quality evaluation code for PSNR, SSIM, MAE, and trabecular summary statistics</td>
+            <td>Image quality evaluation and trabecular summary scripts</td>
         </tr>
         <tr>
             <td><code>docs/</code></td>
@@ -586,10 +586,8 @@ tar -xzf LumbarSR_Dataset.tar.gz
     </table>
 
     <p class="note">
-        The current release covers the registration baseline, super-resolution baselines, evaluation scripts, the released BoneMask ROI files, and the website.
-        As of 2026-04-06, the public benchmark pages already reflect the refreshed BoneMask-ROI protocol for the previously released methods
-        (registered clinical CT baseline, interpolation baselines, SRCNN, and UNet). The public method code currently covers
-        interpolation, SRCNN, and UNet; ESRGAN and SwinIR image-quality metrics and bone morphometry are currently released as benchmark-page result entries.
+        The public benchmark reports registered clinical CT, nearest interpolation, SRCNN, UNet, ESRGAN, and SwinIR under the released BoneMask-ROI protocol.
+        Usage details are documented in <code>methods/</code> and <code>evaluation/</code>.
     </p>
 
     <hr>
@@ -638,15 +636,7 @@ tar -xzf LumbarSR_Dataset.tar.gz
     </ul>
 
     <h3>Baseline Performance</h3>
-    <p>
-        We provide baseline results using standard methods:
-    </p>
-    <ul>
-        <li><strong>Baseline:</strong> Registered clinical CT (no super-resolution)</li>
-        <li><strong>SRCNN:</strong> Super-Resolution Convolutional Neural Network</li>
-        <li><strong>UNet:</strong> U-shaped encoder-decoder architecture</li>
-        <li><strong>Nearest:</strong> Nearest neighbor interpolation</li>
-    </ul>
+    <p>Public benchmark tables cover registered clinical CT, Nearest, SRCNN, UNet, ESRGAN, and SwinIR.</p>
 
     <div class="info-box">
         <strong>Experimental Setup:</strong> Training on Lumbar_01 to Lumbar_25 (25 samples), evaluation on Lumbar_26 to Lumbar_30 (5 samples).
@@ -657,25 +647,6 @@ tar -xzf LumbarSR_Dataset.tar.gz
     </center>
 
     <br>
-
-    <h3>Additional Baselines</h3>
-    <table class="data-table">
-        <tr>
-            <th>Method</th>
-            <th>Status</th>
-            <th>Public Results</th>
-        </tr>
-        <tr>
-            <td><strong>ESRGAN</strong></td>
-            <td>Image metrics + morphometry completed</td>
-            <td>Public tables updated</td>
-        </tr>
-        <tr>
-            <td><strong>SwinIR</strong></td>
-            <td>Image metrics + morphometry completed</td>
-            <td>Public tables updated</td>
-        </tr>
-    </table>
 
     <h3>Registration Evaluation</h3>
     <p>
@@ -714,14 +685,7 @@ tar -xzf LumbarSR_Dataset.tar.gz
     </table>
 
     <h3>Bone Morphometry</h3>
-    <p>
-        The public benchmark pages report a compact set of ROI-based bone morphometry parameters for the currently released subset
-        (`Micro-PCCT`, registered clinical CT baseline, `SRCNN`, `UNet`, `ESRGAN`, and `SwinIR`).
-    </p>
-    <p>
-        A paired statistical comparison against <code>Micro-PCCT</code> is also available on the full benchmark page:
-        one-sided exact <code>Wilcoxon signed-rank</code> tests are reported separately for each FOV together with signed mean differences.
-    </p>
+    <p>The public benchmark reports ROI-based bone morphometry for the released subset and paired comparison against <code>Micro-PCCT</code>.</p>
 
     <table class="data-table">
         <tr>
