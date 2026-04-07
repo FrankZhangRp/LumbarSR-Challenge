@@ -242,23 +242,23 @@ Training uses `Lumbar_01` to `Lumbar_25`; evaluation reports mean ± standard de
 
 | Method | Full Raw | Full Bone | Full Soft | Masked Raw | Masked Bone | Masked Soft |
 |--------|---|---|---|---|---|---|
-| **Baseline** | 21.94±0.67 | 18.94±0.45 | 17.20±0.38 | 11.86±0.77 | 8.85±0.61 | 7.12±0.61 |
-| **UNet** | 21.94±0.67 | 18.94±0.45 | 17.20±0.38 | 11.86±0.77 | 8.85±0.61 | 7.12±0.61 |
-| **SRCNN** | **23.64±0.50** | **20.04±0.39** | **18.00±0.35** | **12.87±0.35** | **9.26±0.32** | 7.22±0.30 |
-| **ESRGAN** | 21.87±0.63 | 18.78±0.50 | 17.08±0.40 | 9.73±0.45 | 6.60±0.37 | 4.90±0.34 |
-| **SwinIR** | 22.82±0.59 | 19.72±0.42 | 17.55±0.34 | 10.75±0.37 | 7.62±0.35 | 5.51±0.28 |
-| **Nearest** | 23.74±0.54 | 20.11±0.42 | 18.00±0.36 | 13.04±0.35 | 9.40±0.30 | 7.29±0.26 |
+| **Baseline** | 21.9449±0.6015 | 18.9359±0.4007 | 17.2012±0.3435 | 11.8627±0.6846 | 8.8535±0.5437 | 7.1188±0.5422 |
+| **UNet** | 21.9449±0.6015 | 18.9359±0.4007 | 17.2012±0.3435 | 11.8627±0.6846 | 8.8535±0.5437 | 7.1188±0.5422 |
+| **SRCNN** | 23.6444±0.5034 | 20.0389±0.3909 | **18.0030±0.3534** | 12.8653±0.3459 | 9.2598±0.3202 | 7.2238±0.3015 |
+| **ESRGAN** | 21.8739±0.7088 | 18.7800±0.5592 | 17.0813±0.4445 | 9.7697±0.5064 | 6.6177±0.4223 | 4.9046±0.3837 |
+| **SwinIR** | 22.8177±0.5885 | 19.7247±0.4243 | 17.5512±0.3366 | 10.7463±0.3728 | 7.6232±0.3476 | 5.5052±0.2795 |
+| **Nearest** | **23.7416±0.5417** | **20.1053±0.4186** | 17.9961±0.3569 | **13.0394±0.3528** | **9.4029±0.3031** | **7.2937±0.2600** |
 
 ##### Large FOV (586μm × 586μm)
 
 | Method | Full Raw | Full Bone | Full Soft | Masked Raw | Masked Bone | Masked Soft |
 |--------|---|---|---|---|---|---|
-| **Baseline** | 22.01±0.66 | 18.98±0.41 | 17.30±0.34 | 12.04±0.67 | 9.01±0.50 | 7.33±0.51 |
-| **UNet** | 22.01±0.66 | 18.98±0.41 | 17.30±0.34 | 12.04±0.67 | 9.01±0.50 | 7.33±0.51 |
-| **SRCNN** | **23.99±0.58** | **20.31±0.42** | **18.07±0.37** | **13.18±0.38** | **9.50±0.27** | 7.25±0.21 |
-| **ESRGAN** | 22.64±0.48 | 19.22±0.39 | 17.44±0.33 | 10.49±0.29 | 7.04±0.28 | 5.26±0.29 |
-| **SwinIR** | 23.31±0.53 | 20.22±0.35 | 17.88±0.32 | 11.21±0.29 | 8.05±0.27 | 5.76±0.22 |
-| **Nearest** | 23.71±0.54 | 20.19±0.41 | 18.00±0.36 | 13.03±0.34 | 9.51±0.26 | 7.31±0.23 |
+| **Baseline** | 22.0106±0.5928 | 18.9804±0.3657 | 17.3008±0.3026 | 12.0416±0.6035 | 9.0115±0.4446 | **7.3319±0.4541** |
+| **UNet** | 22.0106±0.5928 | 18.9804±0.3657 | 17.3008±0.3026 | 12.0416±0.6035 | 9.0115±0.4446 | **7.3319±0.4541** |
+| **SRCNN** | **23.9935±0.5790** | **20.3074±0.4218** | **18.0655±0.3667** | **13.1820±0.3808** | 9.4958±0.2719 | 7.2539±0.2084 |
+| **ESRGAN** | 22.6371±0.5350 | 19.2183±0.4342 | 17.4409±0.3697 | 10.4862±0.3220 | 7.0362±0.3090 | 5.2592±0.3222 |
+| **SwinIR** | 23.3147±0.5329 | 20.2197±0.3506 | 17.8842±0.3230 | 11.2070±0.2851 | 8.0537±0.2707 | 5.7589±0.2208 |
+| **Nearest** | 23.7139±0.5395 | 20.1946±0.4063 | 17.9976±0.3632 | 13.0295±0.3440 | **9.5101±0.2568** | 7.3131±0.2268 |
 
 #### SSIM Results ↑
 
@@ -266,23 +266,23 @@ Training uses `Lumbar_01` to `Lumbar_25`; evaluation reports mean ± standard de
 
 | Method | Full Raw | Full Bone | Full Soft | Masked Raw | Masked Bone | Masked Soft |
 |--------|---|---|---|---|---|---|
-| **Baseline** | 0.92±0.00 | 0.94±0.00 | 0.95±0.00 | 0.92±0.00 | 0.94±0.00 | 0.95±0.00 |
-| **UNet** | 0.93±0.01 | 0.95±0.00 | 0.95±0.00 | 0.93±0.01 | 0.95±0.00 | **0.95±0.00** |
-| **SRCNN** | 0.93±0.00 | 0.95±0.00 | 0.95±0.00 | 0.93±0.00 | 0.95±0.00 | 0.95±0.00 |
-| **ESRGAN** | 0.93±0.00 | 0.94±0.00 | 0.94±0.00 | 0.82±0.04 | 0.82±0.04 | 0.82±0.04 |
-| **SwinIR** | 0.92±0.00 | 0.94±0.00 | 0.95±0.00 | 0.92±0.00 | 0.94±0.00 | 0.95±0.00 |
-| **Nearest** | 0.92±0.00 | 0.94±0.00 | 0.95±0.00 | 0.92±0.00 | 0.94±0.00 | 0.95±0.00 |
+| **Baseline** | 0.9239±0.0030 | 0.9432±0.0035 | 0.9467±0.0032 | 0.9239±0.0030 | 0.9432±0.0035 | 0.9467±0.0032 |
+| **UNet** | **0.9345±0.0051** | **0.9489±0.0032** | **0.9499±0.0032** | **0.9345±0.0051** | **0.9489±0.0032** | **0.9499±0.0032** |
+| **SRCNN** | 0.9309±0.0044 | 0.9479±0.0033 | 0.9493±0.0033 | 0.9309±0.0044 | 0.9479±0.0033 | 0.9493±0.0033 |
+| **ESRGAN** | 0.9294±0.0053 | 0.9438±0.0038 | 0.9448±0.0038 | 0.8224±0.0414 | 0.8216±0.0426 | 0.8241±0.0421 |
+| **SwinIR** | 0.9222±0.0033 | 0.9414±0.0036 | 0.9460±0.0032 | 0.9222±0.0033 | 0.9414±0.0036 | 0.9460±0.0032 |
+| **Nearest** | 0.9309±0.0044 | 0.9479±0.0033 | 0.9493±0.0033 | 0.9309±0.0044 | 0.9479±0.0033 | 0.9493±0.0033 |
 
 ##### Large FOV (586μm × 586μm)
 
 | Method | Full Raw | Full Bone | Full Soft | Masked Raw | Masked Bone | Masked Soft |
 |--------|---|---|---|---|---|---|
-| **Baseline** | 0.92±0.00 | 0.94±0.00 | 0.95±0.00 | 0.92±0.00 | 0.94±0.00 | 0.95±0.00 |
-| **UNet** | **0.94±0.00** | **0.95±0.00** | **0.95±0.00** | **0.94±0.00** | **0.95±0.00** | **0.95±0.00** |
-| **SRCNN** | 0.93±0.00 | 0.95±0.00 | 0.95±0.00 | 0.93±0.00 | 0.95±0.00 | 0.95±0.00 |
-| **ESRGAN** | 0.93±0.00 | 0.95±0.00 | 0.95±0.00 | 0.82±0.03 | 0.82±0.04 | 0.82±0.03 |
-| **SwinIR** | 0.92±0.00 | 0.94±0.00 | 0.95±0.00 | 0.92±0.00 | 0.94±0.00 | 0.95±0.00 |
-| **Nearest** | 0.92±0.00 | 0.94±0.00 | 0.95±0.00 | 0.92±0.00 | 0.94±0.00 | 0.95±0.00 |
+| **Baseline** | 0.9240±0.0037 | 0.9445±0.0035 | 0.9475±0.0031 | 0.9240±0.0037 | 0.9445±0.0035 | 0.9475±0.0031 |
+| **UNet** | **0.9371±0.0041** | **0.9489±0.0031** | **0.9500±0.0032** | **0.9371±0.0041** | **0.9489±0.0031** | **0.9500±0.0032** |
+| **SRCNN** | 0.9310±0.0046 | 0.9473±0.0034 | 0.9491±0.0033 | 0.9310±0.0046 | 0.9473±0.0034 | 0.9491±0.0033 |
+| **ESRGAN** | 0.9304±0.0051 | 0.9450±0.0035 | 0.9462±0.0033 | 0.8231±0.0386 | 0.8222±0.0397 | 0.8250±0.0391 |
+| **SwinIR** | 0.9214±0.0042 | 0.9426±0.0036 | 0.9472±0.0032 | 0.9214±0.0042 | 0.9426±0.0036 | 0.9472±0.0032 |
+| **Nearest** | 0.9310±0.0046 | 0.9473±0.0034 | 0.9491±0.0033 | 0.9310±0.0046 | 0.9473±0.0034 | 0.9491±0.0033 |
 
 #### MAE Results ↓
 
@@ -290,23 +290,23 @@ Training uses `Lumbar_01` to `Lumbar_25`; evaluation reports mean ± standard de
 
 | Method | Full Raw | Full Bone | Full Soft | Masked Raw | Masked Bone | Masked Soft |
 |--------|---|---|---|---|---|---|
-| **Baseline** | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.15±0.02 | 0.19±0.03 | 0.21±0.03 |
-| **UNet** | **0.01±0.00** | 0.01±0.00 | 0.02±0.00 | 0.14±0.01 | 0.18±0.01 | 0.21±0.01 |
-| **SRCNN** | **0.01±0.00** | **0.02±0.00** | **0.02±0.00** | **0.14±0.01** | **0.18±0.01** | **0.21±0.01** |
-| **ESRGAN** | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.22±0.01 | 0.31±0.02 | 0.35±0.03 |
-| **SwinIR** | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.21±0.01 | 0.28±0.02 | 0.32±0.02 |
-| **Nearest** | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.15±0.02 | 0.19±0.03 | 0.21±0.03 |
+| **Baseline** | 0.0143±0.0015 | 0.0182±0.0016 | 0.0208±0.0016 | 0.1455±0.0175 | 0.1858±0.0224 | 0.2132±0.0255 |
+| **UNet** | **0.0117±0.0012** | **0.0150±0.0013** | **0.0175±0.0014** | 0.1395±0.0067 | 0.1798±0.0116 | 0.2091±0.0144 |
+| **SRCNN** | 0.0122±0.0012 | 0.0152±0.0013 | 0.0176±0.0014 | **0.1376±0.0067** | **0.1780±0.0105** | **0.2070±0.0124** |
+| **ESRGAN** | 0.0143±0.0017 | 0.0185±0.0020 | 0.0213±0.0021 | 0.2213±0.0168 | 0.3045±0.0253 | 0.3514±0.0301 |
+| **SwinIR** | 0.0140±0.0014 | 0.0176±0.0016 | 0.0201±0.0015 | 0.2062±0.0104 | 0.2810±0.0160 | 0.3210±0.0193 |
+| **Nearest** | 0.0122±0.0012 | 0.0152±0.0013 | 0.0176±0.0014 | **0.1376±0.0067** | **0.1780±0.0105** | **0.2070±0.0124** |
 
 ##### Large FOV (586μm × 586μm)
 
 | Method | Full Raw | Full Bone | Full Soft | Masked Raw | Masked Bone | Masked Soft |
 |--------|---|---|---|---|---|---|
-| **Baseline** | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.14±0.02 | 0.18±0.02 | 0.20±0.02 |
-| **UNet** | **0.01±0.00** | **0.02±0.00** | **0.02±0.00** | **0.14±0.01** | 0.18±0.01 | 0.21±0.01 |
-| **SRCNN** | **0.01±0.00** | **0.02±0.00** | **0.02±0.00** | **0.14±0.01** | **0.18±0.01** | **0.21±0.01** |
-| **ESRGAN** | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.21±0.01 | 0.28±0.02 | 0.32±0.02 |
-| **SwinIR** | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.20±0.01 | 0.27±0.01 | 0.31±0.01 |
-| **Nearest** | 0.01±0.00 | 0.02±0.00 | 0.02±0.00 | 0.14±0.02 | 0.18±0.02 | 0.20±0.02 |
+| **Baseline** | 0.0140±0.0015 | 0.0178±0.0016 | 0.0203±0.0015 | 0.1389±0.0152 | **0.1773±0.0190** | **0.2020±0.0211** |
+| **UNet** | **0.0116±0.0012** | **0.0151±0.0013** | **0.0176±0.0015** | **0.1383±0.0059** | 0.1814±0.0092 | 0.2118±0.0109 |
+| **SRCNN** | 0.0121±0.0012 | 0.0153±0.0014 | 0.0178±0.0015 | 0.1386±0.0066 | 0.1789±0.0096 | 0.2080±0.0111 |
+| **ESRGAN** | 0.0135±0.0014 | 0.0171±0.0015 | 0.0197±0.0016 | 0.2062±0.0104 | 0.2822±0.0186 | 0.3247±0.0239 |
+| **SwinIR** | 0.0135±0.0013 | 0.0166±0.0014 | 0.0189±0.0014 | 0.1986±0.0079 | 0.2690±0.0117 | 0.3073±0.0150 |
+| **Nearest** | 0.0121±0.0012 | 0.0153±0.0014 | 0.0178±0.0015 | 0.1386±0.0066 | 0.1789±0.0096 | 0.2080±0.0111 |
 
 Detailed commands are provided in [`methods/README.md`](methods/README.md).
 
@@ -316,16 +316,19 @@ Detailed commands are provided in [`methods/README.md`](methods/README.md).
 2. External data, pre-trained models, and synthetic data are allowed, but should be disclosed clearly.
 3. Do not use hidden ground truth or any form of test leakage.
 
-## Organizers
+## Authors and Affiliations
 
-- **Ping Wang***, Institute of Diagnostic and Interventional Radiology, Shanghai Sixth People's Hospital Affiliated to Shanghai Jiao Tong University School of Medicine
-- **Ruipeng Zhang***, Institute of Diagnostic and Interventional Radiology, Shanghai Sixth People's Hospital Affiliated to Shanghai Jiao Tong University School of Medicine
-- **Mengfei Wang**, School of Information and Intelligent Science, Donghua University
-- **Zhenzhen Cao**, Basic Medical Science, Kunming Medical University
-- **Xuefei Hu**, Basic Medical Science, Tarim University School of Medicine
-- **Yuehua Li**✉, Institute of Diagnostic and Interventional Radiology, Shanghai Sixth People's Hospital Affiliated to Shanghai Jiao Tong University School of Medicine (liyuehua77@sjtu.edu.cn)
+**Ping Wang<sup>1,2</sup>, Ruipeng Zhang<sup>1,2</sup>, Mengfei Wang<sup>1,3</sup>, Shenyan Zong<sup>1,2</sup>, Jinyu Zhu<sup>1</sup>, Xinyu Song<sup>1</sup>, Zhenzhen Cao<sup>4</sup>, Xuefei Hu<sup>5</sup>, Dan Wang<sup>1*</sup>, Yuehua Li<sup>1,2*</sup>**
 
-\* Equal contribution
+1. Institute of Diagnostic and Interventional Radiology, Shanghai Sixth People's Hospital Affiliated to Shanghai Jiao Tong University School of Medicine, Shanghai, China
+2. Faculty of Medical Imaging Technology, College of Health Science and Technology, Shanghai Jiao Tong University School of Medicine
+3. School of Information and Intelligent Science, Donghua University, Shanghai, China
+4. Human Anatomy Lab, School of Basic Medical Science, Kunming Medical University, Kunming, China
+5. Tarim University School of Medicine, Alar, China
+
+Ping Wang and Ruipeng Zhang contributed equally to this work.
+
+*Corresponding authors:* Dan Wang (`joshuastonecn@sjtu.edu.cn`); Yuehua Li (`liyuehua77@sjtu.edu.cn`)
 
 ## Citation
 
@@ -334,7 +337,7 @@ If you use this dataset, please cite:
 ```bibtex
 @misc{lumbarsr2026,
   title={LumbarSR: A Paired Clinical CT and Photon-Counting Micro-CT Dataset for Human Lumbar Vertebrae},
-  author={Wang, Ping and Zhang, Ruipeng and Wang, Mengfei and Cao, Zhenzhen and Hu, Xuefei and Li, Yuehua},
+  author={Wang, Ping and Zhang, Ruipeng and Wang, Mengfei and Zong, Shenyan and Zhu, Jinyu and Song, Xinyu and Cao, Zhenzhen and Hu, Xuefei and Wang, Dan and Li, Yuehua},
   year={2026},
   url={https://github.com/frankzhangrp/LumbarSR-Challenge}
 }
@@ -342,8 +345,8 @@ If you use this dataset, please cite:
 
 ## Contact
 
-- Email: zhangrp@sjtu.edu.cn
-- GitHub: [@frankzhangrp](https://github.com/frankzhangrp)
+- Corresponding authors: Dan Wang (`joshuastonecn@sjtu.edu.cn`); Yuehua Li (`liyuehua77@sjtu.edu.cn`)
+- GitHub: [@FrankZhangRp](https://github.com/FrankZhangRp)
 
 ## License
 
