@@ -51,13 +51,11 @@ Given clinical CT images with **soft tissue kernel** at two FOV settings (`195 Î
 
 ### Download
 
-**[Download Dataset from Zenodo (tar.gz)](https://doi.org/10.5281/zenodo.19404387)**
+**[Download Dataset from Zenodo (ZIP parts)](https://doi.org/10.5281/zenodo.19404387)**
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19404387.svg)](https://doi.org/10.5281/zenodo.19404387)
 
-```bash
-tar -xzf LumbarSR_Dataset.tar.gz
-```
+The dataset is distributed on Zenodo as split ZIP archives. Please use the Zenodo record for the current file list and download instructions.
 
 ### Directory Structure
 
