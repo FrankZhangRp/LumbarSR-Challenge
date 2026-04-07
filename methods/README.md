@@ -1,12 +1,10 @@
 # Super-Resolution Methods
 
-This directory contains baseline implementations for the LumbarSR dataset and benchmark.
+This directory contains runnable method scripts for the LumbarSR benchmark.
 
 ## Quick Start
 
 ### 1. Setup Environment
-
-We recommend a standard local Python environment:
 
 ```bash
 conda create -n lumbarsr python=3.10 -y
@@ -16,22 +14,7 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-Environment checklist:
-- PyTorch >= 2.0
-- MONAI >= 1.2
-- nibabel
-- pydicom
-- SimpleITK
-- numpy
-- scipy
-- scikit-image
-
-Optional checks:
-```bash
-python -c "import torch; print(torch.__version__)"
-python -c "import monai; print(monai.__version__)"
-python -c "import nibabel, pydicom, SimpleITK, scipy, skimage; print('deps ok')"
-```
+Main dependencies: PyTorch, MONAI, nibabel, pydicom, SimpleITK, numpy, scipy, and scikit-image.
 
 ### 2. Prepare Data
 
@@ -82,9 +65,7 @@ python methods/interpolation.py --method bicubic --data-root data/RegisteredData
 python methods/interpolation.py --method lanczos --data-root data/RegisteredData --output-root results
 ```
 
-### 2. SRCNN (Super-Resolution CNN)
-
-Deep learning approach with patch-based training.
+### 2. SRCNN
 
 **Training:**
 ```bash
@@ -124,8 +105,6 @@ python methods/inference.py \
 
 ### 3. UNet
 
-U-shaped architecture with encoder-decoder and skip connections.
-
 **Training:**
 ```bash
 # Train UNet (single-sequence soft-kernel input)
@@ -153,38 +132,22 @@ python methods/inference.py \
 
 Registration baseline code is available separately in [`../baseline/`](../baseline/), while public evaluation code is available in [`../evaluation/`](../evaluation/).
 
-## Model Architecture
+## Model Notes
 
-### SRCNN
-- **Input**: 1-channel soft-kernel clinical CT by default
-- **Layers**:
-  - Conv1: 9×9, 64 filters, ReLU
-  - Conv2: 1×1, 32 filters, ReLU
-  - Conv3: 5×5, 1 filter
-- **Parameters**: ~60K
-- **Training Loss**: L1
-
-### UNet
-- **Input**: 1-channel soft-kernel clinical CT by default
-- **Architecture**: Encoder-decoder with skip connections
-  - 4 encoder levels (64 → 512 filters)
-  - 4 decoder levels with concatenation
-  - Final 1×1 conv to output
-- **Parameters**: ~30M
-- **Training Loss**: L1
+- `SRCNN`: 2D convolutional baseline with `~60K` parameters
+- `UNet`: 2D encoder-decoder baseline with `~30M` parameters
+- Default input is the soft-kernel sequence of one FOV; optional dual-channel input uses the matching `B + S` pair from the same FOV
 
 ## Training Tips
 
-1. **Default input**: Use the soft-kernel sequence of one FOV as the default input
-2. **Optional dual-kernel input**: If two channels are used, they should be the `B + S` pair from the same FOV
-3. **Patch-based training**: Extract random patches (256×256 by default) from slices for memory efficiency
-4. **Full-slice batched inference**: `methods/inference.py` now loads the model once and runs large 2D slice batches directly
-5. **Canonical outputs**: Predictions are saved under `results/<method>/<sample>/LumbarXX_<sequence>_<method>.nii.gz`
-6. **Learning rate**: Start with 1e-4, reduce on plateau
+1. Use the soft-kernel sequence of one FOV as the default input.
+2. If dual-channel input is used, pair `B + S` from the same FOV.
+3. Training is patch-based by default; inference is full-slice batched.
+4. Predictions are saved under `results/<method>/<sample>/LumbarXX_<sequence>_<method>.nii.gz`.
 
 ## Evaluation
 
-After generating predictions, use the evaluation script:
+After generating predictions, use:
 
 ```bash
 # Evaluate predictions against ground truth inside the released BoneMask ROI
@@ -196,16 +159,7 @@ python evaluation/batch_evaluate.py \
   --output-dir outputs/metrics
 ```
 
-Primary metrics computed:
-- **PSNR** (Peak Signal-to-Noise Ratio, dB)
-- **SSIM** (Structural Similarity Index)
-- **MAE** (Mean Absolute Error)
-
-Metrics are calculated under:
-- Raw HU values
-- Bone window (WC=400, WW=1800)
-- Soft tissue window (WC=40, WW=400)
-- Full image / non-air / BoneMask ROI modes
+The public evaluation reports PSNR, SSIM, and MAE under raw, bone, and soft-tissue windows, with BoneMask-ROI metrics as the main reported setting.
 
 ## File Structure
 
@@ -221,11 +175,7 @@ methods/
 
 ## Expected Results
 
-**Experimental Setup:**
-- **Training Set**: Lumbar_01 to Lumbar_25 (25 samples)
-- **Test Set**: Lumbar_26 to Lumbar_30 (5 samples)
-- **Training**: Deep learning methods trained on 25 samples with single-sequence soft-kernel input by default
-- **Evaluation**: Metrics computed as mean ± standard deviation across test set
+Training uses `Lumbar_01` to `Lumbar_25`; evaluation reports mean ± standard deviation on `Lumbar_26` to `Lumbar_30`.
 
 **Key Performance Summary:**
 
@@ -242,20 +192,9 @@ For complete public benchmark tables, see the [full results page](../docs/baseli
 
 ## Troubleshooting
 
-**Out of Memory (OOM)**:
-- Reduce `--batch-size`
-- Reduce `--patch-size`
-- Use single-channel instead of optional dual-kernel input
-
-**Slow Training**:
-- Reduce `--n-patches` (fewer patches per volume)
-- Use smaller model (SRCNN instead of UNet)
-
-**Poor Results**:
-- Train for more epochs
-- Try different learning rates
-- If using two channels, use the B + S pair from the same FOV
-- Add data augmentation
+- OOM: reduce `--batch-size` or `--patch-size`
+- Slow training: reduce `--n-patches` or use `SRCNN`
+- Poor results: train longer, adjust learning rate, or verify sequence pairing
 
 ## Citation
 

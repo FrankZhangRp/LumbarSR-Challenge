@@ -324,25 +324,12 @@
     <h2 id="overview">Overview</h2>
 
     <p>
-        Medical computed tomography (CT) plays a crucial role in disease diagnosis, with CT technology having undergone significant evolution over the past half-century. Low back pain is a prevalent symptom affecting approximately <strong>540 million people</strong> globally at any given time, with lumbar vertebral microstructure changes being a potential osseous factor contributing to this condition. However, these microstructural morphological changes remain largely undetectable due to current limitations in standard clinical CT equipment resolution.
+        LumbarSR is a paired clinical CT and Micro-PCCT benchmark for lumbar vertebral super-resolution, containing
+        <strong>30 ex vivo human lumbar samples</strong> scanned with multiple clinical CT configurations and matched <strong>105 μm</strong> Micro-PCCT.
     </p>
 
-    <div class="info-box">
-        <strong>Project Goal:</strong> Develop algorithms capable of reconstructing high-resolution bone microstructure from paired regular clinical helical CT lumbar vertebral images to match the quality of state-of-the-art Micro-PCCT.
-    </div>
-
     <p>
-        The LumbarSR project provides a unique dataset of <strong>30 paired human dry lumbar vertebrae</strong> scanned with both clinical helical CT (at multiple resolution and reconstruction configurations) and Micro-PCCT at 0.1mm super-resolution. This benchmark enables development and evaluation of super-resolution reconstruction algorithms in musculoskeletal imaging, with potential applications in:
-    </p>
-
-    <ul>
-        <li>Osteoporosis screening and bone quality assessment</li>
-        <li>Fracture risk prediction</li>
-        <li>Low back pain investigation</li>
-    </ul>
-
-    <p>
-        The technical objective is to develop algorithms that can transform clinical helical CT images (0.5-1.0 mm resolution) into high-resolution images comparable to Micro-PCCT (0.1 mm), representing a <strong>10-200x super-resolution enhancement factor</strong>.
+        The task is to reconstruct bone microstructure from routine clinical CT into Micro-PCCT-like resolution for musculoskeletal imaging research.
     </p>
 
     <!-- Visualization Showcase -->
@@ -358,9 +345,7 @@
 
     <!-- Task Section -->
     <h2>Task Definition</h2>
-
-    <h3>Input</h3>
-    <p>Clinical CT images reconstructed with <strong>soft tissue kernel</strong> at two different fields of view:</p>
+    <p>Input: clinical CT with <strong>soft tissue kernel</strong> at two fields of view. Output: <strong>105 μm isotropic Micro-PCCT</strong>.</p>
 
     <table class="data-table">
         <tr>
@@ -379,9 +364,6 @@
             <td>500 μm / 1000 μm</td>
         </tr>
     </table>
-
-    <h3>Output</h3>
-    <p>High-resolution <strong>Micro-PCCT</strong> image with <strong>105 μm isotropic</strong> resolution.</p>
 
     <!-- Flowchart -->
     <center>
@@ -421,12 +403,7 @@
         </a>
     </p>
 
-    <p>The dataset is provided as a compressed tar.gz archive. After downloading, extract it using:</p>
-
-    <pre><code># Extract the dataset
-tar -xzf LumbarSR_Dataset.tar.gz
-
-# This will create a LumbarSR/ directory with the following structure</code></pre>
+    <pre><code>tar -xzf LumbarSR_Dataset.tar.gz</code></pre>
 
     <h3>Directory Structure</h3>
 
@@ -469,18 +446,10 @@ tar -xzf LumbarSR_Dataset.tar.gz
 │   └── ...
 └── README.md</code></pre>
 
-    <div class="info-box">
-        <strong>Key Points:</strong>
-        <ul style="margin: 10px 0;">
-            <li><code>original_dicom/</code>: Contains raw DICOM files for advanced users who want to process from scratch</li>
-            <li><code>RegisteredData/</code>: Pre-processed and registered NIfTI files, ready for training (recommended starting point)</li>
-            <li><code>BoneMask/</code>: Binary bone ROI volumes aligned to the released <code>RegisteredData</code> files</li>
-            <li>All clinical CT sequences are rigidly registered to the Micro-PCCT space</li>
-            <li>Ground truth files are named <code>*_MicroPCCT_105um.nii.gz</code></li>
-            <li>Each sample contains 9 BoneMask files: 1 <code>MicroPCCT</code> mask and 8 registered clinical-sequence masks</li>
-            <li>Within one FOV, the same released mask is reused across <code>B/S</code> kernels and <code>500/1000</code> reconstructions</li>
-        </ul>
-    </div>
+    <p class="note">
+        <code>RegisteredData/</code> is the recommended starting point. <code>BoneMask/</code> provides binary ROIs aligned to the released NIfTI volumes.
+        Each sample contains one <code>MicroPCCT</code> mask and eight sequence-level clinical masks.
+    </p>
 
     <h3>Data Statistics</h3>
     <table class="data-table">
@@ -540,17 +509,7 @@ tar -xzf LumbarSR_Dataset.tar.gz
         </tr>
     </table>
 
-    <h3>Ground Truth</h3>
-    <ul>
-        <li><strong>Resolution:</strong> 105 μm isotropic</li>
-        <li><strong>Format:</strong> NIfTI (.nii.gz)</li>
-        <li><strong>Data type:</strong> int16 (Hounsfield Units)</li>
-    </ul>
-
-    <h3>Dataset Statistics</h3>
-    <ul>
-        <li><strong>Training Set:</strong> 30 samples, 212,805 slices total (avg 7,093.5 slices/case, registered to 105μm isotropic)</li>
-    </ul>
+    <p class="note">Micro-PCCT targets are released as <code>int16</code> NIfTI volumes at <code>105 μm</code> isotropic resolution.</p>
 
     <hr>
 
@@ -845,10 +804,8 @@ tar -xzf LumbarSR_Dataset.tar.gz
 
     <ol>
         <li><strong>Official Data:</strong> Use the released LumbarSR training set as the core development data.</li>
-        <li><strong>External Data:</strong> External datasets may be used for pre-training or supplementary training, but should be clearly documented.</li>
-        <li><strong>Pre-trained / Foundation Models:</strong> Publicly available pre-trained models and foundation models may be used, and the exact model or checkpoint should be documented.</li>
-        <li><strong>Synthetic Data:</strong> Synthetic data generation, augmentation, simulation, or self-training strategies may be used and should be briefly described.</li>
-        <li><strong>Evaluation Integrity:</strong> Avoid any hidden-ground-truth usage or test leakage, and keep evaluation fully automatic.</li>
+        <li><strong>Disclosure:</strong> External data, pre-trained models, and synthetic data are allowed, but should be documented clearly.</li>
+        <li><strong>Integrity:</strong> Avoid hidden-ground-truth usage or any form of test leakage.</li>
     </ol>
 
     <hr>

@@ -13,11 +13,9 @@
 
 ## Overview
 
-Medical computed tomography (CT) plays a crucial role in disease diagnosis, with CT technology having undergone significant evolution over the past half-century—from primary CT to energy-integrating detector CT, and now to photon-counting detector CT (PCCT) systems being deployed in clinical centers worldwide. Low back pain is a prevalent symptom affecting approximately 540 million people globally at any given time, with lumbar vertebral microstructure changes being a potential osseous factor contributing to this condition. However, these microstructural morphological changes remain largely undetectable due to current limitations in standard clinical CT equipment resolution.
+LumbarSR is a paired clinical CT and Micro-PCCT benchmark for lumbar vertebral super-resolution. It contains 30 ex vivo human lumbar samples scanned with multiple clinical CT configurations and matched `105 μm` Micro-PCCT.
 
-This project addresses the critical need for algorithms capable of reconstructing high-resolution bone microstructure from paired regular clinical helical CT lumbar vertebral images to match the quality of state-of-the-art Micro-PCCT. The LumbarSR project provides a unique dataset of 30 paired human dry lumbar vertebrae scanned with both clinical helical CT (at multiple resolution and reconstruction configurations) and Micro-PCCT at 0.1mm super-resolution. This benchmark enables development and evaluation of super-resolution reconstruction algorithms in musculoskeletal imaging, with potential applications in osteoporosis screening, fracture risk assessment, and low back pain investigation.
-
-The technical objective is to develop algorithms that can transform clinical helical CT images (0.5-1.0 mm resolution) into high-resolution images comparable to Micro-PCCT (0.1 mm), representing a 10-200× super-resolution enhancement factor. Success on this benchmark could transform routine lumbar CT scans into diagnostic tools for bone microstructure assessment, advancing AI-based image reconstruction in musculoskeletal radiology.
+The benchmark targets reconstruction of bone microstructure from routine clinical CT into Micro-PCCT-like resolution for musculoskeletal imaging research.
 
 <p align="center">
   <a href="docs/images/showcase.gif">
@@ -29,11 +27,7 @@ The technical objective is to develop algorithms that can transform clinical hel
 
 ## Task Description
 
-Given clinical CT images acquired with **soft tissue reconstruction kernel** at two different fields of view (FOV):
-- **Small FOV** (195um in-plane resolution)
-- **Large FOV** (586um in-plane resolution)
-
-Reconstruct the corresponding high-resolution Micro-PCCT image (105um isotropic resolution).
+Given clinical CT images with **soft tissue kernel** at two FOV settings (`195 μm` and `586 μm` in-plane), reconstruct the corresponding `105 μm` isotropic Micro-PCCT target.
 
 <p align="center">
   <a href="docs/images/flowchart.png">
@@ -61,15 +55,8 @@ Reconstruct the corresponding high-resolution Micro-PCCT image (105um isotropic 
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19404387.svg)](https://doi.org/10.5281/zenodo.19404387)
 
-Zenodo DOI: [10.5281/zenodo.19404387](https://doi.org/10.5281/zenodo.19404387)
-
-The dataset is provided as a compressed tar.gz archive. After downloading, extract it using:
-
 ```bash
-# Extract the dataset
 tar -xzf LumbarSR_Dataset.tar.gz
-
-# This will create a LumbarSR/ directory with the following structure
 ```
 
 ### Directory Structure
@@ -118,14 +105,7 @@ LumbarSR/
 └── README.md
 ```
 
-**Key Points:**
-- `original_dicom/`: Contains raw DICOM files for advanced users who want to process from scratch
-- `RegisteredData/`: Pre-processed and registered NIfTI files, ready for training (recommended starting point)
-- `BoneMask/`: Binary bone ROI volumes aligned to the released `RegisteredData` files
-- All clinical CT sequences are rigidly registered to the Micro-PCCT space
-- Ground truth files are named `*_MicroPCCT_105um.nii.gz`
-- Each sample contains 9 BoneMask files: 1 `MicroPCCT` mask and 8 registered clinical-sequence masks
-- Within one FOV, the same released mask is reused across `B/S` kernels and `500/1000` slice-thickness reconstructions
+`RegisteredData/` is the recommended starting point. `BoneMask/` provides binary ROIs aligned to the released NIfTI volumes. Each sample contains one `MicroPCCT` mask and eight sequence-level clinical masks.
 
 ### Recommended Split
 
@@ -145,15 +125,7 @@ For each sample, we provide 4 sequences with soft tissue kernel:
 | 586X_586Y_500Z_S | 586um | 500um | Large |
 | 586X_586Y_1000Z_S | 586um | 1000um | Large |
 
-### Ground Truth (Micro-PCCT)
-
-- Resolution: 105um isotropic
-- Format: NIfTI (.nii.gz)
-- Data type: int16 (Hounsfield Units)
-
-### Dataset Statistics
-
-- **Training Set**: 30 samples, 212,805 slices total (avg 7,093.5 slices/case, registered to 105μm isotropic)
+Micro-PCCT targets are released as `int16` NIfTI volumes at `105 μm` isotropic resolution.
 
 ## Evaluation Metrics
 
@@ -171,8 +143,6 @@ Image-quality metrics are reported within the released `BoneMask` ROI under thre
 
 ### Environment Setup
 
-We recommend a standard local Python environment for training and evaluation:
-
 ```bash
 git clone https://github.com/frankzhangrp/LumbarSR-Challenge.git
 cd LumbarSR-Challenge
@@ -184,19 +154,7 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-Environment checklist:
-- PyTorch ≥ 2.0
-- MONAI ≥ 1.2
-- nibabel, pydicom, SimpleITK
-- numpy, scipy, scikit-image
-
-Optional checks:
-
-```bash
-python -c "import torch; print(torch.__version__)"
-python -c "import monai; print(monai.__version__)"
-python -c "import nibabel, pydicom, SimpleITK, scipy, skimage; print('deps ok')"
-```
+Main dependencies: PyTorch, MONAI, nibabel, pydicom, SimpleITK, numpy, scipy, and scikit-image.
 
 ## Repository Contents
 
@@ -333,15 +291,9 @@ Detailed commands are provided in [`methods/README.md`](methods/README.md).
 
 ## Recommended Usage Policy
 
-1. **Official Data**: Use the released LumbarSR training set as the primary development data.
-
-2. **External Data**: External datasets may be used for pre-training or supplementary training. Please clearly document the data sources and approximate scale in any report or publication.
-
-3. **Pre-trained / Foundation Models**: Publicly available pre-trained models and foundation models may be used. Please document the model name, version, and checkpoint when applicable.
-
-4. **Synthetic Data**: Synthetic data generation, simulation, augmentation, or self-training strategies may be used and should be briefly described.
-
-5. **Evaluation Integrity**: Do not use hidden ground truth or any form of test leakage. Evaluation should remain fully automatic and reproducible.
+1. Use the released LumbarSR training set as the primary development data.
+2. External data, pre-trained models, and synthetic data are allowed, but should be disclosed clearly.
+3. Do not use hidden ground truth or any form of test leakage.
 
 ## Organizers
 
