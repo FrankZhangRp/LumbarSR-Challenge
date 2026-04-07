@@ -6,75 +6,109 @@
     <meta name="description" content="A paired clinical CT and photon-counting micro-CT dataset for human lumbar vertebrae">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Google Fonts - Inter -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet">
 
     <style type="text/css">
+        :root {
+            --bg: #f4f1ea;
+            --bg-deep: #ece7de;
+            --surface: rgba(255, 255, 255, 0.84);
+            --surface-strong: #ffffff;
+            --surface-muted: #f8f5ef;
+            --ink: #1b2430;
+            --muted: #607080;
+            --line: #d9d1c4;
+            --accent: #123b59;
+            --accent-strong: #0d2940;
+            --accent-soft: #dbe6ef;
+            --gold: #d6b16b;
+            --shadow: 0 20px 50px rgba(24, 41, 56, 0.10);
+            --radius-lg: 28px;
+            --radius-md: 20px;
+            --radius-sm: 14px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             font-weight: 400;
-            font-size: 18px;
-            margin-left: auto;
-            margin-right: auto;
-            max-width: 1100px;
-            width: 90%;
-            padding: 0 20px;
-            line-height: 1.6;
-            color: #333;
+            font-size: 17px;
+            margin: 0;
+            line-height: 1.7;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at top left, rgba(18, 59, 89, 0.14), transparent 26rem),
+                radial-gradient(circle at top right, rgba(214, 177, 107, 0.16), transparent 20rem),
+                linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
         }
 
         h1 {
-            font-weight: 600;
-            font-size: 36px;
-            margin-bottom: 5px;
+            font-family: "Source Serif 4", Georgia, serif;
+            font-weight: 700;
+            font-size: clamp(2.4rem, 4vw, 4.2rem);
+            line-height: 1.02;
+            letter-spacing: -0.03em;
+            margin: 0;
         }
 
         h2 {
-            font-weight: 600;
-            font-size: 24px;
-            margin-top: 30px;
-            margin-bottom: 15px;
-            color: #1a1a1a;
+            font-family: "Source Serif 4", Georgia, serif;
+            font-weight: 700;
+            font-size: clamp(1.8rem, 2.3vw, 2.5rem);
+            letter-spacing: -0.03em;
+            margin: 0 0 16px;
+            color: var(--accent-strong);
         }
 
         h3 {
-            font-weight: 500;
-            font-size: 20px;
-            margin-top: 25px;
-            margin-bottom: 10px;
-            color: #333;
+            font-family: "Source Serif 4", Georgia, serif;
+            font-weight: 600;
+            font-size: 1.45rem;
+            margin: 28px 0 12px;
+            color: var(--accent-strong);
         }
 
-        .subtitle {
-            font-size: 22px;
-            color: #666;
-            margin-bottom: 20px;
+        h4 {
+            font-family: "Source Serif 4", Georgia, serif;
+            font-weight: 600;
+            font-size: 1.15rem;
+            margin: 24px 0 10px;
+            color: var(--accent-strong);
+        }
+
+        p {
+            margin: 0 0 14px;
         }
 
         a:link, a:visited {
-            color: #1367a7;
+            color: var(--accent);
             text-decoration: none;
         }
 
         a:hover {
-            color: #208799;
+            color: var(--accent-strong);
             text-decoration: underline;
         }
 
         hr {
-            border: 0;
-            height: 1px;
-            background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
-            margin: 30px 0;
+            display: none;
         }
 
         img.rounded {
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            -moz-border-radius: 10px;
-            -webkit-border-radius: 10px;
+            width: 100%;
+            border: 1px solid rgba(18, 59, 89, 0.10);
+            border-radius: 18px;
+            box-shadow: 0 16px 38px rgba(17, 35, 52, 0.12);
         }
 
         table {
@@ -84,19 +118,25 @@
 
         table.data-table {
             width: 100%;
+            background: var(--surface-strong);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 10px 24px rgba(18, 59, 89, 0.06);
         }
 
         table.data-table th {
-            background-color: #f5f5f5;
-            padding: 12px 15px;
+            background-color: #f3efe7;
+            padding: 13px 15px;
             text-align: left;
-            font-weight: 400;
-            border-bottom: 2px solid #ddd;
+            font-weight: 700;
+            color: var(--accent-strong);
+            border-bottom: 1px solid var(--line);
         }
 
         table.data-table td {
             padding: 10px 15px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #eee7db;
         }
 
         table.compact-table th,
@@ -106,58 +146,75 @@
         }
 
         table.data-table tr:hover {
-            background-color: #fafafa;
+            background-color: #fbf8f2;
         }
 
         .info-box {
-            background-color: #f0f7ff;
-            border: 1px solid #d0e3f7;
-            border-radius: 8px;
+            background-color: #eef3f7;
+            border: 1px solid #d5e0e8;
+            border-radius: var(--radius-sm);
             padding: 15px 20px;
             margin: 20px 0;
         }
 
         .highlight-box {
-            background-color: #fff8e6;
-            border: 1px solid #ffe0a0;
-            border-radius: 8px;
+            background-color: #fbf4e7;
+            border: 1px solid #ead8af;
+            border-radius: var(--radius-sm);
             padding: 15px 20px;
             margin: 20px 0;
         }
 
         .btn {
             display: inline-block;
-            padding: 10px 25px;
-            background-color: #1367a7;
+            padding: 11px 20px;
+            background-color: var(--accent);
             color: white !important;
-            border-radius: 5px;
+            border-radius: 999px;
             text-decoration: none !important;
             margin: 5px;
-            font-size: 16px;
+            font-size: 15px;
+            font-weight: 700;
+            border: 1px solid transparent;
+            box-shadow: 0 10px 24px rgba(18, 59, 89, 0.18);
         }
 
         .btn:hover {
-            background-color: #208799;
+            background-color: var(--accent-strong);
+            text-decoration: none;
         }
 
         .btn-outline {
-            background-color: transparent;
-            border: 1px solid #1367a7;
-            color: #1367a7 !important;
+            background-color: rgba(18, 59, 89, 0.02);
+            border: 1px solid rgba(18, 59, 89, 0.28);
+            color: var(--accent) !important;
+            box-shadow: none;
         }
 
         .btn-outline:hover {
-            background-color: #1367a7;
-            color: white !important;
+            background-color: rgba(18, 59, 89, 0.08);
+            color: var(--accent-strong) !important;
+        }
+
+        .hero .btn-outline {
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #eef5fb !important;
+        }
+
+        .hero .btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+            color: #ffffff !important;
         }
 
         .btn-primary {
-            background-color: #28a745;
-            font-weight: 600;
+            background-color: var(--gold);
+            color: #1a2430 !important;
+            font-weight: 800;
         }
 
         .btn-primary:hover {
-            background-color: #218838;
+            background-color: #c7a25d;
         }
 
         ul {
@@ -170,9 +227,9 @@
         }
 
         pre {
-            background-color: #f5f5f5;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            background-color: #f6f3ee;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-sm);
             padding: 15px;
             overflow-x: auto;
             font-size: 14px;
@@ -182,74 +239,201 @@
             font-family: "Monaco", "Menlo", "Consolas", monospace;
         }
 
-        .author-list {
-            font-size: 16px;
-            color: #555;
+        .page-shell {
+            max-width: 1220px;
+            margin: 0 auto;
+            padding: 32px 24px 72px;
         }
 
-        .affiliation {
-            font-size: 15px;
-            color: #777;
-            font-style: italic;
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.9fr);
+            gap: 28px;
+            background: linear-gradient(135deg, rgba(15, 38, 59, 0.97), rgba(18, 59, 89, 0.94));
+            color: #f8fbff;
+            border-radius: var(--radius-lg);
+            padding: 34px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .metric-item {
-            display: inline-block;
-            margin: 5px 15px 5px 0;
+        .hero-copy {
+            min-width: 0;
+        }
+
+        .eyebrow {
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            font-size: 0.74rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.72);
+            margin-bottom: 14px;
+        }
+
+        .hero-brand {
+            display: flex;
+            align-items: flex-start;
+            gap: 22px;
+        }
+
+        .masthead-logo {
+            width: 96px;
+            flex: 0 0 auto;
+            filter: drop-shadow(0 14px 20px rgba(0, 0, 0, 0.18));
+        }
+
+        .hero-subtitle {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: rgba(243, 248, 252, 0.84);
+            max-width: 46rem;
+            margin-top: 18px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .hero-panel {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 24px;
+            padding: 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        .panel-kicker {
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            font-size: 0.74rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.72);
+            margin-bottom: 14px;
+        }
+
+        .panel-title {
+            font-family: "Source Serif 4", Georgia, serif;
+            font-size: 1.45rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin: 0 0 16px;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.94);
+            color: var(--ink);
+            border-radius: 18px;
+            padding: 16px;
+        }
+
+        .stat-value {
+            display: block;
+            font-family: "Source Serif 4", Georgia, serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent-strong);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .hero-note {
+            margin-top: 16px;
+            font-size: 0.95rem;
+            color: rgba(243, 248, 252, 0.78);
+        }
+
+        .section-card {
+            background: var(--surface);
+            border: 1px solid rgba(18, 59, 89, 0.08);
+            border-radius: 24px;
+            box-shadow: 0 16px 36px rgba(18, 59, 89, 0.06);
+            backdrop-filter: blur(8px);
+            padding: 28px 30px;
+            margin-top: 24px;
+        }
+
+        .section-card:first-of-type {
+            margin-top: 28px;
         }
 
         .note {
             font-size: 15px;
-            color: #666;
+            color: var(--muted);
             font-style: italic;
         }
 
-        /* Table wrapper for horizontal scroll on mobile */
-        .table-wrapper {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
+        center {
+            display: block;
+            text-align: center;
         }
 
-        /* Button container for flex wrap */
-        .btn-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
+        @media screen and (max-width: 980px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
         }
 
-        /* Responsive Design */
         @media screen and (max-width: 768px) {
             body {
                 font-size: 16px;
-                padding: 0 15px;
             }
 
-            h1, .title {
-                font-size: 24px !important;
+            .page-shell {
+                padding: 20px 14px 48px;
             }
 
-            h2 {
-                font-size: 20px;
+            .hero {
+                padding: 22px;
+                border-radius: 24px;
             }
 
-            h3 {
-                font-size: 18px;
+            .hero-brand {
+                flex-direction: column;
+                gap: 16px;
             }
 
-            .subtitle {
-                font-size: 18px;
+            .masthead-logo {
+                width: 78px;
             }
 
             .btn {
-                padding: 8px 16px;
+                width: auto;
                 font-size: 14px;
-                margin: 3px;
+                padding: 10px 16px;
+                margin: 4px;
+            }
+
+            .section-card {
+                padding: 22px 18px;
+                border-radius: 20px;
+            }
+
+            table.data-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
             }
 
             table.data-table th,
             table.data-table td {
-                padding: 8px 10px;
+                padding: 9px 10px;
                 font-size: 14px;
             }
 
@@ -257,71 +441,63 @@
                 font-size: 12px;
                 padding: 10px;
             }
-
-            .info-box,
-            .highlight-box {
-                padding: 12px 15px;
-            }
-
-            img.rounded {
-                max-width: 100%;
-                height: auto;
-            }
-        }
-
-        @media screen and (max-width: 480px) {
-            body {
-                font-size: 15px;
-            }
-
-            h1, .title {
-                font-size: 20px !important;
-            }
-
-            h2 {
-                font-size: 18px;
-            }
-
-            .btn {
-                display: block;
-                width: 100%;
-                text-align: center;
-                margin: 5px 0;
-            }
-
-            .btn-container {
-                flex-direction: column;
-            }
         }
     </style>
 </head>
 
 <body>
-    <br><br>
+    <div class="page-shell">
+    <header class="hero">
+        <div class="hero-copy">
+            <div class="eyebrow">Benchmark Dataset · Clinical CT to Micro-PCCT</div>
+            <div class="hero-brand">
+                <img src="images/logo_512.png" alt="LumbarSR Logo" class="masthead-logo">
+                <div>
+                    <h1>LumbarSR</h1>
+                    <p class="hero-subtitle">
+                        A paired clinical CT and photon-counting Micro-PCCT benchmark for lumbar vertebral super-resolution,
+                        released with aligned BoneMask ROIs, reference registration, visualization assets, and public benchmark tables.
+                    </p>
+                </div>
+            </div>
+            <div class="hero-actions">
+                <a href="https://doi.org/10.5281/zenodo.19404387" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Zenodo DOI</a>
+                <a href="#dataset" class="btn btn-outline">Dataset</a>
+                <a href="#evaluation" class="btn btn-outline">Evaluation</a>
+                <a href="baseline_results.html" class="btn btn-outline">Results</a>
+                <a href="compare.html" class="btn btn-outline">Interactive Compare</a>
+                <a href="https://github.com/FrankZhangRp/LumbarSR-Challenge" class="btn btn-outline">GitHub</a>
+            </div>
+        </div>
+        <aside class="hero-panel">
+            <div class="panel-kicker">Benchmark Snapshot</div>
+            <h3 class="panel-title">Released With Reproducible Evaluation</h3>
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <span class="stat-value">30</span>
+                    <span class="stat-label">Paired Samples</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value">212K</span>
+                    <span class="stat-label">Registered Slices</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value">105 μm</span>
+                    <span class="stat-label">Micro-PCCT Target</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value">6</span>
+                    <span class="stat-label">Reported Methods</span>
+                </div>
+            </div>
+            <p class="hero-note">
+                Public benchmark tables cover registered clinical CT, Nearest, SRCNN, UNet, ESRGAN, and SwinIR under the released BoneMask-ROI protocol.
+            </p>
+        </aside>
+    </header>
 
-    <!-- Title Section -->
-    <center>
-        <!-- Logo -->
-        <img src="images/logo_512.png" alt="LumbarSR Logo" style="width: 200px; margin-bottom: 20px;">
-        <br>
-        <span style="font-size:34px; font-weight:600;">LumbarSR: A Paired Clinical CT and Photon-Counting Micro-CT Dataset for Human Lumbar Vertebrae</span>
-        <br><br>
-
-        <!-- Quick Links -->
-        <a href="#overview" class="btn">Overview</a>
-        <a href="#dataset" class="btn btn-outline">Dataset</a>
-        <a href="#evaluation" class="btn btn-outline">Evaluation</a>
-        <a href="baseline_results.html" class="btn btn-primary">Baseline Results</a>
-        <a href="sr_overview.html" class="btn btn-outline">SR Overview</a>
-        <a href="compare.html" class="btn btn-outline">Interactive Compare</a>
-        <a href="https://github.com/FrankZhangRp/LumbarSR-Challenge" class="btn btn-outline">GitHub</a>
-    </center>
-
-    <br>
-    <hr>
-
-    <!-- Overview Section -->
-    <h2 id="overview">Overview</h2>
+    <section class="section-card" id="overview">
+    <h2>Overview</h2>
 
     <p>
         LumbarSR is a paired clinical CT and Micro-PCCT benchmark for lumbar vertebral super-resolution, containing
@@ -340,10 +516,10 @@
         <p class="note">Tri-planar views and 3D bone rendering across different CT resolutions<br>
         <a href="images/showcase.gif" target="_blank">Click to view at higher resolution (Original ultra-high resolution is not available online)</a></p>
     </center>
-
-    <hr>
+    </section>
 
     <!-- Task Section -->
+    <section class="section-card">
     <h2>Task Definition</h2>
     <p>Input: clinical CT with <strong>soft tissue kernel</strong> at two fields of view. Output: <strong>105 μm isotropic Micro-PCCT</strong>.</p>
 
@@ -372,7 +548,9 @@
         </a>
         <p class="note">Pipeline overview (<a href="images/flowchart.png" target="_blank">Full resolution</a>)</p>
     </center>
+    </section>
 
+    <section class="section-card">
     <h2>Super-Resolution Visualization</h2>
     <p>
         The following figure shows a representative tri-planar comparison for <code>Lumbar_26</code> using
@@ -385,11 +563,11 @@
         </a>
         <p class="note">Open the <a href="images/sr_visualization_lumbar26_586um.pdf" target="_blank">PDF version</a> for the full-resolution figure.</p>
     </center>
-
-    <hr>
+    </section>
 
     <!-- Dataset Section -->
-    <h2 id="dataset">Dataset</h2>
+    <section class="section-card" id="dataset">
+    <h2>Dataset</h2>
 
     <h3>Download</h3>
     <p>
@@ -510,10 +688,10 @@
     </table>
 
     <p class="note">Micro-PCCT targets are released as <code>int16</code> NIfTI volumes at <code>105 μm</code> isotropic resolution.</p>
-
-    <hr>
+    </section>
 
     <!-- Public Code Section -->
+    <section class="section-card">
     <h2>Repository Contents</h2>
 
     <table class="data-table">
@@ -548,11 +726,11 @@
         The public benchmark reports registered clinical CT, nearest interpolation, SRCNN, UNet, ESRGAN, and SwinIR under the released BoneMask-ROI protocol.
         Usage details are documented in <code>methods/</code> and <code>evaluation/</code>.
     </p>
-
-    <hr>
+    </section>
 
     <!-- Evaluation Section -->
-    <h2 id="evaluation">Evaluation</h2>
+    <section class="section-card" id="evaluation">
+    <h2>Evaluation</h2>
 
     <h3>CT Window Settings</h3>
     <p>All metrics are computed under <strong>three different CT window settings</strong>:</p>
@@ -796,10 +974,10 @@
             <td>-0.1722 / 0.03125</td><td>+0.1437 / 0.03125</td><td>+0.5568 / 0.03125</td><td>-0.7410 / 0.03125</td>
         </tr>
     </table>
-
-    <hr>
+    </section>
 
     <!-- Recommended Usage Policy -->
+    <section class="section-card">
     <h2>Recommended Usage Policy</h2>
 
     <ol>
@@ -807,10 +985,10 @@
         <li><strong>Disclosure:</strong> External data, pre-trained models, and synthetic data are allowed, but should be documented clearly.</li>
         <li><strong>Integrity:</strong> Avoid hidden-ground-truth usage or any form of test leakage.</li>
     </ol>
-
-    <hr>
+    </section>
 
     <!-- Organizers Section -->
+    <section class="section-card">
     <h2>Organizers</h2>
 
     <ul>
@@ -823,10 +1001,10 @@
     </ul>
 
     <p class="note">* Equal contribution</p>
-
-    <hr>
+    </section>
 
     <!-- Contact Section -->
+    <section class="section-card">
     <h2>Contact</h2>
 
     <p>
@@ -834,10 +1012,10 @@
         <strong>Email:</strong> <a href="mailto:zhangrp@sjtu.edu.cn">zhangrp@sjtu.edu.cn</a><br>
         <strong>GitHub:</strong> <a href="https://github.com/FrankZhangRp">@FrankZhangRp</a>
     </p>
-
-    <hr>
+    </section>
 
     <!-- Citation Section -->
+    <section class="section-card">
     <h2>Citation</h2>
 
     <p>If you use this dataset, please cite:</p>
@@ -858,6 +1036,8 @@
     </center>
 
     <br><br>
+    </section>
 
+    </div>
 </body>
 </html>
