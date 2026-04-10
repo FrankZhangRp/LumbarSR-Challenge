@@ -6,15 +6,6 @@ services:
     image: lumbarsr:latest
     container_name: lumbarsr_challenge
 
-    # GPU support
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
-
     # Mount directories
     volumes:
       - ./data:/workspace/data

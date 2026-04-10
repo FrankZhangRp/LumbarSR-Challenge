@@ -232,6 +232,16 @@ Current public subset (`586X_586Y_1000Z_S`):
 
 Public benchmark tables currently cover registered clinical CT, `Nearest`, `SRCNN`, `UNet`, `ESRGAN`, and `SwinIR`. Model usage notes are kept in [`methods/README.md`](methods/README.md), and evaluation scripts are provided in [`evaluation/`](evaluation/).
 
+## Quantitative Comparison Figure
+
+<p align="center">
+  <a href="docs/images/fig5_sr_results_metrics.pdf">
+    <img src="docs/images/fig5_sr_results_metrics.jpg" alt="Quantitative comparison of super-resolution baselines across objective metrics and bone morphometry" width="100%">
+  </a>
+  <br>
+  <em>Quantitative comparison of registration, image-quality, and trabecular morphometry results across the released baselines (<a href="docs/images/fig5_sr_results_metrics.pdf">PDF</a>).</em>
+</p>
+
 ### Baseline Performance
 
 Training uses `Lumbar_01` to `Lumbar_25`; evaluation reports mean ± standard deviation on `Lumbar_26` to `Lumbar_30`.

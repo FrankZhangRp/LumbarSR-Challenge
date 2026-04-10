@@ -190,12 +190,6 @@ Training uses `Lumbar_01` to `Lumbar_25`; evaluation reports mean ± standard de
 
 For complete public benchmark tables, see the [full results page](../docs/baseline_results.html) or the main [README](../README.md#baseline-performance).
 
-## Troubleshooting
-
-- OOM: reduce `--batch-size` or `--patch-size`
-- Slow training: reduce `--n-patches` or use `SRCNN`
-- Poor results: train longer, adjust learning rate, or verify sequence pairing
-
 ## Citation
 
 If you use these baseline methods, please cite:

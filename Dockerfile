@@ -1,5 +1,4 @@
 # LumbarSR Challenge - Docker Environment
-# Base: NVIDIA GPU + PyTorch + Medical Imaging Libraries
 
 FROM nvcr.io/nvidia/pytorch:24.01-py3
 
@@ -34,7 +33,6 @@ RUN mkdir -p /workspace/data \
 
 # Set environment variables
 ENV PYTHONPATH=/workspace:$PYTHONPATH
-ENV CUDA_VISIBLE_DEVICES=0
 
 # Default command
 CMD ["/bin/bash"]
