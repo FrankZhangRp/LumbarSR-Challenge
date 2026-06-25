@@ -11,6 +11,10 @@
   <img src="https://img.shields.io/badge/Resolution-105μm-orange" alt="Resolution">
 </p>
 
+## News
+
+- Our manuscript, **"LumbarSR: A Paired Clinical CT and Photon-Counting Micro-CT Dataset for Human Lumbar Vertebrae,"** has been accepted for publication in *Scientific Data*.
+
 ## Overview
 
 LumbarSR is a paired clinical CT and Micro-PCCT benchmark for lumbar vertebral super-resolution. It contains 30 ex vivo human lumbar samples scanned with multiple clinical CT configurations and matched `105 μm` Micro-PCCT.
@@ -345,11 +349,20 @@ Ping Wang and Ruipeng Zhang contributed equally to this work.
 If you use this dataset, please cite:
 
 ```bibtex
+@article{wang2026lumbarsr,
+  title={LumbarSR: A Paired Clinical CT and Photon-Counting Micro-CT Dataset for Human Lumbar Vertebrae},
+  author={Wang, Ping and Zhang, Ruipeng and Wang, Mengfei and Zong, Shenyan and Zhu, Jinyu and Song, Xinyu and Cao, Zhenzhen and Hu, Xuefei and Wang, Dan and Li, Yuehua},
+  journal={Scientific Data},
+  year={2026},
+  note={Accepted for publication}
+}
+
 @misc{lumbarsr2026,
   title={LumbarSR: A Paired Clinical CT and Photon-Counting Micro-CT Dataset for Human Lumbar Vertebrae},
   author={Wang, Ping and Zhang, Ruipeng and Wang, Mengfei and Zong, Shenyan and Zhu, Jinyu and Song, Xinyu and Cao, Zhenzhen and Hu, Xuefei and Wang, Dan and Li, Yuehua},
   year={2026},
-  url={https://github.com/frankzhangrp/LumbarSR-Challenge}
+  howpublished={GitHub repository},
+  url={https://github.com/FrankZhangRp/LumbarSR-Challenge}
 }
 ```
 
