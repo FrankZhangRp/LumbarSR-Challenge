@@ -13,7 +13,7 @@
 
 ## News
 
-- Our manuscript, **"LumbarSR: A Paired Clinical CT and Photon-Counting Micro-CT Dataset for Human Lumbar Vertebrae,"** has been accepted for publication in *Scientific Data*.
+- Our paper, **"LumbarSR: A Paired Clinical CT and Photon-Counting Micro-CT Dataset for Human Lumbar Vertebrae,"** was published online in *Scientific Data* on June 26, 2026: [https://www.nature.com/articles/s41597-026-07748-5](https://www.nature.com/articles/s41597-026-07748-5).
 
 ## Overview
 
@@ -354,7 +354,10 @@ If you use this dataset, please cite:
   author={Wang, Ping and Zhang, Ruipeng and Wang, Mengfei and Zong, Shenyan and Zhu, Jinyu and Song, Xinyu and Cao, Zhenzhen and Hu, Xuefei and Wang, Dan and Li, Yuehua},
   journal={Scientific Data},
   year={2026},
-  note={Accepted for publication}
+  month={jun},
+  doi={10.1038/s41597-026-07748-5},
+  url={https://www.nature.com/articles/s41597-026-07748-5},
+  publisher={Springer Science and Business Media LLC}
 }
 
 @misc{lumbarsr2026,
