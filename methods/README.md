@@ -2,6 +2,8 @@
 
 This directory contains runnable method scripts for the LumbarSR benchmark.
 
+Official paper: [LumbarSR: A Paired Clinical CT and Photon-Counting Micro-CT Dataset for Human Lumbar Vertebrae](https://www.nature.com/articles/s41597-026-07748-5)
+
 ## Quick Start
 
 ### 1. Setup Environment
@@ -195,11 +197,23 @@ For complete public benchmark tables, see the [full results page](../docs/baseli
 If you use these baseline methods, please cite:
 
 ```bibtex
+@article{wang2026lumbarsr,
+  title={LumbarSR: A Paired Clinical CT and Photon-Counting Micro-CT Dataset for Human Lumbar Vertebrae},
+  author={Wang, Ping and Zhang, Ruipeng and Wang, Mengfei and Zong, Shenyan and Zhu, Jinyu and Song, Xinyu and Cao, Zhenzhen and Hu, Xuefei and Wang, Dan and Li, Yuehua},
+  journal={Scientific Data},
+  year={2026},
+  month={jun},
+  doi={10.1038/s41597-026-07748-5},
+  url={https://www.nature.com/articles/s41597-026-07748-5},
+  publisher={Springer Science and Business Media LLC}
+}
+
 @misc{lumbarsr2026,
   title={LumbarSR: A Paired Clinical CT and Photon-Counting Micro-CT Dataset for Human Lumbar Vertebrae},
-  author={Wang, Ping and Zhang, Ruipeng and Wang, Mengfei and Cao, Zhenzhen and Hu, Xuefei and Li, Yuehua},
+  author={Wang, Ping and Zhang, Ruipeng and Wang, Mengfei and Zong, Shenyan and Zhu, Jinyu and Song, Xinyu and Cao, Zhenzhen and Hu, Xuefei and Wang, Dan and Li, Yuehua},
   year={2026},
-  url={https://github.com/frankzhangrp/LumbarSR-Challenge}
+  howpublished={GitHub repository},
+  url={https://github.com/FrankZhangRp/LumbarSR-Challenge}
 }
 ```
 
